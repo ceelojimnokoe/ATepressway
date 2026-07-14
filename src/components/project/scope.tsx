@@ -1,4 +1,4 @@
-import { Figure } from "@/components/ui/figure";
+import { AnimatedFigure } from "@/components/ui/animated-figure";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import { buildSegments } from "@/components/corridor/geometry";
 
@@ -13,7 +13,7 @@ export function Scope() {
   const segments = buildSegments();
 
   return (
-    <section className="border-b border-rule">
+    <section className="border-b border-rule bg-void">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
         <h2 className="text-heading-4 text-ink-1">Scope</h2>
 
@@ -32,7 +32,7 @@ export function Scope() {
                 </span>
               </div>
               <div className="flex items-baseline gap-1">
-                <Figure value={segment.section.lengthKm} className="text-heading-3" />
+                <AnimatedFigure value={segment.section.lengthKm} decimals={1} className="text-heading-3" />
                 <span className="text-small text-ink-2">km</span>
               </div>
             </div>

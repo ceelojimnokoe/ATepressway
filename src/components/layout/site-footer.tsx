@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { organization, media, contact } from "@/content/project";
 import { isPlaceholder } from "@/content/placeholder";
 import { primaryNav } from "@/content/navigation";
 import { PlaceholderNotice } from "@/components/ui/placeholder-notice";
+import { PageTransitionLink } from "./page-transition-link";
 
 const SOCIAL_LINKS = [
   { key: "twitter", value: contact.social.twitter },
@@ -34,9 +34,9 @@ export function SiteFooter() {
             <ul className="flex flex-col gap-2 sm:items-end">
               {primaryNav.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} className="text-small text-ink-2 hover:text-ink-1">
+                  <PageTransitionLink href={item.href} className="text-small text-ink-2 hover:text-ink-1">
                     {item.label}
-                  </Link>
+                  </PageTransitionLink>
                 </li>
               ))}
             </ul>

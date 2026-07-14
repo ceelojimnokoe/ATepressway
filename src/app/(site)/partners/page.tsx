@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { DeliveryEcosystem } from "@/components/partners/delivery-ecosystem";
 import { TeamRoster } from "@/components/partners/team-roster";
+import { ImageBanner } from "@/components/ui/image-banner";
+import { stockImages } from "@/content/stock-media";
 import { buildMetadata } from "@/lib/page-metadata";
 import { routes } from "@/content/seo";
 
@@ -14,6 +16,7 @@ export default function PartnersPage() {
       </div>
 
       <DeliveryEcosystem />
+      <ImageBanner image={stockImages.interchangeConstruction} />
       <TeamRoster />
     </>
   );

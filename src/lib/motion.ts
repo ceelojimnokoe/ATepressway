@@ -112,3 +112,33 @@ export const viewport: ViewportConfig = {
   once: true,
   amount: 0.3,
 };
+
+interface TrackDrawVariant {
+  readonly hidden: { readonly scaleX: number };
+  readonly visible: {
+    readonly scaleX: number;
+    readonly transition: TransitionConfig;
+  };
+}
+
+/**
+ * Corridor's signature scroll-in: the track draws left-to-right once,
+ * scaleX from an origin-left element. Segments reveal in sequence as a
+ * side effect of the sweep, no separate per-segment stagger needed.
+ * Deliberately longer than duration.slow (320ms) — the one named
+ * exception to the site's motion budget, for the one named signature
+ * moment.
+ */
+export const trackDraw: TrackDrawVariant = {
+  hidden: { scaleX: 0 },
+  visible: {
+    scaleX: 1,
+    transition: { duration: 0.65, ease: easing.standard },
+  },
+};
+
+/** Transition for scroll-triggered number count-ups (KeyFigures, stats, etc). Fires once. */
+export const countUp: TransitionConfig = {
+  duration: duration.slow,
+  ease: easing.out,
+};

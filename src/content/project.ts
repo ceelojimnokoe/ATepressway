@@ -244,13 +244,18 @@ export interface Progress {
     | Placeholder<readonly WorkPackageProgress[]>;
 }
 
+/**
+ * UNVERIFIED — pending written confirmation from ATEL. Reported by the
+ * Chief Resident Engineer, via Ghanaian Times (Jan 2026). Rendered as a
+ * real figure with its source attached, rather than withheld — see the
+ * "reported by" (not "verified by") wording everywhere this renders.
+ * The five-work-package breakdown below is a separate, still-genuinely-
+ * unconfirmed fact — do not backfill it from this figure.
+ */
 export const progress: Progress = {
-  overallPercentComplete: placeholder<number>("Overall progress percentage", 0),
-  asOf: placeholder<string>("Progress as-of date", ""),
-  signOffSource: placeholder<string>(
-    "Verified-by / sign-off source for progress percentages",
-    "",
-  ),
+  overallPercentComplete: 46,
+  asOf: "May 2026",
+  signOffSource: "Chief Resident Engineer (via Ghanaian Times, Jan 2026)",
   sections: placeholder<readonly SectionProgress[]>("Per-section progress percentages", []),
   workPackages: placeholder<readonly WorkPackageProgress[]>(
     "Work package breakdown & progress — 5 packages per client; breakdown (interchanges vs. contract packages) not yet defined",

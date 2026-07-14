@@ -11,7 +11,7 @@ export function BulletinFeed() {
   const newestFirst = [...bulletins].sort((a, b) => (a.date < b.date ? 1 : -1));
 
   return (
-    <section>
+    <section className="bg-sunk">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
         <h2 className="text-heading-4 text-ink-1">Bulletins</h2>
 

@@ -24,11 +24,11 @@ const ECOSYSTEM = [
  */
 export function DeliveryEcosystem() {
   return (
-    <section className="border-b border-rule">
+    <section className="border-b border-rule bg-raised">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
         <h2 className="text-heading-4 text-ink-1">Delivery ecosystem</h2>
 
-        <div className="flex flex-col gap-3 border border-rule bg-raised px-6 py-8 sm:px-8 sm:py-10">
+        <div className="flex flex-col gap-3 border border-rule bg-sunk px-6 py-8 sm:px-8 sm:py-10">
           <span className="text-caption text-ink-3 tracking-wide uppercase">
             {stakeholders.client.role}
           </span>

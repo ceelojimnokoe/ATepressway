@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import type { NavItem } from "@/content/navigation";
+import { PageTransitionLink } from "./page-transition-link";
 
 interface MobileNavProps {
   readonly items: readonly NavItem[];
@@ -29,13 +29,13 @@ export function MobileNav({ items }: MobileNavProps) {
           <ul className="flex flex-col border-t border-rule">
             {items.map((item) => (
               <li key={item.href} className="border-b border-rule">
-                <Link
+                <PageTransitionLink
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className="block px-4 py-3 text-body text-ink-1"
                 >
                   {item.label}
-                </Link>
+                </PageTransitionLink>
               </li>
             ))}
           </ul>

@@ -1,5 +1,5 @@
 import { interchanges, projectFacts, laneConfiguration } from "@/content/project";
-import { Figure } from "@/components/ui/figure";
+import { AnimatedFigure } from "@/components/ui/animated-figure";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 
 const totalLanes = laneConfiguration.freeway.lanes + laneConfiguration.urban.lanes;
@@ -13,7 +13,7 @@ const STATS = [
 
 export function TheWorks() {
   return (
-    <section className="border-b border-rule">
+    <section className="border-b border-rule bg-raised">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
         <h2 className="text-heading-4 text-ink-1">The works</h2>
 
@@ -21,7 +21,7 @@ export function TheWorks() {
           {STATS.map((stat) => (
             <div key={stat.label} className="flex flex-col gap-2">
               <span className="text-caption text-ink-3 tracking-wide uppercase">{stat.label}</span>
-              <Figure value={stat.value} className="text-heading-3" />
+              <AnimatedFigure value={stat.value} className="text-heading-3" />
             </div>
           ))}
         </div>

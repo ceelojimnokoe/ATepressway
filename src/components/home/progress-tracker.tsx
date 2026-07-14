@@ -5,6 +5,7 @@ import { reveal, viewport } from "@/lib/motion";
 import { progress } from "@/content/project";
 import { isPlaceholder } from "@/content/placeholder";
 import { Figure } from "@/components/ui/figure";
+import { AnimatedFigure } from "@/components/ui/animated-figure";
 
 function TbcChip({ label }: { readonly label: string }) {
   return (
@@ -25,7 +26,7 @@ function TbcChip({ label }: { readonly label: string }) {
  */
 export function ProgressTracker() {
   return (
-    <section className="border-b border-rule">
+    <section className="border-b border-rule bg-raised">
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -41,10 +42,10 @@ export function ProgressTracker() {
             <TbcChip label="Overall progress percentage" />
           ) : (
             <div className="flex items-baseline gap-3">
-              <Figure value={`${progress.overallPercentComplete}%`} signal className="text-heading-2" />
+              <AnimatedFigure value={progress.overallPercentComplete} suffix="%" signal className="text-heading-2" />
               {!isPlaceholder(progress.asOf) && !isPlaceholder(progress.signOffSource) && (
                 <span className="text-small text-ink-2">
-                  as of {progress.asOf} · verified by {progress.signOffSource}
+                  as of {progress.asOf} · reported by {progress.signOffSource}
                 </span>
               )}
             </div>

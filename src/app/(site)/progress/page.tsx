@@ -3,6 +3,8 @@ import { OverallCompletion } from "@/components/progress/overall-completion";
 import { WorkPackages } from "@/components/progress/work-packages";
 import { MilestoneTimeline } from "@/components/progress/milestone-timeline";
 import { BulletinFeed } from "@/components/progress/bulletin-feed";
+import { ImageBanner } from "@/components/ui/image-banner";
+import { stockImages } from "@/content/stock-media";
 import { buildMetadata } from "@/lib/page-metadata";
 import { routes } from "@/content/seo";
 
@@ -16,6 +18,7 @@ export default function ProgressPage() {
       </div>
 
       <OverallCompletion />
+      <ImageBanner image={stockImages.pavingEquipment} />
       <WorkPackages />
       <MilestoneTimeline />
       <BulletinFeed />

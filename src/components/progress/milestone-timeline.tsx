@@ -51,7 +51,7 @@ export function MilestoneTimeline() {
   const milestones = buildMilestones();
 
   return (
-    <section className="border-b border-rule">
+    <section className="border-b border-rule bg-void">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
         <h2 className="text-heading-4 text-ink-1">Milestone timeline</h2>
 

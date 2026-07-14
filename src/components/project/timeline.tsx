@@ -12,7 +12,7 @@ const MILESTONES = [
 
 export function Timeline() {
   return (
-    <section>
+    <section className="bg-raised">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
         <h2 className="text-heading-4 text-ink-1">Timeline</h2>
         <ol className="flex flex-col divide-y divide-rule border-t border-b border-rule">

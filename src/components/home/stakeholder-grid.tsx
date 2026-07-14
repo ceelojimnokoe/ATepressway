@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { stakeholders } from "@/content/project";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
+import { PageTransitionLink } from "@/components/layout/page-transition-link";
 
 const ECOSYSTEM = [
   stakeholders.contractor,
@@ -12,7 +12,7 @@ const ECOSYSTEM = [
 
 export function StakeholderGrid() {
   return (
-    <section>
+    <section className="bg-sunk">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
         <h2 className="text-heading-4 text-ink-1">Delivered by</h2>
 
@@ -39,9 +39,9 @@ export function StakeholderGrid() {
           ))}
         </div>
 
-        <Link href="/partners" className="text-small text-ink-1 underline underline-offset-4">
+        <PageTransitionLink href="/partners" className="text-small text-ink-1 underline underline-offset-4">
           See all partners →
-        </Link>
+        </PageTransitionLink>
       </ViewportReveal>
     </section>
   );

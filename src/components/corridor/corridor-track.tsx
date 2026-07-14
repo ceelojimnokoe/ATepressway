@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { barFill, viewport } from "@/lib/motion";
+import { barFill, trackDraw, viewport } from "@/lib/motion";
 import { cn } from "@/lib/cn";
 import { kmToPercent, sectionFillFraction, type CorridorSegment } from "./geometry";
 
@@ -75,20 +75,32 @@ export function CorridorTrack({
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
-        className={cn(
-          "relative flex w-full touch-none select-none bg-rule",
-          compact ? "h-2" : "h-3",
-        )}
+        className={cn("relative w-full touch-none select-none", compact ? "h-2" : "h-3")}
       >
-        {segments.map((segment, index) => (
-          <div
-            key={segment.section.id}
-            style={{ flexGrow: segment.section.lengthKm, flexBasis: 0 }}
-            className={cn("relative h-full", index > 0 && "border-l border-void")}
-          >
-            <SegmentFill segment={segment} />
-          </div>
-        ))}
+        {/*
+          Visual track only — scaleX draws in left-to-right once, on
+          scroll. Segments reveal in sequence as a side effect of the
+          sweep (they're laid out left-to-right inside it), so no
+          separate per-segment stagger is needed. Kept as a distinct
+          layer from trackRef so the scaleX transform never stretches
+          the handle, which is a sibling, not a child, of this element.
+        */}
+        <motion.div
+          initial={trackDraw.hidden}
+          whileInView={trackDraw.visible}
+          viewport={viewport}
+          className="absolute inset-0 flex origin-left bg-rule"
+        >
+          {segments.map((segment, index) => (
+            <div
+              key={segment.section.id}
+              style={{ flexGrow: segment.section.lengthKm, flexBasis: 0 }}
+              className={cn("relative h-full", index > 0 && "border-l border-void")}
+            >
+              <SegmentFill segment={segment} />
+            </div>
+          ))}
+        </motion.div>
 
         <div
           role="slider"
@@ -99,13 +111,15 @@ export function CorridorTrack({
           aria-valuenow={roundedValueKm}
           aria-valuetext={valueText}
           onKeyDown={onKeyDown}
-          className="absolute top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none items-center justify-center focus:outline-none active:cursor-grabbing"
+          className="group absolute top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none items-center justify-center focus:outline-none active:cursor-grabbing"
           style={{ left: `${percent}%` }}
         >
           <div
             className={cn(
-              "w-1 bg-lime focus-visible:ring-2 focus-visible:ring-lime",
-              compact ? "h-4" : "h-6",
+              "rounded-full border-2 border-lime bg-void",
+              "group-hover:bg-lime group-active:bg-lime",
+              "group-focus-visible:bg-lime group-focus-visible:ring-2 group-focus-visible:ring-lime group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-void",
+              compact ? "h-4 w-4" : "h-5 w-5",
             )}
           />
         </div>

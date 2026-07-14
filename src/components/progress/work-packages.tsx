@@ -16,7 +16,7 @@ import { Figure } from "@/components/ui/figure";
  */
 export function WorkPackages() {
   return (
-    <section className="border-b border-rule">
+    <section className="border-b border-rule bg-raised">
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -35,7 +35,7 @@ export function WorkPackages() {
                     <span className="text-body text-ink-1">{pkg.name}</span>
                     <Figure value={`${pkg.percentComplete}%`} />
                   </div>
-                  <div className="h-2 w-full overflow-hidden bg-raised">
+                  <div className="h-2 w-full overflow-hidden bg-sunk">
                     <motion.div
                       initial={barFill.hidden}
                       whileInView={barFill.visible(pkg.percentComplete / 100)}
