@@ -1,14 +1,11 @@
-import { stakeholders } from "@/content/project";
+import { stakeholderChain, specialistContractors } from "@/content/project";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import { PageTransitionLink } from "@/components/layout/page-transition-link";
 
-const ECOSYSTEM = [
-  stakeholders.contractor,
-  stakeholders.designSupervision,
-  stakeholders.electricalRelocation,
-  stakeholders.waterRelocation,
-  stakeholders.financier,
-] as const;
+// Employer sits above the rest; the teaser lists the remaining chain plus
+// the specialists, and links through to the full accountability chain.
+const [employer, ...downstream] = stakeholderChain;
+const others = [...downstream, ...specialistContractors];
 
 export function StakeholderGrid() {
   return (
@@ -17,18 +14,17 @@ export function StakeholderGrid() {
         <h2 className="text-heading-4 text-ink-1">Delivered by</h2>
 
         <div className="flex flex-col gap-1 border border-rule bg-raised px-4 py-3">
-          <span className="text-body text-ink-1">{stakeholders.client.name}</span>
-          <span className="text-small text-ink-2">{stakeholders.client.role}</span>
+          <span className="text-caption text-ink-3 tracking-wide uppercase">{employer.role}</span>
+          <span className="text-body text-ink-1">{employer.name}</span>
         </div>
 
         {/*
-          Border-per-item, not the gap-color grid trick — the ecosystem
-          list has an odd count (5), and a gap-color background shows
-          through as a solid filled block in whatever cell has no child
-          to cover it. Borders only render where there's an actual item.
+          Border-per-item, not the gap-color grid trick — borders render
+          only where there's an actual cell, so an odd count never leaves a
+          filled gap block. Same fix as the /stakeholders chain.
         */}
         <div className="grid grid-cols-1 border-t border-l border-rule sm:grid-cols-2">
-          {ECOSYSTEM.map((entity) => (
+          {others.map((entity) => (
             <div
               key={entity.name}
               className="flex flex-col gap-1 border-r border-b border-rule px-4 py-3"
@@ -39,8 +35,8 @@ export function StakeholderGrid() {
           ))}
         </div>
 
-        <PageTransitionLink href="/partners" className="text-small text-ink-1 underline underline-offset-4">
-          See all partners →
+        <PageTransitionLink href="/stakeholders" className="text-small text-ink-1 underline underline-offset-4">
+          See all stakeholders →
         </PageTransitionLink>
       </ViewportReveal>
     </section>

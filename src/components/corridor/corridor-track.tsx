@@ -102,26 +102,37 @@ export function CorridorTrack({
           ))}
         </motion.div>
 
-        <div
-          role="slider"
-          tabIndex={0}
-          aria-label="Corridor position"
-          aria-valuemin={0}
-          aria-valuemax={totalKm}
-          aria-valuenow={roundedValueKm}
-          aria-valuetext={valueText}
-          onKeyDown={onKeyDown}
-          className="group absolute top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none items-center justify-center focus:outline-none active:cursor-grabbing"
-          style={{ left: `${percent}%` }}
-        >
-          <div
-            className={cn(
-              "rounded-full border-2 border-lime bg-void",
-              "group-hover:bg-lime group-active:bg-lime",
-              "group-focus-visible:bg-lime group-focus-visible:ring-2 group-focus-visible:ring-lime group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-void",
-              compact ? "h-4 w-4" : "h-5 w-5",
-            )}
-          />
+        {/*
+          Positioning layer spans the full track, so translateX(percent%)
+          moves the handle by percent% of the *track* width — the position
+          animates on the compositor (transform), never `left` (which would
+          trigger layout each spring frame during keyboard scrubbing). The
+          layer is pointer-transparent so track drags pass through to the
+          parent; the handle re-enables pointer events for itself.
+        */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-full">
+          <div className="absolute inset-y-0 left-0 w-full" style={{ transform: `translateX(${percent}%)` }}>
+            <div
+              role="slider"
+              tabIndex={0}
+              aria-label="Corridor position"
+              aria-valuemin={0}
+              aria-valuemax={totalKm}
+              aria-valuenow={roundedValueKm}
+              aria-valuetext={valueText}
+              onKeyDown={onKeyDown}
+              className="group pointer-events-auto absolute top-1/2 left-0 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 cursor-grab touch-none items-center justify-center focus:outline-none active:cursor-grabbing"
+            >
+              <div
+                className={cn(
+                  "rounded-full border-2 border-lime bg-void",
+                  "group-hover:bg-lime group-active:bg-lime",
+                  "group-focus-visible:bg-lime group-focus-visible:ring-2 group-focus-visible:ring-lime group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-void",
+                  compact ? "h-4 w-4" : "h-5 w-5",
+                )}
+              />
+            </div>
+          </div>
         </div>
       </div>
 

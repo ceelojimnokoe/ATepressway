@@ -1,7 +1,11 @@
 /**
  * Primary site navigation, shared by SiteHeader and SiteFooter
- * (src/components/layout/). Routes reflect the IA agreed for launch:
- * Home, Progress, Project, Partners, Contact.
+ * (src/components/layout/). Order reflects the IA agreed for launch:
+ * Home, Project, Design, Progress, Gallery, Stakeholders, Contact.
+ *
+ * Below `md` the header collapses this list into MobileNav's toggle
+ * menu (a vertical dropdown), so the item count never crowds the header
+ * row on small screens — it only has to fit horizontally at `md` and up.
  */
 
 export interface NavItem {
@@ -11,8 +15,10 @@ export interface NavItem {
 
 export const primaryNav: readonly NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "Progress", href: "/progress" },
   { label: "Project", href: "/project" },
-  { label: "Partners", href: "/partners" },
+  { label: "Design", href: "/design" },
+  { label: "Progress", href: "/progress" },
+  { label: "Gallery", href: "/gallery" },
+  { label: "Stakeholders", href: "/stakeholders" },
   { label: "Contact", href: "/contact" },
 ] as const;

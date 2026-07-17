@@ -1,49 +1,71 @@
-import { organization, statementOfIntent, progress, projectFacts } from "@/content/project";
+import Image from "next/image";
+import { organization, progress, projectFacts } from "@/content/project";
 import { isPlaceholder } from "@/content/placeholder";
-import { heroVideo } from "@/content/stock-media";
+import { mediaRegistry } from "@/content/media";
 import { PlaceholderNotice } from "@/components/ui/placeholder-notice";
 import { AnimatedFigure } from "@/components/ui/animated-figure";
-import { Corridor } from "@/components/corridor/Corridor";
-import { ViewportReveal } from "@/components/motion/viewport-reveal";
-import { HeroVideo } from "@/components/home/hero-video";
+import { formatLongDate } from "@/lib/format";
 
+const hero = mediaRegistry.heroCorridorAerial;
+
+/**
+ * First screen. The client's own aerial drone photograph of the corridor,
+ * full-bleed and priority (the LCP image), carries the overall-progress
+ * figure. Two stacked gradient overlays darken the photo — heaviest at
+ * the bottom-left where the text sits (so the 46% reads at full contrast),
+ * lightest at the top-right (so the aerial still reads). Lime appears
+ * exactly once here: on the live figure. Nowhere else in the hero.
+ */
 export function Hero() {
   return (
-    <section className="relative border-b border-rule">
-      <HeroVideo video={heroVideo} />
+    <section className="relative isolate flex min-h-[32rem] flex-col justify-end overflow-hidden border-b border-rule sm:min-h-[40rem]">
+      <Image
+        src={hero.src}
+        alt={hero.alt}
+        fill
+        priority
+        sizes="100vw"
+        // The heavy bottom-left overlay hides compression artefacts, so a
+        // lower quality trims the LCP payload (notably the large retina
+        // variants) with no visible cost behind the gradient.
+        quality={58}
+        className="-z-10 object-cover"
+      />
+      {/* Bottom-weighted darkening: protects the text band, lets the top read. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-gradient-to-t from-void/80 via-void/35 to-void/5"
+      />
+      {/* Bottom-left corner emphasis, stacking with the layer above under the text. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 -z-10 bg-gradient-to-tr from-void/70 via-transparent to-transparent"
+      />
 
-      <ViewportReveal className="relative z-10 mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8 sm:py-24">
-        <p className="text-caption text-ink-2 tracking-wide uppercase">{organization.shortName}</p>
+      <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 pt-24 pb-14 sm:px-8 sm:pb-20">
+        {/* The page's accessible name and only h1. The hero's visible focus
+            is the progress figure, which isn't heading text, so the h1 is
+            visually hidden rather than forced into the design. */}
+        <h1 className="sr-only">{organization.name} — reconstruction progress</h1>
 
-        <div className="flex flex-col gap-2">
-          <span className="text-caption text-ink-2 tracking-wide uppercase">Overall completion</span>
-          <PlaceholderNotice value={progress.overallPercentComplete}>
-            {(value) => <AnimatedFigure value={value} suffix="%" signal className="text-figure" />}
-          </PlaceholderNotice>
-          {!isPlaceholder(progress.asOf) && !isPlaceholder(progress.signOffSource) && (
-            <span className="text-small text-ink-2">
-              as of {progress.asOf} · reported by {progress.signOffSource}
-            </span>
+        <PlaceholderNotice value={progress.overallPercentComplete} size="display">
+          {(value) => (
+            <AnimatedFigure value={value} suffix="%" signal className="text-figure leading-none" />
           )}
-        </div>
-
-        {/*
-          The one spend of --font-serif on the entire site — only in the
-          real-value branch. The TBC branch below stays in the standard
-          placeholder treatment, so the reservation isn't wasted on an
-          empty promise while the real line is still unwritten.
-        */}
-        <PlaceholderNotice value={statementOfIntent}>
-          {(value) => <p className="font-serif text-lead text-ink-1 sm:text-heading-3">{value}</p>}
         </PlaceholderNotice>
 
-        <p className="text-body text-ink-1">
-          Began {projectFacts.reconstructionStartYear} · {projectFacts.constructionWindowMonths}-month
-          window
-        </p>
-
-        <Corridor variant="hero" />
-      </ViewportReveal>
+        <div className="flex flex-col gap-1">
+          {!isPlaceholder(progress.asOf) && (
+            <p className="text-small text-ink-1">
+              <span className="text-ink-2">Physical progress</span> · {progress.asOf}
+            </p>
+          )}
+          <p className="text-small text-ink-1">
+            <span className="text-ink-2">Scheduled completion</span> ·{" "}
+            {formatLongDate(projectFacts.scheduledCompletionDate)}
+          </p>
+        </div>
+      </div>
     </section>
   );
 }

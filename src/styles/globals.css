@@ -21,7 +21,10 @@
   /* ---- Ink: text on dark surfaces ---- */
   --color-ink-1: #f5f5f3;
   --color-ink-2: #a8a8a3;
-  --color-ink-3: #6b6b67;
+  /* Tertiary text. Lightened from #6b6b67 to clear WCAG AA (4.5:1) for
+     small text on the darkest surface it appears on (raised #121212):
+     #80807c gives ~4.7:1 on raised, ~5.2:1 on void, ~5.3:1 on sunk. */
+  --color-ink-3: #80807c;
 
   /* ---- Ink: text on light/paper surfaces ---- */
   --color-paper-ink-1: #0a0a08;

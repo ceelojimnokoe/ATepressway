@@ -2,6 +2,11 @@
  * Single source of truth for site copy and data. Components must import
  * from here — no hardcoded strings or numbers. See CLAUDE.md.
  *
+ * Fact hierarchy: the client's written Monthly Progress Report (MPR) is
+ * the source of truth. It supersedes verbal confirmations, the
+ * information form, and press reports. Current reference: Monthly
+ * Progress Report, May 2026.
+ *
  * Facts the client has not yet supplied are wrapped in `placeholder()`
  * (see ./placeholder.ts) rather than invented or left blank, so a naive
  * `{value}` render can't silently ship a made-up fact. Consuming
@@ -10,8 +15,12 @@
  */
 
 import { placeholder, type Placeholder } from "./placeholder";
+import type { MediaKey } from "./media";
 
 export { isPlaceholder, type Placeholder } from "./placeholder";
+
+/** Source tag carried by every per-structure figure taken from the May 2026 MPR. */
+const MPR_MAY_2026 = "MPR May 2026";
 
 // ---------------------------------------------------------------------------
 // Organization & stakeholders
@@ -19,71 +28,164 @@ export { isPlaceholder, type Placeholder } from "./placeholder";
 
 export interface Stakeholder {
   readonly name: string;
+  /** Contractual role — used verbatim as the label (e.g. "Employer"). */
   readonly role: string;
+  /** One-line plain-English gloss of what this party actually does. */
+  readonly gloss: string;
+  /**
+   * Registry key for this party's logo. The slot renders an image only
+   * where the asset is verified; otherwise the party shows name-only, so
+   * an unconfirmed or missing logo never renders as a broken image.
+   */
+  readonly logo?: MediaKey;
 }
 
 /**
- * ATEL is the project company / client. It does not build the road.
- * Never describe ATEL as the contractor — see CLAUDE.md.
+ * Contractual structure per the May 2026 MPR. ATEL's contractual role is
+ * Employer — it commissions and oversees the works; it does not build
+ * the road. Never describe ATEL as the contractor — see CLAUDE.md.
+ *
+ * Chain, top to bottom: Employer → Funding Agency → Employer's
+ * Representative → Employer's Representative's Agent → EPC Contractor.
+ * The relocation specialists sit outside that chain and render visually
+ * subordinate to it.
  */
+const employer = {
+  name: "Accra–Tema Expressway Limited",
+  role: "Employer",
+  gloss: "Commissions and funds the works and holds final accountability for delivery. It does not build the road.",
+  logo: "logoAtel",
+} as const satisfies Stakeholder;
+
+const fundingAgency = {
+  name: "GIIF",
+  role: "Funding Agency",
+  gloss: "Provides the project finance.",
+} as const satisfies Stakeholder;
+
+const employersRepresentative = {
+  name: "Ghana Highway Authority",
+  role: "Employer's Representative",
+  gloss: "Acts for the Employer to safeguard the public interest in the road.",
+} as const satisfies Stakeholder;
+
+const employersRepAgent = {
+  name: "Associated Consultants Ltd",
+  role: "Employer's Representative's Agent",
+  gloss: "Reviews the design and supervises construction on the Representative's behalf.",
+} as const satisfies Stakeholder;
+
+const epcContractor = {
+  name: "Maripoma Enterprise Ltd",
+  role: "EPC Contractor",
+  gloss: "Engineers, procures, and builds the works.",
+} as const satisfies Stakeholder;
+
+const electricalRelocation = {
+  name: "Limmark Energy Solutions Ltd",
+  role: "Specialist Contractor — Electrical Relocation",
+  gloss: "Relocates electrical services clear of the works.",
+} as const satisfies Stakeholder;
+
+const waterRelocation = {
+  name: "Dakal Construction Works Ltd",
+  role: "Specialist Contractor — Water Relocation",
+  gloss: "Relocates water mains clear of the works.",
+} as const satisfies Stakeholder;
+
 export const stakeholders = {
-  client: {
-    name: "Accra–Tema Motorway Expressway Limited",
-    role: "Project company / client",
-  },
-  contractor: {
-    name: "Maripoma Enterprise Ltd",
-    role: "EPC Contractor",
-  },
-  designSupervision: {
-    name: "Associated Consultants Ltd",
-    role: "Design Review & Construction Supervision",
-  },
-  electricalRelocation: {
-    name: "Limmark Energy Solutions Ltd",
-    role: "Electrical Relocation",
-  },
-  waterRelocation: {
-    name: "Dakal Construction Works Ltd",
-    role: "Water Relocation",
-  },
-  financier: {
-    name: "GIIF",
-    role: "Financing",
-  },
+  employer,
+  fundingAgency,
+  employersRepresentative,
+  employersRepAgent,
+  epcContractor,
+  electricalRelocation,
+  waterRelocation,
 } as const satisfies Record<string, Stakeholder>;
 
+/** Contractual chain per the MPR organogram, top to bottom — render in this order. */
+export const stakeholderChain: readonly Stakeholder[] = [
+  employer,
+  fundingAgency,
+  employersRepresentative,
+  employersRepAgent,
+  epcContractor,
+];
+
+/** Outside the contractual chain — always render visually subordinate to it. */
+export const specialistContractors: readonly Stakeholder[] = [
+  electricalRelocation,
+  waterRelocation,
+];
+
+/**
+ * Confirmed company name (client, 2026-07-17): "Accra–Tema Expressway
+ * Limited" — the same string is used for the Employer (stakeholders.
+ * employer.name) so the identity is consistent everywhere. "ATEL" is the
+ * initialism (Accra–Tema Expressway Limited).
+ */
 export const organization = {
-  name: "Accra–Tema Motorway Expressway Limited",
+  name: "Accra–Tema Expressway Limited",
   shortName: "ATEL",
   description:
-    "ATEL is the project company responsible for the reconstruction of the Accra–Tema Motorway corridor. ATEL commissions and oversees the works; it does not build the road.",
+    "ATEL is the Employer for the reconstruction of the Accra–Tema Motorway corridor: it commissions and funds the works and holds final accountability, and does not build the road.",
 } as const;
 
 /**
- * The single serif statement of intent, used exactly once sitewide (Hero).
- * Editorial copy to be drafted and approved — not a withheld fact, but it
- * still can't render until real copy exists.
+ * The single serif statement of intent, used exactly once sitewide.
+ *
+ * The copy below is PROPOSED, pending ATEL's written approval — it is not
+ * yet an approved fact and must not render as one. Approval is a single
+ * switch: flip STATEMENT_OF_INTENT_APPROVED to `true` once ATEL signs
+ * off, and `statementOfIntent` resolves from the TBC placeholder to the
+ * real line everywhere it renders. No other edit required. Until then it
+ * renders as an honest "to be confirmed" slot.
  */
-export const statementOfIntent: string | Placeholder<string> = placeholder<string>(
-  "Statement of intent (one sentence, set in --font-serif, used once sitewide)",
-  "",
-);
+const STATEMENT_OF_INTENT_APPROVED = false;
+
+const PROPOSED_STATEMENT_OF_INTENT =
+  "Built in 1964 for a twenty-year life, Ghana's busiest corridor is being rebuilt for the next fifty.";
+
+export const statementOfIntent: string | Placeholder<string> = STATEMENT_OF_INTENT_APPROVED
+  ? PROPOSED_STATEMENT_OF_INTENT
+  : placeholder<string>(
+      "Statement of intent (one sentence, set in --font-serif, used once sitewide)",
+      "",
+    );
 
 // ---------------------------------------------------------------------------
-// Verified project facts — do not alter without client sign-off
+// Verified project facts — per the Monthly Progress Report, May 2026.
+// The MPR supersedes verbal confirmations, the information form, and
+// press reports. Do not alter without a newer MPR.
 // ---------------------------------------------------------------------------
+
+// Contract price per the May 2026 MPR. The pre-MPR "≈US$340M investment"
+// figure is superseded — do not reintroduce it.
+const CONTRACT_PRICE_USD = 338_897_543.56;
+const CONTRACT_PRICE_DISPLAY = "US$338.9M contract price";
 
 export const projectFacts = {
-  investmentUSD: 340_000_000,
-  investmentDisplay: "≈US$340M",
+  /** Contract price before tax (MPR May 2026). */
+  contractPriceUSD: CONTRACT_PRICE_USD,
+  /** Total contract price including tax (MPR May 2026). */
+  contractPriceWithTaxUSD: 393_121_150.53,
+  contractPriceDisplay: CONTRACT_PRICE_DISPLAY,
   corridorLengthKm: 27.7,
   openedYear: 1964,
   openedUnder: "Kwame Nkrumah",
+  /** ISO 8601, per the May 2026 MPR. */
+  contractAwardDate: "2024-03-21",
+  /** ISO 8601, per the May 2026 MPR. The 36-month window runs from this date. */
+  commencementDate: "2024-08-02",
+  /** ISO 8601, per the May 2026 MPR — commencement + 36 months. */
+  scheduledCompletionDate: "2027-08-02",
   reconstructionStartYear: 2024,
   constructionWindowMonths: 36,
-  interchangeCount: 5,
-  pedestrianFootbridges: 14,
+  /**
+   * MPR scope: "Construction of 10 No. Pedestrian Crossing Points"; the
+   * MPR quantities table confirms 10.
+   */
+  pedestrianFootbridges: 10,
   tollPlazaCount: 8,
 } as const;
 
@@ -155,6 +257,49 @@ export const sections: readonly ProjectSection[] = [
   },
 ] as const;
 
+// ---------------------------------------------------------------------------
+// Works scope — per the May 2026 MPR scope statement.
+// ---------------------------------------------------------------------------
+
+export interface ScopeItem {
+  readonly id: string;
+  readonly description: string;
+  readonly source: string;
+}
+
+export const scopeOfWorks: readonly ScopeItem[] = [
+  {
+    id: "tetteh-quarshie-reconstruction",
+    description: "Reconstruction of the Tetteh Quarshie Interchange",
+    source: MPR_MAY_2026,
+  },
+  {
+    id: "new-interchanges",
+    description: "Construction of new interchanges at Teshie Link, Community 18, and Lashibi",
+    source: MPR_MAY_2026,
+  },
+  {
+    id: "toll-plazas",
+    description: "Construction of 8 toll plazas",
+    source: MPR_MAY_2026,
+  },
+  {
+    id: "pedestrian-crossing-points",
+    description: "Construction of 10 pedestrian crossing points",
+    source: MPR_MAY_2026,
+  },
+  {
+    id: "lagos-avenue-enhancement",
+    description: "Enhancement of roadway traffic in the Lagos Avenue / Lagos Link area",
+    source: MPR_MAY_2026,
+  },
+  {
+    id: "liberation-road-widening",
+    description: "Rehabilitation and widening of Liberation Road to Polo Club, with overpass",
+    source: MPR_MAY_2026,
+  },
+] as const;
+
 /**
  * Where an interchange sits on the corridor scale: which section it falls
  * in, and its distance in km from that section's start. Unknown until the
@@ -166,8 +311,17 @@ export interface InterchangePosition {
   readonly offsetKm: number;
 }
 
+export type InterchangeKind = "reconstruction" | "new";
+
 export interface Interchange {
+  /**
+   * Stable id, shared with the matching progress work package
+   * (progress.workPackages[].id) so the two can be joined without
+   * matching on display names.
+   */
+  readonly id: string;
   readonly name: string;
+  readonly kind: InterchangeKind;
   readonly position: InterchangePosition | Placeholder<InterchangePosition>;
 }
 
@@ -175,47 +329,56 @@ export interface Interchange {
 // real chainage. See isPlaceholder() / Placeholder<T> above.
 const UNCONFIRMED_POSITION: InterchangePosition = { sectionId: "s1", offsetKm: 0 };
 
+/**
+ * Interchange scope per the May 2026 MPR: reconstruction of Tetteh
+ * Quarshie, new interchanges at Teshie Link, Community 18, and Lashibi.
+ * The pre-MPR "five interchanges" list is superseded: Fiesta Royale
+ * exists only as a design visualisation, and Neoplan does not appear in
+ * the MPR works scope (flagged 2026-07-16 — restore only if the client
+ * confirms it).
+ */
 export const interchanges: readonly Interchange[] = [
   {
+    id: "tetteh-quarshie",
+    name: "Tetteh Quarshie",
+    kind: "reconstruction",
+    position: placeholder<InterchangePosition>(
+      "Tetteh Quarshie position along corridor",
+      UNCONFIRMED_POSITION,
+    ),
+  },
+  {
+    id: "teshie-link",
     name: "Teshie Link",
+    kind: "new",
     position: placeholder<InterchangePosition>(
       "Teshie Link position along corridor",
       UNCONFIRMED_POSITION,
     ),
   },
   {
+    id: "community-18",
     name: "Community 18",
+    kind: "new",
     position: placeholder<InterchangePosition>(
       "Community 18 position along corridor",
       UNCONFIRMED_POSITION,
     ),
   },
   {
+    id: "lashibi",
     name: "Lashibi",
+    kind: "new",
     position: placeholder<InterchangePosition>(
       "Lashibi position along corridor",
-      UNCONFIRMED_POSITION,
-    ),
-  },
-  {
-    name: "Fiesta Royale",
-    position: placeholder<InterchangePosition>(
-      "Fiesta Royale position along corridor",
-      UNCONFIRMED_POSITION,
-    ),
-  },
-  {
-    name: "Neoplan",
-    position: placeholder<InterchangePosition>(
-      "Neoplan position along corridor",
       UNCONFIRMED_POSITION,
     ),
   },
 ] as const;
 
 // ---------------------------------------------------------------------------
-// Progress — figures arrive weekly by email; sign-off source is required
-// before a percentage can render as fact.
+// Progress — official figures from the Monthly Progress Report, May 2026.
+// A newer MPR is the only thing that updates these.
 // ---------------------------------------------------------------------------
 
 export interface SectionProgress {
@@ -224,20 +387,29 @@ export interface SectionProgress {
 }
 
 /**
- * Generic on purpose: whether the client's "five work packages" turn out
- * to be the five interchanges or a separate contract-package breakdown is
- * still unconfirmed. This shape doesn't presuppose either answer.
+ * One per-structure progress entry from the MPR. `source` is required by
+ * design: a figure without a citation must not typecheck. Unit-based
+ * structures (footbridges, culverts) carry the MPR's aggregate
+ * unitsComplete/unitsTotal; their percentComplete is the exact derived
+ * value, stored as a literal so floating-point division can't leak into
+ * a render (e.g. "64.25000000000001%"). Keep the pair in sync.
  */
 export interface WorkPackageProgress {
   readonly id: string;
   readonly name: string;
   readonly percentComplete: number;
+  readonly unitsComplete?: number;
+  readonly unitsTotal?: number;
+  readonly source: string;
 }
 
 export interface Progress {
   readonly overallPercentComplete: number | Placeholder<number>;
   readonly asOf: string | Placeholder<string>;
+  /** Full citation, e.g. "Monthly Progress Report, May 2026". */
   readonly signOffSource: string | Placeholder<string>;
+  /** Report series name without the date, e.g. "Monthly Progress Report". */
+  readonly reportSeries: string;
   readonly sections: readonly SectionProgress[] | Placeholder<readonly SectionProgress[]>;
   readonly workPackages:
     | readonly WorkPackageProgress[]
@@ -245,23 +417,110 @@ export interface Progress {
 }
 
 /**
- * UNVERIFIED — pending written confirmation from ATEL. Reported by the
- * Chief Resident Engineer, via Ghanaian Times (Jan 2026). Rendered as a
- * real figure with its source attached, rather than withheld — see the
- * "reported by" (not "verified by") wording everywhere this renders.
- * The five-work-package breakdown below is a separate, still-genuinely-
- * unconfirmed fact — do not backfill it from this figure.
+ * OFFICIAL — Monthly Progress Report, May 2026. This supersedes the
+ * earlier press-reported figure (Chief Resident Engineer via Ghanaian
+ * Times, Jan 2026), which happened to match at 46% but was never the
+ * sign-off source. Per-section percentages were not in the MPR and stay
+ * placeholder — do not back-derive them from the per-structure figures.
  */
 export const progress: Progress = {
   overallPercentComplete: 46,
   asOf: "May 2026",
-  signOffSource: "Chief Resident Engineer (via Ghanaian Times, Jan 2026)",
+  signOffSource: "Monthly Progress Report, May 2026",
+  reportSeries: "Monthly Progress Report",
   sections: placeholder<readonly SectionProgress[]>("Per-section progress percentages", []),
-  workPackages: placeholder<readonly WorkPackageProgress[]>(
-    "Work package breakdown & progress — 5 packages per client; breakdown (interchanges vs. contract packages) not yet defined",
-    [],
-  ),
+  workPackages: [
+    {
+      id: "tetteh-quarshie",
+      name: "Tetteh Quarshie Interchange",
+      percentComplete: 88,
+      source: MPR_MAY_2026,
+    },
+    {
+      id: "teshie-link",
+      name: "Teshie Link Interchange",
+      percentComplete: 74.5,
+      source: MPR_MAY_2026,
+    },
+    {
+      id: "community-18",
+      name: "Community 18 Interchange",
+      percentComplete: 67.5,
+      source: MPR_MAY_2026,
+    },
+    {
+      id: "lashibi",
+      name: "Lashibi Interchange",
+      percentComplete: 30,
+      source: MPR_MAY_2026,
+    },
+    {
+      id: "footbridges",
+      name: "Pedestrian footbridges",
+      percentComplete: 31.5,
+      unitsComplete: 3.15,
+      unitsTotal: 10,
+      source: MPR_MAY_2026,
+    },
+    {
+      id: "box-culverts",
+      name: "Box culverts",
+      percentComplete: 64.25,
+      unitsComplete: 12.85,
+      unitsTotal: 20,
+      source: MPR_MAY_2026,
+    },
+    {
+      id: "bridge-culverts",
+      name: "Bridge culverts",
+      percentComplete: 40,
+      unitsComplete: 1.2,
+      unitsTotal: 3,
+      source: MPR_MAY_2026,
+    },
+  ],
 };
+
+// ---------------------------------------------------------------------------
+// Monthly updates — the "This month" summary on /progress. Each month is
+// one entry (newest first). Summarise in plain sentences drawn from that
+// month's MPR; do NOT paste quantity tables. `overallPct` is the overall
+// figure reported that month.
+//
+// Adding a month is a one-entry edit — unshift the new record, e.g.:
+//   {
+//     month: "June 2026",
+//     completed: ["Lashibi interchange deck poured", "Box culverts 15/20 in place"],
+//     planned: ["Begin footbridge steelwork at Community 18", "Toll plaza foundations"],
+//     overallPct: 49,
+//   },
+//
+// `completed`/`planned` are left empty for May 2026 on purpose: the MPR
+// figures are captured per-structure elsewhere, but the narrative summary
+// of what was done and what's next is the client's to supply — it is not
+// invented here. The section renders an honest "to be added" state until
+// then.
+// ---------------------------------------------------------------------------
+
+export interface MonthlyUpdate {
+  /** Reporting month, e.g. "May 2026". */
+  readonly month: string;
+  readonly completed: readonly string[];
+  readonly planned: readonly string[];
+  /** Overall physical progress reported that month. */
+  readonly overallPct: number;
+}
+
+export const monthlyUpdates: readonly MonthlyUpdate[] = [
+  {
+    month: "May 2026",
+    completed: [],
+    planned: [],
+    overallPct: 46,
+  },
+];
+
+export const latestMonthlyUpdate: MonthlyUpdate | undefined = monthlyUpdates[0];
 
 // ---------------------------------------------------------------------------
 // Contact
@@ -313,7 +572,9 @@ export const team: readonly TeamMember[] | Placeholder<readonly TeamMember[]> = 
 >("Leadership team roster (names, titles, photos)", []);
 
 // ---------------------------------------------------------------------------
-// Media
+// Media slots — which asset renders where. The catalogue of real files on
+// disk lives in ./media.ts (the registry); these slots stay placeholder
+// until an asset is confirmed for each position.
 // ---------------------------------------------------------------------------
 
 export interface SectionPhotographs {
@@ -384,13 +645,17 @@ export const project = {
   organization,
   statementOfIntent,
   stakeholders,
+  stakeholderChain,
+  specialistContractors,
   projectFacts,
+  scopeOfWorks,
   bulletins,
   laneConfiguration,
   reconstructionRationale,
   sections,
   interchanges,
   progress,
+  monthlyUpdates,
   contact,
   team,
   media,

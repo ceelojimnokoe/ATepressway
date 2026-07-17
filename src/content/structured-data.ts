@@ -1,5 +1,5 @@
-import { organization, sections, projectFacts, media } from "./project";
-import { isPlaceholder } from "./placeholder";
+import { organization, sections, projectFacts } from "./project";
+import { mediaRegistry, isRenderable } from "./media";
 import { SITE_URL } from "@/lib/site";
 
 /**
@@ -17,9 +17,11 @@ export function organizationJsonLd() {
     alternateName: organization.shortName,
     description: organization.description,
     url: SITE_URL,
-    // media.logo is still a placeholder — omit rather than point at an
-    // empty src. Add once a real logo lands.
-    ...(isPlaceholder(media.logo) ? {} : { logo: new URL(media.logo.src, SITE_URL).toString() }),
+    // The confirmed ATEL logo from the registry; omitted only if it ever
+    // becomes unrenderable, never pointed at an empty src.
+    ...(isRenderable(mediaRegistry.logoAtel)
+      ? { logo: new URL(mediaRegistry.logoAtel.src, SITE_URL).toString() }
+      : {}),
   };
 }
 

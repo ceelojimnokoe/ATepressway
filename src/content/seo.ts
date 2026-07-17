@@ -23,7 +23,13 @@ export const routes = {
     path: "/project",
     title: `Project — ${organization.name}`,
     description:
-      "Scope and engineering rationale for the Accra–Tema Motorway reconstruction: three sections, five interchanges, and why a corridor opened in 1964 needs rebuilding.",
+      "Scope and engineering rationale for the Accra–Tema Motorway reconstruction: three sections, new and rebuilt interchanges, and why a corridor opened in 1964 needs rebuilding.",
+  },
+  design: {
+    path: "/design",
+    title: `Design & Infrastructure — ${organization.name}`,
+    description:
+      "Design and infrastructure for the Accra–Tema Motorway reconstruction: road cross-sections, interchange visualisations, footbridges, toll plazas, and drainage. Proposed design visualisations — final construction may vary.",
   },
   progress: {
     path: "/progress",
@@ -31,11 +37,17 @@ export const routes = {
     description:
       "Construction status for the Accra–Tema Motorway reconstruction: overall completion, work packages, milestones, and bulletins, updated as figures are confirmed.",
   },
-  partners: {
-    path: "/partners",
-    title: `Partners — ${organization.name}`,
+  gallery: {
+    path: "/gallery",
+    title: `Gallery — ${organization.name}`,
     description:
-      "ATEL and the delivery ecosystem for the Accra–Tema Motorway reconstruction — contractor, design supervision, utility relocation, and financing partners.",
+      "Construction gallery for the Accra–Tema Motorway reconstruction — interchanges, bridges and structures, footbridges, drainage and culverts, earthworks, and aerial views.",
+  },
+  stakeholders: {
+    path: "/stakeholders",
+    title: `Stakeholders — ${organization.name}`,
+    description:
+      "The delivery structure for the Accra–Tema Motorway reconstruction — Employer, funding agency, Employer's Representative, EPC contractor, and specialist relocation contractors.",
   },
   contact: {
     path: "/contact",

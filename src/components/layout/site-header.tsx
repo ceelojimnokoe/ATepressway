@@ -2,6 +2,7 @@ import { organization, media } from "@/content/project";
 import { isPlaceholder } from "@/content/placeholder";
 import { primaryNav } from "@/content/navigation";
 import { PageTransitionLink } from "./page-transition-link";
+import { NavLink } from "./nav-link";
 import { MobileNav } from "./mobile-nav";
 
 export function SiteHeader() {
@@ -23,9 +24,9 @@ export function SiteHeader() {
           <ul className="flex items-center gap-6">
             {primaryNav.map((item) => (
               <li key={item.href}>
-                <PageTransitionLink href={item.href} className="text-small text-ink-2 hover:text-ink-1">
+                <NavLink href={item.href} className="text-small">
                   {item.label}
-                </PageTransitionLink>
+                </NavLink>
               </li>
             ))}
           </ul>

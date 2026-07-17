@@ -3,7 +3,8 @@
 import type { FormEvent } from "react";
 import { enquiryTypes } from "@/content/contact-form";
 
-const fieldClassName = "border border-rule bg-raised px-4 py-3 text-body text-ink-1 focus:border-ink-2 focus:outline-none";
+const fieldClassName =
+  "border border-rule bg-raised px-4 py-3 text-body text-ink-1 focus:border-ink-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime";
 const labelClassName = "text-small text-ink-2";
 
 /**

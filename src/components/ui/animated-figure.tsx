@@ -32,7 +32,12 @@ export function AnimatedFigure({
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.3 });
   const reducedMotion = useReducedMotion();
-  const [display, setDisplay] = useState(reducedMotion ? value : 0);
+  // Always start at 0 so server and first client render agree — the
+  // server has no matchMedia, so seeding from `reducedMotion` here would
+  // mismatch (server 0 vs client `value`) and fail hydration for anyone
+  // with reduced motion enabled. The effect below jumps straight to the
+  // final value for those users, once, after hydration.
+  const [display, setDisplay] = useState(0);
 
   useEffect(() => {
     if (!inView) return;

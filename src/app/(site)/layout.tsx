@@ -1,6 +1,7 @@
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { JsonLd } from "@/components/seo/json-ld";
+import { MotionProvider } from "@/components/motion/motion-provider";
 import { organizationJsonLd } from "@/content/structured-data";
 
 /**
@@ -13,11 +14,11 @@ import { organizationJsonLd } from "@/content/structured-data";
  */
 export default function SiteLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <>
+    <MotionProvider>
       <JsonLd data={organizationJsonLd()} />
       <SiteHeader />
       <main>{children}</main>
       <SiteFooter />
-    </>
+    </MotionProvider>
   );
 }

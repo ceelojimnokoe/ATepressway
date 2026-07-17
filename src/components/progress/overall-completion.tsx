@@ -12,11 +12,11 @@ export function OverallCompletion() {
         <h2 className="text-caption text-ink-3 tracking-wide uppercase">Overall completion</h2>
         <PlaceholderNotice value={progress.overallPercentComplete} size="display">
           {(value) => (
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col gap-3">
               <AnimatedFigure value={value} suffix="%" signal className="text-figure" />
-              {!isPlaceholder(progress.asOf) && !isPlaceholder(progress.signOffSource) && (
+              {!isPlaceholder(progress.asOf) && (
                 <span className="text-small text-ink-2">
-                  as of {progress.asOf} · reported by {progress.signOffSource}
+                  As of {progress.asOf} · {progress.reportSeries}
                 </span>
               )}
             </div>

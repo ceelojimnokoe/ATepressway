@@ -36,7 +36,7 @@ const typeScaleSteps: readonly TypeScaleStep[] = [
   {
     token: "small",
     className: "text-small",
-    sample: `${stakeholders.contractor.name} — ${stakeholders.contractor.role}`,
+    sample: `${stakeholders.epcContractor.name} — ${stakeholders.epcContractor.role}`,
   },
   {
     token: "body",
@@ -118,7 +118,7 @@ export default function StyleguidePage() {
           description="12px rise + fade, duration.base, ease.out."
         >
           <RevealDemo
-            sampleText={`${stakeholders.designSupervision.name} — ${stakeholders.designSupervision.role}`}
+            sampleText={`${stakeholders.employersRepAgent.name} — ${stakeholders.employersRepAgent.role}`}
           />
         </Section>
 
@@ -163,8 +163,8 @@ export default function StyleguidePage() {
           >
             <PlaceholderStateDemo
               realLabel="Real value"
-              realValue={stakeholders.contractor.name}
-              realPath="stakeholders.contractor.name"
+              realValue={stakeholders.epcContractor.name}
+              realPath="stakeholders.epcContractor.name"
               unresolvedValue={contact.email}
               unresolvedPath="contact.email"
             />

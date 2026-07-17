@@ -1,48 +1,53 @@
-import { projectFacts } from "@/content/project";
-import { Figure } from "@/components/ui/figure";
+import { projectFacts, progress } from "@/content/project";
+import { isPlaceholder } from "@/content/placeholder";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
+import { formatLongDate } from "@/lib/format";
 import { cn } from "@/lib/cn";
 
 type MilestoneState = "completed" | "active" | "upcoming";
 
 interface Milestone {
-  readonly year: number;
+  readonly date: string;
   readonly label: string;
+  readonly detail?: string;
   readonly state: MilestoneState;
 }
 
 /**
- * "Active" marks the phase we're currently in, not just whichever event
- * date has passed — the reconstruction-commenced milestone stays
- * "active" (not "completed") for the whole 36-month window, since that's
- * the useful answer to "where are we," computed against the real server
- * clock at request time.
+ * The real reconstruction timeline from the MPR: award → commencement →
+ * the current 46% reporting point → scheduled completion. The current
+ * point (the latest MPR) is the one "active" node; award and commencement
+ * are past, completion is ahead. The 1964 opening lives on /project — this
+ * timeline is the reconstruction only.
  */
 function buildMilestones(): readonly Milestone[] {
-  const now = new Date();
-  const startDate = new Date(projectFacts.reconstructionStartYear, 0, 1);
-  const targetDate = new Date(startDate);
-  targetDate.setMonth(targetDate.getMonth() + projectFacts.constructionWindowMonths);
-
-  const reconstructionState: MilestoneState =
-    now < startDate ? "upcoming" : now < targetDate ? "active" : "completed";
-  const targetState: MilestoneState = now < targetDate ? "upcoming" : "completed";
+  const asOf = isPlaceholder(progress.asOf) ? null : progress.asOf;
+  const pct = isPlaceholder(progress.overallPercentComplete)
+    ? null
+    : progress.overallPercentComplete;
 
   return [
     {
-      year: projectFacts.openedYear,
-      label: `Opened under ${projectFacts.openedUnder}`,
+      date: formatLongDate(projectFacts.contractAwardDate),
+      label: "Contract awarded",
       state: "completed",
     },
     {
-      year: projectFacts.reconstructionStartYear,
-      label: "Reconstruction commenced",
-      state: reconstructionState,
+      date: formatLongDate(projectFacts.commencementDate),
+      label: "Construction commenced",
+      detail: `${projectFacts.constructionWindowMonths}-month window begins`,
+      state: "completed",
     },
     {
-      year: targetDate.getFullYear(),
-      label: `Target completion — ${projectFacts.constructionWindowMonths}-month window from commencement`,
-      state: targetState,
+      date: asOf ?? "—",
+      label: pct !== null ? `${pct}% complete` : "Current status",
+      detail: `Latest ${progress.reportSeries}`,
+      state: "active",
+    },
+    {
+      date: formatLongDate(projectFacts.scheduledCompletionDate),
+      label: "Scheduled completion",
+      state: "upcoming",
     },
   ];
 }
@@ -51,13 +56,13 @@ export function MilestoneTimeline() {
   const milestones = buildMilestones();
 
   return (
-    <section className="border-b border-rule bg-void">
+    <section className="border-b border-rule bg-raised">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
         <h2 className="text-heading-4 text-ink-1">Milestone timeline</h2>
 
         <ol className="flex flex-col">
           {milestones.map((milestone, index) => (
-            <li key={milestone.year} className="relative flex gap-4 pb-10 last:pb-0">
+            <li key={milestone.label} className="relative flex gap-4 pb-10 last:pb-0">
               {index < milestones.length - 1 && (
                 <span
                   aria-hidden="true"
@@ -78,12 +83,13 @@ export function MilestoneTimeline() {
               />
               <div className="flex flex-col gap-1">
                 <div className="flex items-baseline gap-2">
-                  <Figure value={milestone.year} className="text-heading-3" />
+                  <span className="figure text-small text-ink-2">{milestone.date}</span>
                   {milestone.state === "active" && (
-                    <span className="text-caption text-lime tracking-wide uppercase">Active</span>
+                    <span className="text-caption text-lime tracking-wide uppercase">Current</span>
                   )}
                 </div>
                 <span className="text-body text-ink-1">{milestone.label}</span>
+                {milestone.detail && <span className="text-caption text-ink-3">{milestone.detail}</span>}
               </div>
             </li>
           ))}
