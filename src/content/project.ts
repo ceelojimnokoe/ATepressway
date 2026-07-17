@@ -51,34 +51,37 @@ export interface Stakeholder {
  * subordinate to it.
  */
 const employer = {
-  name: "Accra–Tema Expressway Limited",
+  name: "A.T. Expressway Ltd.",
   role: "Employer",
-  gloss: "Commissions and funds the works and holds final accountability for delivery. It does not build the road.",
+  gloss: "A.T. Expressway Ltd. is the employer responsible for the delivery framework of the Accra–Tema Motorway and Extensions Project.",
   logo: "logoAtel",
 } as const satisfies Stakeholder;
 
 const fundingAgency = {
-  name: "GIIF",
+  name: "Ghana Infrastructure Investment Fund",
   role: "Funding Agency",
-  gloss: "Provides the project finance.",
+  gloss: "The Ghana Infrastructure Investment Fund provides the project's principal infrastructure financing support.",
 } as const satisfies Stakeholder;
 
 const employersRepresentative = {
   name: "Ghana Highway Authority",
   role: "Employer's Representative",
-  gloss: "Acts for the Employer to safeguard the public interest in the road.",
+  gloss: "The Ghana Highway Authority serves as the employer's representative, providing technical oversight and coordination for the project.",
+  logo: "logoGha",
 } as const satisfies Stakeholder;
 
 const employersRepAgent = {
-  name: "Associated Consultants Ltd",
+  name: "Associated Consultants Limited",
   role: "Employer's Representative's Agent",
-  gloss: "Reviews the design and supervises construction on the Representative's behalf.",
+  gloss: "Associated Consultants Limited provides engineering consultancy, design review and construction-supervision services for the project.",
+  logo: "logoAssociatedConsultants",
 } as const satisfies Stakeholder;
 
 const epcContractor = {
-  name: "Maripoma Enterprise Ltd",
+  name: "Maripoma Enterprise Limited",
   role: "EPC Contractor",
-  gloss: "Engineers, procures, and builds the works.",
+  gloss: "Maripoma Enterprise Limited is the engineering, procurement and construction contractor delivering the Section 1 works.",
+  logo: "logoMaripoma",
 } as const satisfies Stakeholder;
 
 const electricalRelocation = {
@@ -119,16 +122,15 @@ export const specialistContractors: readonly Stakeholder[] = [
 ];
 
 /**
- * Confirmed company name (client, 2026-07-17): "Accra–Tema Expressway
- * Limited" — the same string is used for the Employer (stakeholders.
- * employer.name) so the identity is consistent everywhere. "ATEL" is the
- * initialism (Accra–Tema Expressway Limited).
+ * Website / brand identity. The client distinguishes the public brand
+ * ("Accra–Tema Expressway Ltd.") from the Employer legal entity
+ * ("A.T. Expressway Ltd.", see stakeholders.employer). Both are ATEL.
  */
 export const organization = {
-  name: "Accra–Tema Expressway Limited",
+  name: "Accra–Tema Expressway Ltd.",
   shortName: "ATEL",
   description:
-    "ATEL is the Employer for the reconstruction of the Accra–Tema Motorway corridor: it commissions and funds the works and holds final accountability, and does not build the road.",
+    "Official project information, design highlights and construction progress for the Accra–Tema Motorway and Extensions Project.",
 } as const;
 
 /**
@@ -167,10 +169,19 @@ const CONTRACT_PRICE_DISPLAY = "US$338.9M contract price";
 export const projectFacts = {
   /** Contract price before tax (MPR May 2026). */
   contractPriceUSD: CONTRACT_PRICE_USD,
+  /** Tax on the contract price (MPR May 2026). */
+  taxUSD: 54_223_606.97,
   /** Total contract price including tax (MPR May 2026). */
   contractPriceWithTaxUSD: 393_121_150.53,
   contractPriceDisplay: CONTRACT_PRICE_DISPLAY,
+  /** Contract price before tax, in millions, for the animated figure. */
+  contractPriceMillions: 338.9,
+  /** Approved variation to the contract price as of the May 2026 report. */
+  variationAsOfMay2026: "Nil",
+  /** Full design corridor length. */
   corridorLengthKm: 27.7,
+  /** Section 1 (Tema Roundabout → Tetteh Quarshie) — the length under construction. */
+  section1LengthKm: 19.5,
   openedYear: 1964,
   openedUnder: "Kwame Nkrumah",
   /** ISO 8601, per the May 2026 MPR. */
@@ -179,8 +190,12 @@ export const projectFacts = {
   commencementDate: "2024-08-02",
   /** ISO 8601, per the May 2026 MPR — commencement + 36 months. */
   scheduledCompletionDate: "2027-08-02",
+  /** Contract duration in days (MPR May 2026). */
+  contractDurationDays: 1095,
   reconstructionStartYear: 2024,
   constructionWindowMonths: 36,
+  /** Contractor equipment recorded on site (MPR May 2026). */
+  equipmentOnSite: 284,
   /**
    * MPR scope: "Construction of 10 No. Pedestrian Crossing Points"; the
    * MPR quantities table confirms 10.
@@ -322,6 +337,10 @@ export interface Interchange {
   readonly id: string;
   readonly name: string;
   readonly kind: InterchangeKind;
+  /** Approximate chainage along Section 1, from the May 2026 report. */
+  readonly chainageLabel: string;
+  /** The activity reported at this interchange in the May 2026 report. */
+  readonly mayActivity: string;
   readonly position: InterchangePosition | Placeholder<InterchangePosition>;
 }
 
@@ -342,6 +361,8 @@ export const interchanges: readonly Interchange[] = [
     id: "tetteh-quarshie",
     name: "Tetteh Quarshie",
     kind: "reconstruction",
+    chainageLabel: "approx. CH 0+500",
+    mayActivity: "T-beam installation and joint concreting works",
     position: placeholder<InterchangePosition>(
       "Tetteh Quarshie position along corridor",
       UNCONFIRMED_POSITION,
@@ -351,6 +372,8 @@ export const interchanges: readonly Interchange[] = [
     id: "teshie-link",
     name: "Teshie Link",
     kind: "new",
+    chainageLabel: "approx. CH 6+300",
+    mayActivity: "Traffic-diversion wall construction",
     position: placeholder<InterchangePosition>(
       "Teshie Link position along corridor",
       UNCONFIRMED_POSITION,
@@ -360,6 +383,8 @@ export const interchanges: readonly Interchange[] = [
     id: "community-18",
     name: "Community 18",
     kind: "new",
+    chainageLabel: "approx. CH 12+350",
+    mayActivity: "Underpass construction",
     position: placeholder<InterchangePosition>(
       "Community 18 position along corridor",
       UNCONFIRMED_POSITION,
@@ -369,6 +394,8 @@ export const interchanges: readonly Interchange[] = [
     id: "lashibi",
     name: "Lashibi",
     kind: "new",
+    chainageLabel: "approx. CH 16+200",
+    mayActivity: "Top-slab structural works",
     position: placeholder<InterchangePosition>(
       "Lashibi position along corridor",
       UNCONFIRMED_POSITION,
@@ -564,12 +591,55 @@ export interface ImageAsset {
 export interface TeamMember {
   readonly name: string;
   readonly title: string;
-  readonly photo: ImageAsset;
+  /** Photo asset, or null to render an initials avatar (no fabricated portrait). */
+  readonly photo: ImageAsset | null;
+  /** Initials for the avatar fallback when no photo is supplied. */
+  readonly initials: string;
+  /** Short biography for the card. */
+  readonly bio: string;
+  /** Selected experience / credentials for the expandable "view profile". */
+  readonly credentials: readonly string[];
 }
 
-export const team: readonly TeamMember[] | Placeholder<readonly TeamMember[]> = placeholder<
-  readonly TeamMember[]
->("Leadership team roster (names, titles, photos)", []);
+/**
+ * Only the two confirmed professionals. Ing. Kwabena Bempong has no
+ * supplied photograph, so his card renders an initials avatar rather than
+ * an invented portrait.
+ */
+export const team: readonly TeamMember[] = [
+  {
+    name: "Koffi Togbenou",
+    title: "Resident Engineer — Bridges and Structures",
+    photo: {
+      src: "/images/koffitogbenou.png",
+      alt: "Portrait of Koffi Togbenou, Resident Engineer for bridges and structures",
+    },
+    initials: "KT",
+    bio: "Koffi Togbenou is a structural engineer with approximately eight years of experience in bridge design, analysis and construction supervision. As Resident Engineer for bridges on the Accra–Tema Motorway and Extensions Project, he oversees bridge, interchange and associated structural works, with a strong focus on technical compliance, quality control and site execution.",
+    credentials: [
+      "La Beach Road and Nungua Interchange",
+      "Namdini Gold Project",
+      "Tatale–Yendi–Tamale Road",
+      "Buipe, Yapei, Daboya and Nawuni Bridges",
+      "Padma Multipurpose Bridge",
+      "Guene–Ouenou Road",
+    ],
+  },
+  {
+    name: "Ing. Kwabena Bempong",
+    title: "Chief Resident Engineer",
+    photo: null,
+    initials: "KB",
+    bio: "Ing. Kwabena Bempong is a civil and road engineer with more than 30 years of design and construction-supervision experience. He holds an MSc with honours in Road and Pavement Engineering and is Chief Executive Officer of Associated Consultants Limited. His major assignments include the Pokuase Interchange, the Ofankor–Nsawam Road, the Ashaiman–Akosombo dual carriageway and the Accra–Tema Motorway expansion project, where he serves as Chief Resident Engineer.",
+    credentials: [
+      "MSc, Road and Pavement Engineering",
+      "Chief Executive Officer, Associated Consultants Limited",
+      "Immediate Past President, Ghana Institution of Engineering",
+      "President, Ghana Consulting Engineers Association",
+      "More than 30 years of engineering experience",
+    ],
+  },
+] as const;
 
 // ---------------------------------------------------------------------------
 // Media slots — which asset renders where. The catalogue of real files on

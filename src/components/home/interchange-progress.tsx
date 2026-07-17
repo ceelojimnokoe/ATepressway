@@ -29,10 +29,7 @@ export function InterchangeProgress() {
         variants={reveal}
         className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8"
       >
-        <div className="flex flex-col gap-2">
-          <h2 className="text-heading-4 text-ink-1">Interchange progress</h2>
-          {source && <span className="text-caption text-ink-3">Source: {source}</span>}
-        </div>
+        <h2 className="text-heading-4 text-ink-1">Interchange progress</h2>
 
         <ul className="flex flex-col gap-6">
           {interchanges.map((pkg) => (
@@ -41,7 +38,14 @@ export function InterchangeProgress() {
                 <span className="text-body text-ink-1">{pkg.name}</span>
                 <Figure value={`${pkg.percentComplete}%`} />
               </div>
-              <div className="h-2 w-full overflow-hidden bg-sunk">
+              <div
+                className="h-2 w-full overflow-hidden bg-sunk"
+                role="progressbar"
+                aria-valuenow={pkg.percentComplete}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`${pkg.name} progress`}
+              >
                 <motion.div
                   initial={barFill.hidden}
                   whileInView={barFill.visible(pkg.percentComplete / 100)}
@@ -52,6 +56,12 @@ export function InterchangeProgress() {
             </li>
           ))}
         </ul>
+
+        {source && (
+          <p className="text-caption text-ink-3">
+            Interchange progress figures reflect the {source}.
+          </p>
+        )}
       </motion.div>
     </section>
   );

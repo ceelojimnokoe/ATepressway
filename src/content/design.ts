@@ -1,155 +1,105 @@
 /**
- * Content for /design — "Design & Infrastructure". The build spec, the
- * interchange render captions, the compact sections, and the one
- * mandatory disclaimer every design render must carry.
- *
- * THE DISCLAIMER IS LOAD-BEARING. Design renders are proposals, not
- * as-built records; presenting one without saying so would breach the
- * site's "clinical and accountable, nothing oversold" bar (see
- * CLAUDE.md). Enforcement lives in the DesignRenderSlot component, which
- * appends DESIGN_DISCLAIMER to every caption with no prop to suppress
- * it — so a render cannot reach the page without the line. This constant
- * is the single source of that wording; do not inline it in components.
+ * Content for /design. Each section maps a structure to a supplied image
+ * with a short explanatory paragraph and a status label. Renders carry the
+ * mandatory disclaimer (enforced in the component); real construction
+ * photographs used for footbridges and drainage are labelled honestly as
+ * work in progress, never as proposed designs.
  */
 
-import { projectFacts } from "./project";
 import type { MediaKey } from "./media";
 
-/** Exact wording. Appended automatically beneath every design render. */
-export const DESIGN_DISCLAIMER = "Proposed design visualisation — final construction may vary." as const;
+export const DESIGN_DISCLAIMER =
+  "Proposed design visualisation. Final construction details may be refined during project delivery." as const;
 
-/**
- * One image slot. `media` points into the registry once a render exists;
- * while it's undefined the slot renders as a deliberate, labelled diagram
- * frame (still carrying the disclaimer). `caption` is the descriptive
- * half only — the disclaimer is added by the component, not stored here.
- */
-export interface DesignRender {
-  readonly id: string;
-  readonly caption: string;
-  readonly media?: MediaKey;
-}
-
-// ---------------------------------------------------------------------------
-// Lead — what is being built (the 10-lane cross-section)
-// ---------------------------------------------------------------------------
-
-export interface Carriageway {
-  /** How many carriageways of this kind (e.g. 2). */
-  readonly count: number;
-  /** Lanes per carriageway (e.g. 2). */
-  readonly lanes: number;
-  /** Access-control regime, e.g. "full access-controlled". */
-  readonly access: string;
-  /** Road type, e.g. "expressway". */
-  readonly type: string;
-}
-
-/**
- * The 10-lane cross-section, per the client's design spec:
- * 2 × full access-controlled 2-lane expressway carriageways alongside
- * 2 × partial access-controlled 3-lane urban highway carriageways.
- * Total lanes are summed from `carriageways` (2×2 + 2×3 = 10), not
- * stored, so the figure can't drift from the breakdown.
- *
- * PAVEMENT WORDING — FLAG (2026-07-16): this spec calls the expressway
- * surface "jointed plain concrete pavement" (JPCP — unreinforced,
- * with joints). project.ts `laneConfiguration.freeway.surface` and
- * CLAUDE.md still say "reinforced concrete freeway". JPCP and reinforced
- * concrete are different pavement types — not interchangeable. Left
- * unreconciled pending the client: this page uses the design-spec
- * wording; project.ts and CLAUDE.md are untouched. Reconcile before this
- * ships as approved.
- */
-export const buildSpec = {
-  heading: "What is being built",
-  carriageways: [
-    { count: 2, lanes: 2, access: "full access-controlled", type: "expressway" },
-    { count: 2, lanes: 3, access: "partial access-controlled", type: "urban highway" },
-  ] as readonly Carriageway[],
-  pavementNote: "Jointed plain concrete pavement on the expressway.",
-  render: {
-    id: "cross-section-typical",
-    caption: "Typical cross-section — the 10-lane configuration",
-  } as DesignRender,
-} as const;
-
-// ---------------------------------------------------------------------------
-// Interchanges — render captions keyed by interchange id. The component
-// joins these with project.ts `interchanges` (name, kind, order) and
-// progress.workPackages (completion %) on the shared id. Add a `media`
-// key here when a render lands; the completion % is never stored here —
-// it lives once, in the MPR progress data.
-// ---------------------------------------------------------------------------
-
-export const interchangeRenders: Record<string, DesignRender> = {
-  "tetteh-quarshie": {
-    id: "tetteh-quarshie-render",
-    caption: "Tetteh Quarshie Interchange — reconstruction",
-  },
-  "teshie-link": {
-    id: "teshie-link-render",
-    caption: "Teshie Link Interchange — new interchange",
-  },
-  "community-18": {
-    id: "community-18-render",
-    caption: "Community 18 Interchange — new interchange",
-  },
-  lashibi: {
-    id: "lashibi-render",
-    caption: "Lashibi Interchange — new interchange",
-  },
-};
-
-// ---------------------------------------------------------------------------
-// Compact sections — footbridges, toll plazas, drainage. Counts are read
-// from projectFacts so they can't drift from the rest of the site.
-// ---------------------------------------------------------------------------
-
-export interface DesignStat {
-  readonly value: number;
-  readonly label: string;
-}
-
-export interface CompactDesignSection {
+export interface DesignSection {
   readonly id: string;
   readonly title: string;
   readonly description: string;
-  readonly stat?: DesignStat;
-  readonly render: DesignRender;
+  readonly media: MediaKey;
+  /** Visible status label, e.g. "Proposed Design" or "Under construction". */
+  readonly status: string;
+  /** When set, the component joins the chainage and completion % by interchange id. */
+  readonly interchangeId?: string;
 }
 
-export const compactDesignSections: readonly CompactDesignSection[] = [
+export const corridorOverview: DesignSection = {
+  id: "corridor-overview",
+  title: "Corridor design overview",
+  description:
+    "The reconstruction rebuilds the Section 1 corridor as two full access-controlled two-lane expressways alongside two partial access-controlled three-lane urban highways, with grade-separated interchanges, footbridges, toll plazas and upgraded drainage.",
+  media: "designScheme",
+  status: "Proposed Design",
+};
+
+/**
+ * Interchange sections. The Tetteh Quarshie render is the supplied
+ * `teshie-interchange-remodel.png` — used as instructed despite the
+ * misleading filename and the Maripoma watermark it carries (flagged in
+ * the delivery summary).
+ */
+export const interchangeSections: readonly DesignSection[] = [
+  {
+    id: "tetteh-quarshie",
+    interchangeId: "tetteh-quarshie",
+    title: "Tetteh Quarshie Interchange",
+    description:
+      "The existing Tetteh Quarshie Interchange is reconstructed to improve capacity and grade separation at the Accra end of Section 1.",
+    media: "tettehQuarshieRender",
+    status: "Proposed Design",
+  },
+  {
+    id: "teshie-link",
+    interchangeId: "teshie-link",
+    title: "Teshie Link Interchange",
+    description:
+      "A new grade-separated interchange providing free-flowing connections between the motorway and the Teshie Link corridor.",
+    media: "teshieLinkRemodel",
+    status: "Proposed Design",
+  },
+  {
+    id: "community-18",
+    interchangeId: "community-18",
+    title: "Community 18 Interchange",
+    description:
+      "A new interchange carrying the mainline over the local cross road, with an underpass and connecting ramps.",
+    media: "comm18Render",
+    status: "Proposed Design",
+  },
+  {
+    id: "lashibi",
+    interchangeId: "lashibi",
+    title: "Lashibi Interchange",
+    description:
+      "A new interchange improving access between the motorway and the Lashibi area toward the Tema end of Section 1.",
+    media: "lashibiRender",
+    status: "Proposed Design",
+  },
+] as const;
+
+/** Footbridges, toll plazas and drainage. Footbridge and drainage images are real site photographs. */
+export const structureSections: readonly DesignSection[] = [
   {
     id: "footbridges",
-    title: "Footbridges",
+    title: "Pedestrian footbridges",
     description:
-      "Pedestrian crossing points separating people on foot from high-speed traffic at the busiest crossing locations.",
-    stat: { value: projectFacts.pedestrianFootbridges, label: "crossing points" },
-    render: {
-      id: "footbridge-typical",
-      caption: "Pedestrian footbridge — typical span and approach ramps",
-    },
+      "Ten pedestrian crossing points separate people on foot from high-speed traffic at the busiest locations along Section 1.",
+    media: "overpassPiers",
+    status: "Under construction",
   },
   {
     id: "toll-plazas",
     title: "Toll plazas",
     description:
-      "Lane layouts, canopy structures, and the approach and departure tapers that keep traffic moving through the collection points.",
-    stat: { value: projectFacts.tollPlazaCount, label: "toll plazas" },
-    render: {
-      id: "toll-plaza-typical",
-      caption: "Toll plaza — typical lane and canopy arrangement",
-    },
+      "Eight toll plazas along the corridor, with canopy structures and lane arrangements that keep traffic moving through collection.",
+    media: "tollPlazaRender",
+    status: "Proposed Design",
   },
   {
     id: "drainage",
-    title: "Drainage & culverts",
+    title: "Drainage and supporting infrastructure",
     description:
-      "Box and bridge culverts sized to carry storm flows clear of the carriageway and protect the pavement from the water damage that failed the original road.",
-    render: {
-      id: "culvert-typical",
-      caption: "Culvert — typical section",
-    },
+      "Box and bridge culverts carry storm flows clear of the carriageway and protect the pavement from water damage, alongside overpass and supporting works.",
+    media: "riverBridgeCulverts",
+    status: "Under construction",
   },
 ] as const;

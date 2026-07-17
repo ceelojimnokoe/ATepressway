@@ -46,9 +46,10 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   images: {
-    // 58 for the hero (masked by its overlay); 75 is next/image's default
-    // for every other image. Both must be listed once the allowlist exists.
-    qualities: [58, 75],
+    // Allowed next/image quality values used across the site: 65/70 for the
+    // large hero and page-hero photos (softened, and masked by overlays),
+    // 75 (the default) elsewhere.
+    qualities: [65, 70, 75],
   },
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];

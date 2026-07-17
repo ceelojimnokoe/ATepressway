@@ -1,5 +1,3 @@
-import { organization } from "./project";
-
 /**
  * One entry per public route. Title, description, sitemap, and canonical
  * URLs all read from here — a page's SEO identity is edited in one place,
@@ -13,45 +11,49 @@ export interface RouteMeta {
   readonly description: string;
 }
 
+/** SEO brand string, per the client (2026-07-17): the abbreviated "Ltd." form. */
+export const BRAND = "Accra–Tema Expressway Ltd.";
+
 export const routes = {
   home: {
     path: "/",
-    title: organization.name,
-    description: organization.description,
+    title: `${BRAND} | Motorway and Extensions Project`,
+    description:
+      "Official project information, design highlights and construction progress for the Accra–Tema Motorway and Extensions Project.",
   },
   project: {
     path: "/project",
-    title: `Project — ${organization.name}`,
+    title: `The Project — ${BRAND}`,
     description:
-      "Scope and engineering rationale for the Accra–Tema Motorway reconstruction: three sections, new and rebuilt interchanges, and why a corridor opened in 1964 needs rebuilding.",
+      "Scope and engineering rationale for the Accra–Tema Motorway and Extensions Project: the 27.7 km design corridor, the 19.5 km Section 1 under construction, and why the corridor is being rebuilt.",
   },
   design: {
     path: "/design",
-    title: `Design & Infrastructure — ${organization.name}`,
+    title: `Design & Infrastructure — ${BRAND}`,
     description:
-      "Design and infrastructure for the Accra–Tema Motorway reconstruction: road cross-sections, interchange visualisations, footbridges, toll plazas, and drainage. Proposed design visualisations — final construction may vary.",
+      "Design highlights for the Accra–Tema Motorway and Extensions Project: interchanges, footbridges, toll plazas and drainage. Proposed design visualisations; final construction details may be refined.",
   },
   progress: {
     path: "/progress",
-    title: `Progress — ${organization.name}`,
+    title: `Construction Progress — ${BRAND}`,
     description:
-      "Construction status for the Accra–Tema Motorway reconstruction: overall completion, work packages, milestones, and bulletins, updated as figures are confirmed.",
+      "Verified construction progress for the Accra–Tema Motorway and Extensions Project, drawn from the May 2026 monthly progress report: overall status, interchanges, works in progress and recent activity.",
   },
   gallery: {
     path: "/gallery",
-    title: `Gallery — ${organization.name}`,
+    title: `Gallery — ${BRAND}`,
     description:
-      "Construction gallery for the Accra–Tema Motorway reconstruction — interchanges, bridges and structures, footbridges, drainage and culverts, earthworks, and aerial views.",
+      "Construction and design gallery for the Accra–Tema Motorway and Extensions Project — interchanges, bridges, drainage, earthworks, proposed designs and corridor views.",
   },
   stakeholders: {
     path: "/stakeholders",
-    title: `Stakeholders — ${organization.name}`,
+    title: `Project Stakeholders — ${BRAND}`,
     description:
-      "The delivery structure for the Accra–Tema Motorway reconstruction — Employer, funding agency, Employer's Representative, EPC contractor, and specialist relocation contractors.",
+      "The delivery structure for the Accra–Tema Motorway and Extensions Project — Employer, funding agency, Employer's Representative, Employer's Representative's Agent and EPC contractor.",
   },
   contact: {
     path: "/contact",
-    title: `Contact — ${organization.name}`,
-    description: "Contact ATEL about the Accra–Tema Motorway reconstruction — enquiry form and contact details.",
+    title: `Contact — ${BRAND}`,
+    description: "Contact Accra–Tema Expressway Ltd. about the Accra–Tema Motorway and Extensions Project.",
   },
 } as const satisfies Record<string, RouteMeta>;

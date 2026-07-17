@@ -1,11 +1,10 @@
-import { stakeholderChain, specialistContractors } from "@/content/project";
+import { stakeholderChain } from "@/content/project";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import { PageTransitionLink } from "@/components/layout/page-transition-link";
 
-// Employer sits above the rest; the teaser lists the remaining chain plus
-// the specialists, and links through to the full accountability chain.
-const [employer, ...downstream] = stakeholderChain;
-const others = [...downstream, ...specialistContractors];
+// Employer sits above the rest of the delivery chain; the teaser links
+// through to the full stakeholders page.
+const [employer, ...others] = stakeholderChain;
 
 export function StakeholderGrid() {
   return (

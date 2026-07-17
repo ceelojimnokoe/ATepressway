@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
-import { organization } from "@/content/project";
 import { SITE_URL } from "@/lib/site";
 import "@/styles/globals.css";
 
@@ -22,8 +21,12 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: organization.name,
-  description: organization.description,
+  title: {
+    default: "Accra–Tema Expressway Ltd. | Motorway and Extensions Project",
+    template: "%s",
+  },
+  description:
+    "Official project information, design highlights and construction progress for the Accra–Tema Motorway and Extensions Project.",
 };
 
 export default function RootLayout({

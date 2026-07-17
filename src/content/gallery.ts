@@ -1,19 +1,11 @@
 /**
- * Content for /gallery — the filterable construction gallery. Items read
- * their image from the media registry (./media.ts); this module adds the
- * per-item caption, category, and date.
- *
- * One real, confirmed image leads the set: the corridor aerial drone
- * photograph (registry `heroCorridorAerial`), a genuine Aerial-category
- * shot. The rest are seeded from construction-01..08, whose image files
- * are not on disk yet (registry `onDisk: false`) — the grid renders those
- * as pending slots, never broken images. Seed category assignments are
- * provisional (`categoryProvisional: true`) placeholders: the client
- * categorises the shots after seeing them placed. Dates use the shared
- * Placeholder<T> system rather than invented values.
+ * Central gallery data. Titles describe what each image verifiably shows;
+ * where the report does not let an image be tied to a specific chainage or
+ * activity, a neutral title is used rather than an invented location.
+ * Company, government and stakeholder logos, portraits and duplicates are
+ * deliberately excluded.
  */
 
-import { placeholder, type Placeholder } from "./placeholder";
 import type { MediaKey } from "./media";
 
 export interface GalleryCategory {
@@ -21,111 +13,56 @@ export interface GalleryCategory {
   readonly label: string;
 }
 
-/** The six categories, in display order. Drives the filter control. */
+/** Only categories that actually contain images (no always-empty filters). */
 export const galleryCategories: readonly GalleryCategory[] = [
   { id: "interchanges", label: "Interchanges" },
-  { id: "bridges-structures", label: "Bridges & Structures" },
-  { id: "footbridges", label: "Footbridges" },
-  { id: "drainage-culverts", label: "Drainage & Culverts" },
+  { id: "bridges", label: "Bridges" },
+  { id: "drainage", label: "Drainage" },
   { id: "earthworks", label: "Earthworks" },
-  { id: "aerial", label: "Aerial" },
+  { id: "proposed-designs", label: "Proposed Designs" },
+  { id: "corridor-maps", label: "Corridor and Maps" },
 ] as const;
 
 export type GalleryCategoryId = (typeof galleryCategories)[number]["id"];
 
+export type GalleryType = "Construction Photo" | "Proposed Design";
+
 export interface GalleryItem {
   readonly id: string;
-  /** Registry key for the image. */
   readonly media: MediaKey;
-  readonly caption: string;
+  readonly title: string;
   readonly category: GalleryCategoryId;
-  /**
-   * True while the category is a provisional placeholder — the client
-   * re-categorises after seeing the shots placed. Rendered as a visible
-   * "provisional" marker so a guessed category is never mistaken for a
-   * confirmed one.
-   */
-  readonly categoryProvisional: boolean;
-  /** Capture date. Placeholder until the client supplies it. */
-  readonly date: string | Placeholder<string>;
+  readonly type: GalleryType;
 }
 
-/**
- * Seed set. Every category is provisional and every date is a
- * placeholder; the images resolve automatically once the construction-0N
- * files land in the registry.
- */
 export const galleryItems: readonly GalleryItem[] = [
-  {
-    id: "corridor-aerial",
-    media: "heroCorridorAerial",
-    caption: "Aerial view of the corridor",
-    category: "aerial",
-    categoryProvisional: false,
-    date: placeholder<string>("Corridor aerial capture date", ""),
-  },
-  {
-    id: "construction-01",
-    media: "construction01",
-    caption: "Construction progress — image pending",
-    category: "interchanges",
-    categoryProvisional: true,
-    date: placeholder<string>("construction-01 capture date", ""),
-  },
-  {
-    id: "construction-02",
-    media: "construction02",
-    caption: "Construction progress — image pending",
-    category: "interchanges",
-    categoryProvisional: true,
-    date: placeholder<string>("construction-02 capture date", ""),
-  },
-  {
-    id: "construction-03",
-    media: "construction03",
-    caption: "Construction progress — image pending",
-    category: "bridges-structures",
-    categoryProvisional: true,
-    date: placeholder<string>("construction-03 capture date", ""),
-  },
-  {
-    id: "construction-04",
-    media: "construction04",
-    caption: "Construction progress — image pending",
-    category: "footbridges",
-    categoryProvisional: true,
-    date: placeholder<string>("construction-04 capture date", ""),
-  },
-  {
-    id: "construction-05",
-    media: "construction05",
-    caption: "Construction progress — image pending",
-    category: "drainage-culverts",
-    categoryProvisional: true,
-    date: placeholder<string>("construction-05 capture date", ""),
-  },
-  {
-    id: "construction-06",
-    media: "construction06",
-    caption: "Construction progress — image pending",
-    category: "earthworks",
-    categoryProvisional: true,
-    date: placeholder<string>("construction-06 capture date", ""),
-  },
-  {
-    id: "construction-07",
-    media: "construction07",
-    caption: "Construction progress — image pending",
-    category: "aerial",
-    categoryProvisional: true,
-    date: placeholder<string>("construction-07 capture date", ""),
-  },
-  {
-    id: "construction-08",
-    media: "construction08",
-    caption: "Construction progress — image pending",
-    category: "aerial",
-    categoryProvisional: true,
-    date: placeholder<string>("construction-08 capture date", ""),
-  },
+  // Interchanges
+  { id: "underpass", media: "underpassStructure", title: "Interchange Underpass Construction", category: "interchanges", type: "Construction Photo" },
+  // Bridges
+  { id: "tbeam", media: "bridgeTBeamLaunch", title: "Bridge T-Beam Launching", category: "bridges", type: "Construction Photo" },
+  { id: "deck-rebar", media: "bridgeDeckPour", title: "Bridge Deck Reinforcement and Concreting", category: "bridges", type: "Construction Photo" },
+  { id: "deck-concreting", media: "bridgeDeckConcreting", title: "Bridge Deck Concreting", category: "bridges", type: "Construction Photo" },
+  { id: "deck-finishing", media: "deckFinishing", title: "Deck Slab Concreting", category: "bridges", type: "Construction Photo" },
+  { id: "overpass-piers", media: "overpassPiers", title: "Overpass Pier Construction", category: "bridges", type: "Construction Photo" },
+  { id: "corridor-piers", media: "corridorPiers", title: "Corridor Bridge Piers", category: "bridges", type: "Construction Photo" },
+  { id: "corridor-gantries", media: "corridorGantries", title: "Corridor Overpass Construction", category: "bridges", type: "Construction Photo" },
+  // Drainage
+  { id: "box-culvert", media: "culvertEarthworks", title: "Box Culvert Construction", category: "drainage", type: "Construction Photo" },
+  { id: "stream-culvert", media: "streamCulvert", title: "Culvert Works at a Watercourse", category: "drainage", type: "Construction Photo" },
+  { id: "river-culverts", media: "riverBridgeCulverts", title: "River Crossing Culvert Works", category: "drainage", type: "Construction Photo" },
+  // Earthworks
+  { id: "rock-filling", media: "rockFilling", title: "Earthworks and Rock Filling", category: "earthworks", type: "Construction Photo" },
+  { id: "retaining-wall", media: "retainingWall", title: "Retaining Wall Reinforcement", category: "earthworks", type: "Construction Photo" },
+  { id: "dust-spraying", media: "dustSpraying", title: "Dust Suppression on the Corridor", category: "earthworks", type: "Construction Photo" },
+  // Proposed designs
+  { id: "d-teshie", media: "teshieLinkRemodel", title: "Teshie Link Interchange — Proposed Design", category: "proposed-designs", type: "Proposed Design" },
+  { id: "d-comm18", media: "comm18Render", title: "Community 18 Interchange — Proposed Design", category: "proposed-designs", type: "Proposed Design" },
+  { id: "d-lashibi", media: "lashibiRender", title: "Lashibi Interchange — Proposed Design", category: "proposed-designs", type: "Proposed Design" },
+  { id: "d-tetteh", media: "tettehQuarshieProposed", title: "Tetteh Quarshie Interchange — Proposed Design", category: "proposed-designs", type: "Proposed Design" },
+  { id: "d-toll", media: "tollPlazaRender", title: "Toll Plaza — Proposed Design", category: "proposed-designs", type: "Proposed Design" },
+  { id: "d-flyover", media: "flowerPotRemodel", title: "Corridor Flyover — Proposed Design", category: "proposed-designs", type: "Proposed Design" },
+  // Corridor and maps
+  { id: "corridor-aerial", media: "corridorAerial", title: "Section 1 Corridor Under Construction", category: "corridor-maps", type: "Construction Photo" },
+  { id: "cross-section", media: "designScheme", title: "Typical Road Cross-Section", category: "corridor-maps", type: "Proposed Design" },
+  { id: "route-viz", media: "routeAlignmentMap", title: "Accra–Tema Corridor — Design Visualisation", category: "corridor-maps", type: "Proposed Design" },
 ] as const;

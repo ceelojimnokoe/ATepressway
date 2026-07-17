@@ -102,6 +102,18 @@
   }
 }
 
+/* Hero-slider Ken Burns: a slow, subtle push. Applied only to the active
+   slide and only under motion-safe (the reduced-motion block below zeroes
+   its duration, so reduced-motion users see a static image). */
+@keyframes ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.05);
+  }
+}
+
 /* All numbers render mono + tabular-nums. Apply directly, no exceptions. */
 .figure {
   font-family: var(--font-mono);

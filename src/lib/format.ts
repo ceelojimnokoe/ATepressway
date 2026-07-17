@@ -54,6 +54,17 @@ export function formatShortDate(iso: string): string {
 }
 
 /**
+ * Thousands separators, computed as a pure string operation so the server
+ * and client always produce identical markup (no locale-dependent Intl
+ * formatting that could differ between them). 650241 → "650,241".
+ */
+export function formatThousands(value: number): string {
+  const [whole, fraction] = value.toString().split(".");
+  const grouped = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return fraction ? `${grouped}.${fraction}` : grouped;
+}
+
+/**
  * "May 2026" → "June 2026"; "December 2026" → "January 2027". Used for the
  * "Planned for {next month}" heading. Returns "next month" if the input
  * isn't a recognised "<Month> <Year>" string.
