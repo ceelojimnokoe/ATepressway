@@ -14,8 +14,8 @@ export default function StakeholdersPage() {
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 pt-16 sm:px-8">
         <h1 className="text-heading-1 text-ink-1">Project Stakeholders</h1>
         <p className="max-w-2xl text-body text-ink-2">
-          The delivery structure for the Accra–Tema Motorway and Extensions Project, in order of
-          accountability from Employer to EPC contractor.
+          The delivery structure for the Accra–Tema Motorway and Extensions
+          Project, in order of accountability from Employer to EPC contractor.
         </p>
       </div>
 
@@ -29,7 +29,7 @@ export default function StakeholdersPage() {
 
       <section className="border-t border-rule bg-raised">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-ink-1">Project team</h2>
+          <h2 className="text-heading-4 text-ink-1">Project Team</h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {team.map((member) => (
               <TeamMemberCard key={member.name} member={member} />
