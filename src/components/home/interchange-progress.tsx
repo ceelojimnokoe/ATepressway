@@ -1,68 +1,51 @@
-"use client";
-
-import { motion } from "motion/react";
-import { reveal, viewport, barFill } from "@/lib/motion";
-import { progress } from "@/content/project";
+import { progress, interchanges } from "@/content/project";
 import { isPlaceholder } from "@/content/placeholder";
-import { Figure } from "@/components/ui/figure";
+import { AnimatedProgressBar } from "@/components/ui/animated-progress-bar";
+import { TextReveal } from "@/components/motion/text-reveal";
+import { Reveal } from "@/components/motion/reveal";
+
+const workPackages = isPlaceholder(progress.workPackages) ? [] : progress.workPackages;
+const source = isPlaceholder(progress.signOffSource) ? null : progress.signOffSource;
 
 /**
- * Per-structure progress for the four interchanges, straight from the
- * May 2026 MPR. The interchange packages are the percentage-based ones
- * (no unit tally); the footbridge and culvert packages carry a
- * units-complete/units-total count and live on /progress, not here.
- * Bars animate via barFill (scaleX from origin-left — transform only).
- * The MPR source is rendered visibly, not footnoted: an unsourced
- * percentage has no place on this site.
+ * Interchange progress from the May 2026 report: each bar fills from zero
+ * on scroll-in, the percentage is always shown as text (never colour
+ * alone), and the source is stated. A server component — only the bars and
+ * reveals are client leaves.
  */
 export function InterchangeProgress() {
-  const packages = isPlaceholder(progress.workPackages) ? [] : progress.workPackages;
-  const interchanges = packages.filter((pkg) => pkg.unitsTotal === undefined);
-  const source = isPlaceholder(progress.signOffSource) ? null : progress.signOffSource;
-
   return (
     <section className="border-b border-rule bg-void">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={viewport}
-        variants={reveal}
-        className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8"
-      >
-        <h2 className="text-heading-4 text-ink-1">Interchange progress</h2>
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-24 sm:px-8">
+        <div className="flex flex-col gap-4">
+          <span className="figure text-caption text-lime tracking-[0.2em] uppercase">04 — Progress</span>
+          <TextReveal
+            as="h2"
+            text="Interchange construction, structure by structure"
+            className="max-w-3xl text-heading-3 text-ink-1 sm:text-heading-2"
+          />
+        </div>
 
-        <ul className="flex flex-col gap-6">
-          {interchanges.map((pkg) => (
-            <li key={pkg.id} className="flex flex-col gap-2">
-              <div className="flex items-baseline justify-between gap-4">
-                <span className="text-body text-ink-1">{pkg.name}</span>
-                <Figure value={`${pkg.percentComplete}%`} />
-              </div>
-              <div
-                className="h-2 w-full overflow-hidden bg-sunk"
-                role="progressbar"
-                aria-valuenow={pkg.percentComplete}
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-label={`${pkg.name} progress`}
-              >
-                <motion.div
-                  initial={barFill.hidden}
-                  whileInView={barFill.visible(pkg.percentComplete / 100)}
-                  viewport={viewport}
-                  className="h-full w-full origin-left bg-lime"
+        <div className="flex flex-col gap-8">
+          {interchanges.map((interchange) => {
+            const pkg = workPackages.find((w) => w.id === interchange.id);
+            if (!pkg) return null;
+            return (
+              <Reveal key={interchange.id} direction="up" distance={16}>
+                <AnimatedProgressBar
+                  label={`${interchange.name} Interchange`}
+                  percent={pkg.percentComplete}
+                  sublabel={`${interchange.chainageLabel} · ${interchange.mayActivity}`}
                 />
-              </div>
-            </li>
-          ))}
-        </ul>
+              </Reveal>
+            );
+          })}
+        </div>
 
         {source && (
-          <p className="text-caption text-ink-3">
-            Interchange progress figures reflect the {source}.
-          </p>
+          <p className="text-caption text-ink-3">Interchange progress figures reflect the {source}.</p>
         )}
-      </motion.div>
+      </div>
     </section>
   );
 }

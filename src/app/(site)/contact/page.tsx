@@ -9,7 +9,7 @@ export const metadata: Metadata = buildMetadata(routes.contact);
 export default function ContactPage() {
   return (
     <>
-      <div className="mx-auto w-full max-w-5xl px-4 pt-16 sm:px-8">
+      <div className="mx-auto w-full max-w-5xl px-4 pt-28 sm:px-8">
         <h1 className="text-heading-1 text-ink-1">Contact</h1>
       </div>
 

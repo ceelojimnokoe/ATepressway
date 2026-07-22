@@ -32,7 +32,7 @@ export default async function GalleryPage({
 
   return (
     <>
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 pt-16 sm:px-8">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 pt-28 sm:px-8">
         <h1 className="text-heading-1 text-ink-1">Gallery</h1>
         <p className="max-w-2xl text-body text-ink-2">
           Construction photography and proposed designs from along the Accra–Tema corridor, by

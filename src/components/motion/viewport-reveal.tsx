@@ -1,8 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { motion } from "motion/react";
-import { reveal, viewport } from "@/lib/motion";
+import { Reveal } from "@/components/motion/reveal";
 
 interface ViewportRevealProps {
   readonly children: ReactNode;
@@ -10,21 +9,16 @@ interface ViewportRevealProps {
 }
 
 /**
- * The only motion this site's Server Component sections use: a single
- * reveal, triggered once when scrolled into view. This is the leaf —
- * wrapping server-rendered content in this doesn't make the section
- * itself a Client Component.
+ * The standard once-on-scroll reveal used by the Server Component sections
+ * across the site. Wrapping server-rendered content in this stays a leaf
+ * Client Component — the section itself is untouched. Content is visible
+ * by default (see {@link Reveal}); the entrance is a progressive
+ * enhancement that never hides content if JavaScript doesn't run.
  */
 export function ViewportReveal({ children, className }: ViewportRevealProps) {
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewport}
-      variants={reveal}
-      className={className}
-    >
+    <Reveal className={className} distance={12} amount={0.3}>
       {children}
-    </motion.div>
+    </Reveal>
   );
 }

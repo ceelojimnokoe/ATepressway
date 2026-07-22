@@ -641,6 +641,55 @@ export const team: readonly TeamMember[] = [
   },
 ] as const;
 
+export interface BoardMember {
+  readonly name: string;
+  readonly title: string;
+  readonly description: string;
+  readonly photo: ImageAsset;
+}
+
+/**
+ * ⚠ TEMPORARY PLACEHOLDER CONTENT — board portraits have been supplied, but
+ * the members' names, titles and biographies are NOT yet confirmed by the
+ * client. Every entry deliberately uses neutral "Board Member NN" copy and
+ * a non-identifying alt text. Do NOT replace with real names or titles until
+ * the client has approved them in writing (stakeholder-approval step). The
+ * photo `src` values use the exact on-disk filenames (note the uppercase
+ * .JPEG on board-member2) so they resolve on case-sensitive hosts.
+ */
+export const boardMembers: readonly BoardMember[] = [
+  {
+    name: "Board Member 01",
+    title: "Position to Be Confirmed",
+    description: "Official board member profile information will be added following stakeholder approval.",
+    photo: { src: "/images/board-member1.jpeg", alt: "Board member portrait — profile to be confirmed" },
+  },
+  {
+    name: "Board Member 02",
+    title: "Position to Be Confirmed",
+    description: "Official board member profile information will be added following stakeholder approval.",
+    photo: { src: "/images/board-member2.JPEG", alt: "Board member portrait — profile to be confirmed" },
+  },
+  {
+    name: "Board Member 03",
+    title: "Position to Be Confirmed",
+    description: "Official board member profile information will be added following stakeholder approval.",
+    photo: { src: "/images/board-member3.jpeg", alt: "Board member portrait — profile to be confirmed" },
+  },
+  {
+    name: "Board Member 04",
+    title: "Position to Be Confirmed",
+    description: "Official board member profile information will be added following stakeholder approval.",
+    photo: { src: "/images/board-member4.jpeg", alt: "Board member portrait — profile to be confirmed" },
+  },
+  {
+    name: "Board Member 05",
+    title: "Position to Be Confirmed",
+    description: "Official board member profile information will be added following stakeholder approval.",
+    photo: { src: "/images/board-member5.jpeg", alt: "Board member portrait — profile to be confirmed" },
+  },
+] as const;
+
 // ---------------------------------------------------------------------------
 // Media slots — which asset renders where. The catalogue of real files on
 // disk lives in ./media.ts (the registry); these slots stay placeholder

@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/hero";
-import { KeyFigures } from "@/components/home/key-figures";
+import { Intro } from "@/components/home/intro";
+import { CorridorTimeline } from "@/components/home/corridor-timeline";
+import { Statistics } from "@/components/home/statistics";
 import { InterchangeProgress } from "@/components/home/interchange-progress";
+import { GalleryPreview } from "@/components/home/gallery-preview";
+import { Partners } from "@/components/home/partners";
+import { Leadership } from "@/components/home/leadership";
 import { LatestReport } from "@/components/home/latest-report";
-import { StakeholderGrid } from "@/components/home/stakeholder-grid";
+import { ClosingCta } from "@/components/home/closing-cta";
 import { JsonLd } from "@/components/seo/json-ld";
 import { corridorPlaceJsonLd } from "@/content/structured-data";
 import { buildMetadata } from "@/lib/page-metadata";
@@ -16,10 +21,15 @@ export default function Home() {
     <>
       <JsonLd data={corridorPlaceJsonLd()} />
       <Hero />
-      <KeyFigures />
+      <Intro />
+      <CorridorTimeline />
+      <Statistics />
       <InterchangeProgress />
+      <GalleryPreview />
+      <Partners />
+      <Leadership />
       <LatestReport />
-      <StakeholderGrid />
+      <ClosingCta />
     </>
   );
 }

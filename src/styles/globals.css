@@ -159,3 +159,122 @@
     animation: none !important;
   }
 }
+
+/* ============================================================
+   Scroll reveals — progressive enhancement, visible by default.
+
+   Design contract: content is ALWAYS in its final, visible state
+   unless JavaScript actively hides it. The hidden pre-state is
+   gated on the `.reveal-armed` class, which is added ONLY by the
+   useReveal hook (src/hooks/use-reveal.ts) after React has
+   hydrated on the client. The hook adds `.is-visible` to play the
+   entrance — immediately for on-screen elements, on scroll for
+   the rest.
+
+   Consequences, all intentional:
+   - No JavaScript            → never armed → fully visible.
+   - Hydration fails / errors → never armed → fully visible.
+   - prefers-reduced-motion   → hook skips arming → visible, no motion.
+   - Print                    → forced visible below.
+   Nothing here can leave content permanently hidden.
+   ============================================================ */
+@media (prefers-reduced-motion: no-preference) {
+  /* Single-element reveal (Reveal / FadeIn / ViewportReveal). */
+  [data-reveal].reveal-armed {
+    opacity: 0;
+    transform: translate3d(var(--reveal-x, 0px), var(--reveal-y, 24px), 0);
+  }
+  [data-reveal].reveal-armed.is-visible {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--reveal-duration, 560ms) var(--ease-out) var(--reveal-delay, 0s),
+      transform var(--reveal-duration, 560ms) var(--ease-out) var(--reveal-delay, 0s);
+  }
+
+  /* Staggered group (StaggerContainer / StaggerItem): the container is
+     observed; items carry their own --reveal-delay. */
+  [data-reveal-group].reveal-armed > [data-reveal-item] {
+    opacity: 0;
+    transform: translate3d(0px, var(--reveal-item-y, 16px), 0);
+  }
+  [data-reveal-group].reveal-armed.is-visible > [data-reveal-item] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity var(--reveal-duration, 520ms) var(--ease-out) var(--reveal-delay, 0s),
+      transform var(--reveal-duration, 520ms) var(--ease-out) var(--reveal-delay, 0s);
+  }
+
+  /* Word-by-word text reveal (TextReveal). Screen readers still read the
+     full, in-order text — the words are real text nodes, only visually
+     offset. */
+  [data-reveal-text].reveal-armed [data-reveal-word] {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.5em);
+  }
+  [data-reveal-text].reveal-armed.is-visible [data-reveal-word] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 460ms var(--ease-out) var(--reveal-delay, 0s),
+      transform 460ms var(--ease-out) var(--reveal-delay, 0s);
+  }
+
+  /* Masked image reveal (ImageReveal): a void panel wipes up while the
+     image settles from a slight zoom. Without arming there is no panel,
+     so the image is simply shown. */
+  [data-reveal-cover].reveal-armed::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    background: var(--color-void);
+    transform-origin: bottom;
+    transform: scaleY(1);
+  }
+  [data-reveal-cover].reveal-armed.is-visible::after {
+    transform: scaleY(0);
+    transition: transform 700ms var(--ease-standard) var(--reveal-delay, 0s);
+  }
+  [data-reveal-cover].reveal-armed [data-reveal-zoom] {
+    transform: scale(1.06);
+  }
+  [data-reveal-cover].reveal-armed.is-visible [data-reveal-zoom] {
+    transform: scale(1);
+    transition: transform 900ms var(--ease-out) var(--reveal-delay, 0s);
+  }
+
+  /* Progress/stat bar fill (AnimatedProgressBar): grows from 0 to its
+     value. The resting rule below keeps it at its true value when not
+     armed. */
+  [data-reveal-bar].reveal-armed {
+    transform: scaleX(0);
+  }
+  [data-reveal-bar].reveal-armed.is-visible {
+    transform: scaleX(var(--bar-scale, 1));
+    transition: transform 640ms var(--ease-standard);
+  }
+}
+
+/* Resting state for the bar fill: no-JS, reduced motion and print all
+   show the true, filled value. */
+[data-reveal-bar] {
+  transform: scaleX(var(--bar-scale, 1));
+  transform-origin: left;
+}
+
+/* Belt and braces: printing never hides reveal content. */
+@media print {
+  [data-reveal],
+  [data-reveal-group] > [data-reveal-item],
+  [data-reveal-text] [data-reveal-word],
+  [data-reveal-cover] [data-reveal-zoom] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  [data-reveal-cover].reveal-armed::after {
+    display: none !important;
+  }
+}

@@ -36,6 +36,17 @@ export interface GalleryItem {
 }
 
 export const galleryItems: readonly GalleryItem[] = [
+  // Aerial corridor construction photography (client-supplied), sorted 1–10.
+  { id: "atel-1", media: "atelJunctionUnderpass", title: "Junction Underpass Construction", category: "interchanges", type: "Construction Photo" },
+  { id: "atel-2", media: "atelBridgeDeckRebar", title: "Bridge Deck Reinforcement", category: "bridges", type: "Construction Photo" },
+  { id: "atel-3", media: "atelPierConcreting", title: "Bridge Pier Concreting", category: "bridges", type: "Construction Photo" },
+  { id: "atel-4", media: "atelOverpassDeck", title: "Overpass Deck Construction", category: "bridges", type: "Construction Photo" },
+  { id: "atel-5", media: "atelCorridorOverpass", title: "Corridor Overpass and Piers", category: "bridges", type: "Construction Photo" },
+  { id: "atel-6", media: "atelCorridorPiersWide", title: "Corridor Widening with New Piers", category: "corridor-maps", type: "Construction Photo" },
+  { id: "atel-7", media: "atelOverpassCrossheads", title: "Overpass Piers and Crossheads", category: "bridges", type: "Construction Photo" },
+  { id: "atel-8", media: "atelCarriagewaySection", title: "Completed Carriageway Section", category: "corridor-maps", type: "Construction Photo" },
+  { id: "atel-9", media: "atelRoadsideRamps", title: "Roadside Ramp Structures", category: "corridor-maps", type: "Construction Photo" },
+  { id: "atel-10", media: "atelJunctionRoundabout", title: "Major Junction Underpass", category: "interchanges", type: "Construction Photo" },
   // Interchanges
   { id: "underpass", media: "underpassStructure", title: "Interchange Underpass Construction", category: "interchanges", type: "Construction Photo" },
   // Bridges

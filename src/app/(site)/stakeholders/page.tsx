@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { StakeholderCard } from "@/components/stakeholders/stakeholder-card";
 import { TeamMemberCard } from "@/components/stakeholders/team-member-card";
+import { BoardMemberCard } from "@/components/stakeholders/board-member-card";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
-import { stakeholderChain, team } from "@/content/project";
+import { stakeholderChain, team, boardMembers } from "@/content/project";
 import { buildMetadata } from "@/lib/page-metadata";
 import { routes } from "@/content/seo";
 
@@ -11,7 +12,7 @@ export const metadata: Metadata = buildMetadata(routes.stakeholders);
 export default function StakeholdersPage() {
   return (
     <>
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 pt-16 sm:px-8">
+      <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 pt-28 sm:px-8">
         <h1 className="text-heading-1 text-ink-1">Project Stakeholders</h1>
         <p className="max-w-2xl text-body text-ink-2">
           The delivery structure for the Accra–Tema Motorway and Extensions
@@ -35,6 +36,25 @@ export default function StakeholdersPage() {
               <TeamMemberCard key={member.name} member={member} />
             ))}
           </div>
+        </ViewportReveal>
+      </section>
+
+      <section className="border-t border-rule bg-void">
+        <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-heading-4 text-ink-1">Board of Directors</h2>
+            <p className="max-w-2xl text-small text-ink-3">
+              Board portraits are shown below. Names, titles and profiles are provisional and will
+              be published once confirmed by the stakeholders.
+            </p>
+          </div>
+          <ul className="grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-5">
+            {boardMembers.map((member) => (
+              <li key={member.name}>
+                <BoardMemberCard member={member} />
+              </li>
+            ))}
+          </ul>
         </ViewportReveal>
       </section>
     </>
