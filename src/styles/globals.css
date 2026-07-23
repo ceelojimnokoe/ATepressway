@@ -79,13 +79,19 @@
 
 /*
  * Typefaces: next/font (src/app/layout.tsx) generates the actual font-face
- * declarations and exposes them as --font-geist-sans / --font-geist-mono /
- * --font-instrument-serif on <html>. `inline` because these theme values
- * reference other CSS variables — Tailwind needs the inline variant to
- * resolve var()-in-var() correctly when generating utilities.
+ * declarations and exposes them as --font-general-sans / --font-clash-display
+ * / --font-geist-mono / --font-instrument-serif on <html>. `inline` because
+ * these theme values reference other CSS variables — Tailwind needs the
+ * inline variant to resolve var()-in-var() correctly when generating
+ * utilities.
+ *
+ * Roles: General Sans for body/UI, Clash Display for h1–h3 and the
+ * oversized hero figure, Geist Mono unchanged for tabular numbers, and
+ * Instrument Serif unchanged for the single serif moment.
  */
 @theme inline {
-  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-general-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-clash-display), var(--font-general-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
   --font-serif: var(--font-instrument-serif), ui-serif, Georgia, serif;
 }
@@ -100,6 +106,65 @@
     color: var(--color-ink-1);
     font-family: var(--font-sans);
   }
+
+  /*
+   * Display face for the top three heading levels. Tailwind's preflight
+   * already resets heading font-weight to inherit, so these render at the
+   * inherited weight — Clash Display carries its own display weight and
+   * must never be font-bold'ed on top of that.
+   */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+}
+
+/*
+ * Right-docked navigation rail.
+ *
+ * `--rail-collapsed` is the slim strip permanently visible at every
+ * breakpoint; `--rail-expanded` is the panel's true, always-rendered
+ * width. Page content is padded by --rail-collapsed so nothing ever
+ * renders underneath the strip.
+ */
+:root {
+  --rail-collapsed: 56px;
+  --rail-expanded: 100vw;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --rail-collapsed: 64px;
+    --rail-expanded: 380px;
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --rail-expanded: 420px;
+  }
+}
+
+/*
+ * The width-grow, done with transform only.
+ *
+ * The panel is always laid out at its full --rail-expanded width inside a
+ * clipping parent of the same width. Collapsed, it is pushed right by
+ * (expanded - collapsed) so all but a --rail-collapsed sliver falls
+ * outside the clip; expanded, it returns to translateX(0) and fills the
+ * clip. No width/left/right value is ever transitioned, so this stays on
+ * the compositor. The global prefers-reduced-motion hard-stop collapses
+ * the transition to instant.
+ */
+.rail-panel {
+  transform: translateX(calc(var(--rail-expanded) - var(--rail-collapsed)));
+  transition: transform 420ms var(--ease-standard);
+  will-change: transform;
+}
+
+.rail-panel[data-open="true"] {
+  transform: translateX(0);
 }
 
 /* Hero-slider Ken Burns: a slow, subtle push. Applied only to the active
@@ -138,13 +203,13 @@
 }
 
 /*
- * Route cross-fade via the native View Transitions API — see
- * src/components/layout/page-transition-link.tsx, which calls
- * document.startViewTransition(). These pseudo-elements live outside
- * the normal DOM tree, so the *, *::before, *::after reduced-motion
- * rule above doesn't reach them; PageTransitionLink already skips
- * startViewTransition entirely under prefers-reduced-motion, and the
- * block below is a second, defence-in-depth guard on the CSS side.
+ * View-transition styling. Currently INERT: nothing calls
+ * document.startViewTransition() any more — see the note in
+ * page-transition-link.tsx explaining why the manual hijack was removed
+ * (it could commit a route change before the incoming CSS applied).
+ * Retained only so that if Next's native viewTransition support is
+ * enabled later, the cross-fade already respects the motion tokens and
+ * the reduced-motion guard below.
  */
 ::view-transition-old(root),
 ::view-transition-new(root) {

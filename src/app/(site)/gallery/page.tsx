@@ -4,6 +4,7 @@ import { mediaRegistry } from "@/content/media";
 import { GalleryFilter } from "@/components/gallery/gallery-filter";
 import { GalleryCard } from "@/components/gallery/gallery-tile";
 import { GalleryLightbox, type LightboxImage } from "@/components/gallery/gallery-lightbox";
+import { PageHero } from "@/components/ui/page-hero";
 import { PageTransitionLink } from "@/components/layout/page-transition-link";
 import { buildMetadata } from "@/lib/page-metadata";
 import { routes } from "@/content/seo";
@@ -32,13 +33,11 @@ export default async function GalleryPage({
 
   return (
     <>
-      <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 pt-28 sm:px-8">
-        <h1 className="text-heading-1 text-ink-1">Gallery</h1>
-        <p className="max-w-2xl text-body text-ink-2">
-          Construction photography and proposed designs from along the Accra–Tema corridor, by
-          category.
-        </p>
-      </div>
+      <PageHero
+        media="atelJunctionUnderpass"
+        title="Gallery"
+        subtitle="Construction photography and proposed designs from along the Accra–Tema corridor, by category."
+      />
 
       <section className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
         <GalleryFilter active={active} />

@@ -4,10 +4,9 @@ import { Intro } from "@/components/home/intro";
 import { CorridorTimeline } from "@/components/home/corridor-timeline";
 import { Statistics } from "@/components/home/statistics";
 import { InterchangeProgress } from "@/components/home/interchange-progress";
+import { DesignPreview } from "@/components/home/design-preview";
 import { GalleryPreview } from "@/components/home/gallery-preview";
 import { Partners } from "@/components/home/partners";
-import { Leadership } from "@/components/home/leadership";
-import { LatestReport } from "@/components/home/latest-report";
 import { ClosingCta } from "@/components/home/closing-cta";
 import { JsonLd } from "@/components/seo/json-ld";
 import { corridorPlaceJsonLd } from "@/content/structured-data";
@@ -25,10 +24,9 @@ export default function Home() {
       <CorridorTimeline />
       <Statistics />
       <InterchangeProgress />
+      <DesignPreview />
       <GalleryPreview />
       <Partners />
-      <Leadership />
-      <LatestReport />
       <ClosingCta />
     </>
   );

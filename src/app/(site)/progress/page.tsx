@@ -5,6 +5,7 @@ import { AnimatedFigure } from "@/components/ui/animated-figure";
 import { AnimatedProgressBar } from "@/components/ui/animated-progress-bar";
 import { MilestoneTimeline } from "@/components/progress/milestone-timeline";
 import { BulletinFeed } from "@/components/progress/bulletin-feed";
+import { DownloadSummaryButton } from "@/components/progress/download-summary-button";
 import { projectFacts, progress, interchanges } from "@/content/project";
 import { isPlaceholder } from "@/content/placeholder";
 import {
@@ -67,6 +68,8 @@ export default function ProgressPage() {
             <AnimatedFigure value={overallPct} suffix="%" signal className="text-figure" />
             <span className="text-small text-ink-2">As of {isPlaceholder(progress.asOf) ? "May 2026" : progress.asOf} · {progress.reportSeries}</span>
           </div>
+
+          <DownloadSummaryButton />
 
           <dl className="grid grid-cols-1 gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
             {statusFacts.map((fact) => (

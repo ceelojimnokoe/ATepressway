@@ -7,7 +7,12 @@ import { isPlaceholder } from "@/content/placeholder";
 import { formatLongDate } from "@/lib/format";
 import { Reveal } from "@/components/motion/reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
+import { ImageReveal } from "@/components/motion/image-reveal";
+import { mediaRegistry } from "@/content/media";
 import { cn } from "@/lib/cn";
+
+/** Aerial of a major corridor junction — supports the journey narrative. */
+const journeyImage = mediaRegistry.atelJunctionRoundabout;
 
 type MilestoneState = "done" | "current" | "upcoming";
 
@@ -71,6 +76,13 @@ export function CorridorTimeline() {
           />
         </div>
 
+        {/*
+         * Timeline and supporting photograph sit side by side from `lg`. On
+         * mobile they stack with the image LAST: the milestones are the
+         * substance of the section and should follow the heading directly,
+         * with the photograph as closing context.
+         */}
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.85fr)] lg:items-start lg:gap-12">
         <ol ref={ref} className="relative flex flex-col gap-12">
           <span aria-hidden="true" className="absolute top-2 bottom-2 left-2 w-px bg-rule" />
           <motion.span
@@ -101,6 +113,17 @@ export function CorridorTimeline() {
             </li>
           ))}
         </ol>
+
+          <figure className="flex flex-col gap-3">
+            <ImageReveal
+              src={journeyImage.src}
+              alt={journeyImage.alt}
+              sizes="(min-width: 1024px) 40vw, 100vw"
+              className="aspect-[4/3] w-full border border-rule"
+            />
+            <figcaption className="text-caption text-ink-3">{journeyImage.alt}</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
   );

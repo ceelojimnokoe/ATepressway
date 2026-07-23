@@ -1,8 +1,12 @@
-import { organization, media, contact } from "@/content/project";
+import Image from "next/image";
+import { organization, contact } from "@/content/project";
 import { isPlaceholder } from "@/content/placeholder";
 import { primaryNav } from "@/content/navigation";
+import { mediaRegistry } from "@/content/media";
 import { PlaceholderNotice } from "@/components/ui/placeholder-notice";
 import { NavLink } from "./nav-link";
+
+const logoMark = mediaRegistry.atelLogoMark;
 
 const SOCIAL_LINKS = [
   { key: "twitter", value: contact.social.twitter },
@@ -19,14 +23,16 @@ export function SiteFooter() {
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-12 sm:px-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex max-w-sm flex-col gap-2">
-            {isPlaceholder(media.logo) ? (
-              <span className="font-mono text-body tracking-wide uppercase">
-                {organization.shortName}
-              </span>
-            ) : (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={media.logo.src} alt={media.logo.alt} className="h-6 w-auto" />
-            )}
+            {/* next/image, not a raw <img>: the raw tag skipped resizing and
+                modern-format conversion entirely. */}
+            <Image
+              src={logoMark.src}
+              alt={logoMark.alt}
+              width={logoMark.width}
+              height={logoMark.height}
+              sizes="96px"
+              className="h-8 w-auto object-contain"
+            />
             <p className="text-small text-ink-2">{organization.description}</p>
           </div>
 

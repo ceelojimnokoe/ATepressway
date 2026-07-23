@@ -366,6 +366,24 @@ export const mediaRegistry = {
     verified: true,
   },
 
+  /**
+   * ATEL logo mark used in the navigation rail and footer. Filename verified
+   * on disk as lowercase `atel-logo.png` — Windows is case-insensitive but
+   * Vercel's Linux build is not, so the casing here must match exactly.
+   * NOTE: `logo-atel.png` also exists with identical dimensions and near
+   * identical byte size — the two files appear to be duplicates. Worth
+   * deleting one once the client confirms which is canonical.
+   */
+  atelLogoMark: {
+    src: "/images/atel-logo.png",
+    alt: "Accra–Tema Expressway Ltd. logo",
+    width: 599,
+    height: 496,
+    kind: "logo",
+    onDisk: true,
+    verified: true,
+  },
+
   // --- Stakeholder logos ---------------------------------------------------
   logoAtel: {
     src: "/images/logo-atel.png",

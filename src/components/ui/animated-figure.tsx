@@ -15,6 +15,13 @@ interface AnimatedFigureProps {
   readonly signal?: boolean;
   /** Group the integer part with thousands separators (e.g. 1,095). */
   readonly separator?: boolean;
+  /**
+   * When the count-up runs. "inView" (default) waits for the figure to be
+   * scrolled into view; "load" starts as soon as it mounts — for figures
+   * above the fold, which are already visible and would otherwise never
+   * animate.
+   */
+  readonly trigger?: "inView" | "load";
   readonly className?: string;
 }
 
@@ -43,10 +50,12 @@ export function AnimatedFigure({
   suffix = "",
   signal = false,
   separator = false,
+  trigger = "inView",
   className,
 }: AnimatedFigureProps) {
   const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, amount: 0.4 });
+  const scrolledIntoView = useInView(ref, { once: true, amount: 0.4 });
+  const inView = trigger === "load" ? true : scrolledIntoView;
   const reducedMotion = useReducedMotion();
   // Seed with the final value: server + first client render agree, and any
   // no-JS / failed-hydration path shows the correct number.

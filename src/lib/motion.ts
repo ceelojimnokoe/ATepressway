@@ -28,6 +28,12 @@ export const duration = {
   fast: 0.15,
   base: 0.22,
   slow: 0.32,
+  /**
+   * Number count-ups only. Deliberately far longer than `slow` — a figure
+   * that lands instantly reads as static text, so the run-up needs to be
+   * visible. The one duration allowed outside the 150/220/320ms budget.
+   */
+  count: 1.8,
 } as const;
 
 export type DurationName = keyof typeof duration;
@@ -137,8 +143,8 @@ export const trackDraw: TrackDrawVariant = {
   },
 };
 
-/** Transition for scroll-triggered number count-ups (KeyFigures, stats, etc). Fires once. */
+/** Transition for number count-ups (KeyFigures, stats, hero figures). Fires once. */
 export const countUp: TransitionConfig = {
-  duration: duration.slow,
+  duration: duration.count,
   ease: easing.out,
 };

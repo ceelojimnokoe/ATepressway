@@ -1,8 +1,5 @@
-"use client";
-
 import NextLink, { type LinkProps } from "next/link";
-import { useRouter } from "next/navigation";
-import type { AnchorHTMLAttributes, MouseEvent, ReactNode } from "react";
+import type { AnchorHTMLAttributes, ReactNode } from "react";
 
 interface PageTransitionLinkProps
   extends LinkProps,
@@ -11,42 +8,23 @@ interface PageTransitionLinkProps
 }
 
 /**
- * Wraps next/link with the native View Transitions API for a cross-fade
- * between routes (duration/easing set in globals.css, mirroring
- * --duration-base / --ease-standard). Next's experimental.viewTransition
- * config flag only takes effect with React's canary/experimental build
- * (not installed here — see CLAUDE.md "no new dependencies without
- * asking"), so this drives the browser API directly instead.
+ * Internal navigation link.
  *
- * Progressive enhancement only: browsers without
- * document.startViewTransition (Firefox, older Safari) fall through to
- * a normal Link navigation, and prefers-reduced-motion skips it the
- * same way.
+ * This previously hijacked every click with document.startViewTransition()
+ * to cross-fade between routes. That has been REMOVED and must not be
+ * reinstated in this form: startViewTransition() snapshots the document and
+ * commits when its callback settles, but router.push() in the App Router is
+ * asynchronous and each route loads its own CSS chunk. The old code waited
+ * only two animation frames, so the transition could commit before the
+ * incoming route's stylesheet applied — rendering the page unstyled. A
+ * cross-fade is not worth a race condition in the site's only navigation.
+ *
+ * Kept as a named component (rather than swapping every call site back to
+ * next/link) so route-level link behaviour still has one place to live.
  */
-export function PageTransitionLink({
-  href,
-  onClick,
-  children,
-  ...rest
-}: PageTransitionLinkProps) {
-  const router = useRouter();
-
-  function handleClick(event: MouseEvent<HTMLAnchorElement>) {
-    onClick?.(event);
-    if (event.defaultPrevented) return;
-    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
-    if (typeof document === "undefined" || !document.startViewTransition) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-    event.preventDefault();
-    document.startViewTransition(async () => {
-      router.push(href.toString());
-      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    });
-  }
-
+export function PageTransitionLink({ href, children, ...rest }: PageTransitionLinkProps) {
   return (
-    <NextLink href={href} onClick={handleClick} {...rest}>
+    <NextLink href={href} {...rest}>
       {children}
     </NextLink>
   );

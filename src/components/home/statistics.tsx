@@ -58,7 +58,7 @@ export function Statistics() {
                   suffix={stat.suffix}
                   decimals={stat.decimals ?? 0}
                   separator={stat.separator}
-                  className="text-heading-1"
+                  className="text-heading-1 lg:text-heading-2"
                 />
                 {stat.unit && <span className="text-small text-ink-2">{stat.unit}</span>}
               </div>

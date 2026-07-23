@@ -641,54 +641,55 @@ export const team: readonly TeamMember[] = [
   },
 ] as const;
 
+/**
+ * Mirrors {@link TeamMember} so the board renders through the same card
+ * layout as the project team. The identity fields are Placeholders rather
+ * than plain strings: nothing here is confirmed, so a naive render can't
+ * ship an invented name or title.
+ */
 export interface BoardMember {
-  readonly name: string;
-  readonly title: string;
-  readonly description: string;
-  readonly photo: ImageAsset;
+  readonly name: string | Placeholder<string>;
+  readonly title: string | Placeholder<string>;
+  /** Supplied portrait, or null to fall back to an initials avatar. */
+  readonly photo: ImageAsset | null;
+  readonly initials: string;
+  readonly bio: string | Placeholder<string>;
+  readonly credentials: readonly string[];
 }
 
 /**
- * ⚠ TEMPORARY PLACEHOLDER CONTENT — board portraits have been supplied, but
- * the members' names, titles and biographies are NOT yet confirmed by the
- * client. Every entry deliberately uses neutral "Board Member NN" copy and
- * a non-identifying alt text. Do NOT replace with real names or titles until
- * the client has approved them in writing (stakeholder-approval step). The
- * photo `src` values use the exact on-disk filenames (note the uppercase
- * .JPEG on board-member2) so they resolve on case-sensitive hosts.
+ * ⚠ PLACEHOLDER SEATS — the five board portraits are real, client-supplied
+ * files, but no name, position or biography has been confirmed. Every
+ * identity field is wrapped in placeholder() so the cards render an
+ * explicit "to be confirmed" state and the layout is reserved. Filling
+ * these in once the client approves is a content-only change: swap each
+ * placeholder() for the confirmed string, nothing else moves.
+ *
+ * The photo `src` values use the exact on-disk filenames (note the
+ * uppercase .JPEG on board-member2) so they resolve on case-sensitive hosts.
  */
+function boardSeat(seatNumber: number, photoSrc: string): BoardMember {
+  const seat = String(seatNumber).padStart(2, "0");
+  return {
+    name: placeholder<string>(`Board member ${seat} — full name`, `Board Member ${seat}`),
+    title: placeholder<string>(`Board member ${seat} — position`, "Position to be confirmed"),
+    photo: { src: photoSrc, alt: "Board member portrait — profile to be confirmed" },
+    initials: seat,
+    bio: placeholder<string>(
+      `Board member ${seat} — profile`,
+      "Official board member profile information will be added following stakeholder approval.",
+    ),
+    credentials: [],
+  };
+}
+
 export const boardMembers: readonly BoardMember[] = [
-  {
-    name: "Board Member 01",
-    title: "Position to Be Confirmed",
-    description: "Official board member profile information will be added following stakeholder approval.",
-    photo: { src: "/images/board-member1.jpeg", alt: "Board member portrait — profile to be confirmed" },
-  },
-  {
-    name: "Board Member 02",
-    title: "Position to Be Confirmed",
-    description: "Official board member profile information will be added following stakeholder approval.",
-    photo: { src: "/images/board-member2.JPEG", alt: "Board member portrait — profile to be confirmed" },
-  },
-  {
-    name: "Board Member 03",
-    title: "Position to Be Confirmed",
-    description: "Official board member profile information will be added following stakeholder approval.",
-    photo: { src: "/images/board-member3.jpeg", alt: "Board member portrait — profile to be confirmed" },
-  },
-  {
-    name: "Board Member 04",
-    title: "Position to Be Confirmed",
-    description: "Official board member profile information will be added following stakeholder approval.",
-    photo: { src: "/images/board-member4.jpeg", alt: "Board member portrait — profile to be confirmed" },
-  },
-  {
-    name: "Board Member 05",
-    title: "Position to Be Confirmed",
-    description: "Official board member profile information will be added following stakeholder approval.",
-    photo: { src: "/images/board-member5.jpeg", alt: "Board member portrait — profile to be confirmed" },
-  },
-] as const;
+  boardSeat(1, "/images/board-member1.jpeg"),
+  boardSeat(2, "/images/board-member2.JPEG"),
+  boardSeat(3, "/images/board-member3.jpeg"),
+  boardSeat(4, "/images/board-member4.jpeg"),
+  boardSeat(5, "/images/board-member5.jpeg"),
+];
 
 // ---------------------------------------------------------------------------
 // Media slots — which asset renders where. The catalogue of real files on

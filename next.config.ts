@@ -27,6 +27,10 @@ const contentSecurityPolicy = [
   "img-src 'self' data: blob:",
   "font-src 'self'",
   "connect-src 'self'",
+  // The contact page embeds OpenStreetMap's own iframe for the corridor map
+  // (no API key, no tracker). Without this, default-src 'self' blocks it.
+  // Scoped to that single host — nothing else may be framed.
+  "frame-src https://www.openstreetmap.org",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -46,6 +50,10 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   images: {
+    // AVIF first, WebP fallback. The hero art is photographic and large;
+    // AVIF typically lands 25–40% under WebP at equivalent quality, and
+    // Next falls back automatically for browsers that don't accept it.
+    formats: ["image/avif", "image/webp"],
     // Allowed next/image quality values used across the site: 65/70 for the
     // large hero and page-hero photos (softened, and masked by overlays),
     // 75 (the default) elsewhere.

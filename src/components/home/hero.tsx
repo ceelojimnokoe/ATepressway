@@ -8,6 +8,7 @@ import { Reveal } from "@/components/motion/reveal";
 import { StaggerContainer, StaggerItem } from "@/components/motion/stagger";
 import { MagneticButton } from "@/components/motion/magnetic-button";
 import { CtaLink } from "@/components/ui/cta-link";
+import { AnimatedFigure } from "@/components/ui/animated-figure";
 
 // Approved slide order for the hero backdrop.
 const slides: readonly Slide[] = (
@@ -19,10 +20,29 @@ const slides: readonly Slide[] = (
 
 const overallPct = isPlaceholder(progress.overallPercentComplete) ? 46 : progress.overallPercentComplete;
 
+/**
+ * Physical progress leads — it's the figure the page exists to report, and
+ * the only one carrying the lime signal treatment. The other two stay in
+ * standard ink so the signal keeps its meaning.
+ */
 const heroMetadata = [
-  { value: `${projectFacts.corridorLengthKm} km`, label: "Design corridor" },
-  { value: `${projectFacts.section1LengthKm} km`, label: "Section 1 under construction" },
-  { value: `${overallPct}%`, label: "Physical progress" },
+  { value: overallPct, decimals: 0, suffix: "%", unit: null, label: "Physical progress", signal: true },
+  {
+    value: projectFacts.corridorLengthKm,
+    decimals: 1,
+    suffix: "",
+    unit: "km",
+    label: "Design corridor",
+    signal: false,
+  },
+  {
+    value: projectFacts.section1LengthKm,
+    decimals: 1,
+    suffix: "",
+    unit: "km",
+    label: "Section 1 under construction",
+    signal: false,
+  },
 ] as const;
 
 /**
@@ -35,7 +55,7 @@ const heroMetadata = [
 export function Hero() {
   return (
     <HeroSlider slides={slides} className="border-b border-rule">
-      <div className="relative z-10 mx-auto flex min-h-[92svh] w-full max-w-5xl flex-col justify-end gap-6 px-4 pt-32 pb-28 sm:px-8">
+      <div className="relative z-10 mx-auto flex min-h-[92svh] w-full max-w-5xl flex-col justify-end gap-6 px-4 pt-24 pb-28 sm:px-8">
         <Reveal direction="up" distance={12} delay={0.05}>
           <span className="text-caption text-lime tracking-[0.2em] uppercase">
             Accra–Tema Motorway and Extensions Project
@@ -78,7 +98,17 @@ export function Hero() {
           <dl className="flex flex-wrap gap-x-10 gap-y-4 border-t border-rule pt-6">
             {heroMetadata.map((item) => (
               <div key={item.label} className="flex flex-col gap-1">
-                <dt className="figure text-heading-4 text-ink-1">{item.value}</dt>
+                <dt className="flex items-baseline gap-1.5">
+                  <AnimatedFigure
+                    value={item.value}
+                    decimals={item.decimals}
+                    suffix={item.suffix}
+                    signal={item.signal}
+                    trigger="load"
+                    className="text-heading-3"
+                  />
+                  {item.unit && <span className="text-small text-ink-2">{item.unit}</span>}
+                </dt>
                 <dd className="text-caption text-ink-2 tracking-wide uppercase">{item.label}</dd>
               </div>
             ))}
