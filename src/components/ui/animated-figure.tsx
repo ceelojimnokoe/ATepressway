@@ -78,7 +78,7 @@ export function AnimatedFigure({
   }, [inView, reducedMotion, value]);
 
   return (
-    <span ref={ref} className={cn("figure", signal ? "text-lime" : "text-ink-1", className)}>
+    <span ref={ref} className={cn("figure", signal ? "text-accent" : "text-fg", className)}>
       {prefix}
       {formatValue(display, decimals, separator)}
       {suffix}

@@ -43,7 +43,7 @@ const faqs: readonly Faq[] = [
         <ul className="mt-2 flex flex-col gap-1">
           {sections.map((s) => (
             <li key={s.id}>
-              <span className="text-ink-1">{s.label}</span> — {s.name} ({s.road}), {s.lengthKm} km,{" "}
+              <span className="text-fg">{s.label}</span> — {s.name} ({s.road}), {s.lengthKm} km,{" "}
               {s.from} to {s.to}.
             </li>
           ))}
@@ -198,30 +198,30 @@ const faqs: readonly Faq[] = [
  */
 export function FaqSection() {
   return (
-    <section className="border-b border-rule bg-void">
+    <section className="border-b border-hairline bg-surface">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
         <div className="flex flex-col gap-3">
-          <h2 className="text-heading-3 text-ink-1">Frequently asked questions</h2>
-          <p className="max-w-2xl text-body text-ink-2">
+          <h2 className="text-heading-3 text-fg">Frequently asked questions</h2>
+          <p className="max-w-2xl text-body text-fg-muted">
             Answers drawn from the project record. Where something has not been published, the
             answer says so.
           </p>
         </div>
 
-        <ul className="flex flex-col border-t border-rule">
+        <ul className="flex flex-col border-t border-hairline">
           {faqs.map((faq) => (
-            <li key={faq.id} className="border-b border-rule">
+            <li key={faq.id} className="border-b border-hairline">
               <details className="group">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-body text-ink-1 transition-colors duration-200 ease-out hover:text-lime focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 text-body text-fg transition-colors duration-200 ease-out hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
                   <span>{faq.question}</span>
                   <span
                     aria-hidden="true"
-                    className="shrink-0 text-ink-3 transition-transform duration-200 ease-out group-open:rotate-45"
+                    className="shrink-0 text-fg-faint transition-transform duration-200 ease-out group-open:rotate-45"
                   >
                     +
                   </span>
                 </summary>
-                <div className="max-w-3xl pb-6 text-small text-ink-2">{faq.answer}</div>
+                <div className="max-w-3xl pb-6 text-small text-fg-muted">{faq.answer}</div>
               </details>
             </li>
           ))}

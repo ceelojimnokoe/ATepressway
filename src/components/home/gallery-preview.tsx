@@ -22,15 +22,15 @@ const previews = [
  */
 export function GalleryPreview() {
   return (
-    <section className="border-b border-rule bg-void">
+    <section className="border-b border-hairline bg-surface">
       <div className="mx-auto w-full max-w-5xl px-4 py-24 sm:px-8">
         <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-4">
-            <span className="figure text-caption text-lime tracking-[0.2em] uppercase">06 — Gallery</span>
+            <span className="figure text-caption text-accent tracking-[0.2em] uppercase">06 — Gallery</span>
             <TextReveal
               as="h2"
               text="The works in pictures"
-              className="text-heading-3 text-ink-1 sm:text-heading-2"
+              className="text-heading-3 text-fg sm:text-heading-2"
             />
           </div>
           <Reveal direction="up" distance={12}>
@@ -41,14 +41,14 @@ export function GalleryPreview() {
         </div>
 
         <figure className="flex flex-col gap-3">
-          <div className="relative aspect-[16/9] w-full overflow-hidden bg-sunk sm:aspect-[21/9]">
+          <div className="relative aspect-[16/9] w-full overflow-hidden bg-surface-sunk sm:aspect-[21/9]">
             <Parallax distance={36} className="absolute inset-x-0 -top-[8%] h-[116%]">
               <Image src={feature.src} alt={feature.alt} fill sizes="100vw" loading="lazy" className="object-cover" />
             </Parallax>
           </div>
           <figcaption className="flex items-baseline justify-between gap-4">
-            <span className="text-small text-ink-1">Section 1 corridor under construction</span>
-            <span className="text-caption text-ink-3 tracking-wide uppercase">Construction</span>
+            <span className="text-small text-fg">Section 1 corridor under construction</span>
+            <span className="text-caption text-fg-faint tracking-wide uppercase">Construction</span>
           </figcaption>
         </figure>
 
@@ -65,8 +65,8 @@ export function GalleryPreview() {
                   delay={i * 0.05}
                 />
                 <figcaption className="flex items-baseline justify-between gap-3">
-                  <span className="text-small text-ink-1">{item.caption}</span>
-                  <span className="text-caption text-ink-3 tracking-wide uppercase">{item.type}</span>
+                  <span className="text-small text-fg">{item.caption}</span>
+                  <span className="text-caption text-fg-faint tracking-wide uppercase">{item.type}</span>
                 </figcaption>
               </figure>
             );

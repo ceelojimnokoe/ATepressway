@@ -20,13 +20,13 @@ export function DownloadSummaryButton() {
         type="button"
         aria-disabled="true"
         aria-describedby="progress-pdf-note"
-        className="inline-flex w-fit cursor-not-allowed items-center gap-3 border border-rule bg-transparent px-5 py-3 text-caption tracking-wide text-ink-3 uppercase focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+        className="inline-flex w-fit cursor-not-allowed items-center gap-3 border border-hairline bg-transparent px-5 py-3 text-caption tracking-wide text-fg-faint uppercase focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         <span aria-hidden="true">↓</span>
         <span>Download progress summary (PDF)</span>
-        <span className="border border-rule px-2 py-0.5 text-ink-3">Coming soon</span>
+        <span className="border border-hairline px-2 py-0.5 text-fg-faint">Coming soon</span>
       </button>
-      <p id="progress-pdf-note" className="max-w-md text-caption text-ink-3">
+      <p id="progress-pdf-note" className="max-w-md text-caption text-fg-faint">
         The downloadable summary is being prepared and will be published here once the report is
         cleared for release.
       </p>

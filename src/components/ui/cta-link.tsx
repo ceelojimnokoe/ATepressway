@@ -22,10 +22,10 @@ export function CtaLink({ href, children, variant = "primary", className }: CtaL
       href={href}
       className={cn(
         "group inline-flex items-center gap-2 border px-6 py-3 text-small tracking-wide uppercase transition-colors duration-200 ease-out",
-        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime",
+        "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
         variant === "primary"
-          ? "border-lime bg-lime text-void hover:bg-transparent hover:text-lime"
-          : "border-rule text-ink-1 hover:border-lime hover:text-lime",
+          ? "border-accent bg-lime text-void hover:bg-transparent hover:text-accent"
+          : "border-hairline text-fg hover:border-accent hover:text-accent",
         className,
       )}
     >

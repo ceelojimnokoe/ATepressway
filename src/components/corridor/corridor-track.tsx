@@ -16,11 +16,11 @@ function SegmentFill({ segment }: SegmentFillProps) {
     // Unconfirmed: render the muted "upcoming" treatment only. No lime,
     // no guessed percentage — see corridor-readout.tsx for the explicit
     // "pending confirmation" disclosure that pairs with this.
-    return <div className="h-full w-full bg-rule" />;
+    return <div className="h-full w-full bg-hairline" />;
   }
 
   return (
-    <div className="h-full w-full bg-rule">
+    <div data-theme="dark" className="h-full w-full bg-surface-sunk">
       <motion.div
         initial={barFill.hidden}
         whileInView={barFill.visible(fraction)}
@@ -65,8 +65,8 @@ export function CorridorTrack({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-baseline justify-between">
-        <span className="text-caption text-ink-2">{first?.displayFrom}</span>
-        <span className="text-caption text-ink-2">{last?.displayTo}</span>
+        <span className="text-caption text-fg-muted">{first?.displayFrom}</span>
+        <span className="text-caption text-fg-muted">{last?.displayTo}</span>
       </div>
 
       <div
@@ -89,13 +89,13 @@ export function CorridorTrack({
           initial={trackDraw.hidden}
           whileInView={trackDraw.visible}
           viewport={viewport}
-          className="absolute inset-0 flex origin-left bg-rule"
+          className="absolute inset-0 flex origin-left bg-hairline"
         >
           {segments.map((segment, index) => (
             <div
               key={segment.section.id}
               style={{ flexGrow: segment.section.lengthKm, flexBasis: 0 }}
-              className={cn("relative h-full", index > 0 && "border-l border-void")}
+              className={cn("relative h-full", index > 0 && "border-l border-hairline")}
             >
               <SegmentFill segment={segment} />
             </div>
@@ -125,9 +125,9 @@ export function CorridorTrack({
             >
               <div
                 className={cn(
-                  "rounded-full border-2 border-lime bg-void",
+                  "rounded-full border-2 border-accent bg-surface",
                   "group-hover:bg-lime group-active:bg-lime",
-                  "group-focus-visible:bg-lime group-focus-visible:ring-2 group-focus-visible:ring-lime group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-void",
+                  "group-focus-visible:bg-lime group-focus-visible:ring-2 group-focus-visible:ring-accent group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-void",
                   compact ? "h-4 w-4" : "h-5 w-5",
                 )}
               />
@@ -137,7 +137,7 @@ export function CorridorTrack({
       </div>
 
       {!compact && (
-        <div className="flex text-caption text-ink-3">
+        <div className="flex text-caption text-fg-faint">
           {segments.map((segment) => (
             <span
               key={segment.section.id}

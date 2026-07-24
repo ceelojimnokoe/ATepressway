@@ -13,9 +13,9 @@ export function StakeholderCard({ stakeholder }: { readonly stakeholder: Stakeho
   const logo = stakeholder.logo ? mediaRegistry[stakeholder.logo] : null;
 
   return (
-    <div className="flex h-full flex-col gap-4 border border-rule bg-raised p-6">
-      <span className="text-caption text-ink-3 tracking-wide uppercase">{stakeholder.role}</span>
-      <h3 className="text-heading-4 text-ink-1">{stakeholder.name}</h3>
+    <div className="flex h-full flex-col gap-4 border border-hairline bg-surface-raised p-6">
+      <span className="text-caption text-fg-faint tracking-wide uppercase">{stakeholder.role}</span>
+      <h3 className="text-heading-4 text-fg">{stakeholder.name}</h3>
       {logo && (
         <div className="flex h-14 w-fit max-w-full items-center bg-paper px-4">
           <Image
@@ -27,7 +27,7 @@ export function StakeholderCard({ stakeholder }: { readonly stakeholder: Stakeho
           />
         </div>
       )}
-      <p className="text-small text-ink-2">{stakeholder.gloss}</p>
+      <p className="text-small text-fg-muted">{stakeholder.gloss}</p>
     </div>
   );
 }

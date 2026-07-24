@@ -18,7 +18,10 @@ interface PageHeroProps {
 export function PageHero({ media, title, subtitle, priority = true }: PageHeroProps) {
   const asset = mediaRegistry[media];
   return (
-    <section className="relative isolate flex min-h-[19rem] flex-col justify-end overflow-hidden border-b border-rule sm:min-h-[24rem]">
+    <section
+      data-theme="dark"
+      className="relative isolate flex min-h-[19rem] flex-col justify-end overflow-hidden border-b border-hairline bg-surface sm:min-h-[24rem]"
+    >
       <Image
         src={asset.src}
         alt={asset.alt}
@@ -36,8 +39,8 @@ export function PageHero({ media, title, subtitle, priority = true }: PageHeroPr
         className="absolute inset-0 -z-10 bg-gradient-to-t from-void/88 via-void/50 to-void/25"
       />
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-3 px-4 pt-16 pb-12 sm:px-8">
-        <h1 className="text-heading-2 text-ink-1 sm:text-heading-1">{title}</h1>
-        {subtitle && <div className="max-w-2xl text-body text-ink-2">{subtitle}</div>}
+        <h1 className="text-heading-2 text-fg sm:text-heading-1">{title}</h1>
+        {subtitle && <div className="max-w-2xl text-body text-fg-muted">{subtitle}</div>}
       </div>
     </section>
   );

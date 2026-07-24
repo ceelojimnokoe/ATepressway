@@ -34,18 +34,18 @@ const slots = [
 
 export function DesignPreview() {
   return (
-    <section className="border-b border-rule bg-raised">
+    <section className="border-b border-hairline bg-surface-raised">
       <div className="mx-auto w-full max-w-5xl px-4 py-24 sm:px-8">
         <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-4">
-            <span className="figure text-caption text-lime tracking-[0.2em] uppercase">05 — Design</span>
+            <span className="figure text-caption text-accent tracking-[0.2em] uppercase">05 — Design</span>
             <TextReveal
               as="h2"
               text="A ten-lane corridor, built in two surfaces"
-              className="max-w-3xl text-heading-3 text-ink-1 sm:text-heading-2"
+              className="max-w-3xl text-heading-3 text-fg sm:text-heading-2"
             />
             <Reveal direction="up" distance={16} delay={0.1}>
-              <p className="max-w-2xl text-lead text-ink-2">
+              <p className="max-w-2xl text-lead text-fg-muted">
                 The rebuilt corridor carries {totalLanes} lanes in total:{" "}
                 {laneConfiguration.freeway.lanes} lanes of {laneConfiguration.freeway.surface} alongside{" "}
                 {laneConfiguration.urban.lanes} lanes of {laneConfiguration.urban.surface}. The
@@ -69,12 +69,12 @@ export function DesignPreview() {
                   src={asset.src}
                   alt={asset.alt}
                   sizes="(min-width: 640px) 33vw, 100vw"
-                  className="aspect-[4/3] w-full border border-rule"
+                  className="aspect-[16/10] w-full border border-hairline"
                   delay={i * 0.08}
                 />
                 <figcaption className="flex items-baseline justify-between gap-3">
-                  <span className="text-small text-ink-2">{slot.caption}</span>
-                  <span className="text-caption text-ink-3 tracking-wide uppercase">{slot.kind}</span>
+                  <span className="text-small text-fg-muted">{slot.caption}</span>
+                  <span className="text-caption text-fg-faint tracking-wide uppercase">{slot.kind}</span>
                 </figcaption>
               </figure>
             );

@@ -15,8 +15,8 @@ export default function StakeholdersPage() {
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 pt-16 sm:px-8">
         {/* Steps down on mobile, matching PageHero — "Stakeholders" set in the
             display face overflows a 360px viewport at the full heading-1 size. */}
-        <h1 className="text-heading-2 text-ink-1 sm:text-heading-1">Project Stakeholders</h1>
-        <p className="max-w-2xl text-body text-ink-2">
+        <h1 className="text-heading-2 text-fg sm:text-heading-1">Project Stakeholders</h1>
+        <p className="max-w-2xl text-body text-fg-muted">
           The delivery structure for the Accra–Tema Motorway and Extensions
           Project, in order of accountability from Employer to EPC contractor.
         </p>
@@ -30,9 +30,9 @@ export default function StakeholdersPage() {
         </ViewportReveal>
       </section>
 
-      <section className="border-t border-rule bg-raised">
+      <section className="border-t border-hairline bg-surface-raised">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-ink-1">Project Team</h2>
+          <h2 className="text-heading-4 text-fg">Project Team</h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {team.map((member) => (
               <TeamMemberCard key={member.name} member={member} />
@@ -41,11 +41,11 @@ export default function StakeholdersPage() {
         </ViewportReveal>
       </section>
 
-      <section className="border-t border-rule bg-void">
+      <section className="border-t border-hairline bg-surface">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
           <div className="flex flex-col gap-2">
-            <h2 className="text-heading-4 text-ink-1">Board of Directors</h2>
-            <p className="max-w-2xl text-small text-ink-3">
+            <h2 className="text-heading-4 text-fg">Board of Directors</h2>
+            <p className="max-w-2xl text-small text-fg-faint">
               Seats are reserved below. Names, positions and profiles are provisional and will be
               published once confirmed by the stakeholders.
             </p>

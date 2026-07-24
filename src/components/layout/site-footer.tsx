@@ -19,7 +19,7 @@ export function SiteFooter() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-rule">
+    <footer data-theme="dark" className="border-t border-hairline bg-surface text-fg">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-12 sm:px-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="flex max-w-sm flex-col gap-2">
@@ -33,7 +33,7 @@ export function SiteFooter() {
               sizes="96px"
               className="h-8 w-auto object-contain"
             />
-            <p className="text-small text-ink-2">{organization.description}</p>
+            <p className="text-small text-fg-muted">{organization.description}</p>
           </div>
 
           <nav aria-label="Footer">
@@ -50,16 +50,16 @@ export function SiteFooter() {
         </div>
 
         {SOCIAL_LINKS.length > 0 && (
-          <ul className="flex gap-4 border-t border-rule pt-6">
+          <ul className="flex gap-4 border-t border-hairline pt-6">
             {SOCIAL_LINKS.map((entry) => (
-              <li key={entry.key} className="text-small text-ink-2">
+              <li key={entry.key} className="text-small text-fg-muted">
                 {String(entry.value)}
               </li>
             ))}
           </ul>
         )}
 
-        <div className="flex flex-col gap-2 border-t border-rule pt-6 text-caption text-ink-3">
+        <div className="flex flex-col gap-2 border-t border-hairline pt-6 text-caption text-fg-faint">
           <PlaceholderNotice value={contact.email}>{(value) => <span>{value}</span>}</PlaceholderNotice>
           <span>
             © {year} {organization.name}

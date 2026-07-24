@@ -1,41 +1,49 @@
 @import "tailwindcss";
 
 /*
- * Design tokens for the ATEL site. Components consume these via Tailwind
- * utilities (bg-void, text-ink-2, ease-out, duration-base, ...) — never
- * raw hex or ad-hoc values. See CLAUDE.md non-negotiables.
+ * Design primitives — the raw palette. Components DO NOT use these
+ * directly for surfaces/text; they use the semantic, theme-aware tokens
+ * below (bg-surface, text-fg, border-hairline, text-accent). These raw
+ * tokens are (a) referenced by the light/dark scope blocks in @layer base,
+ * and (b) used directly only where a colour must be FIXED regardless of
+ * theme — bg-lime (the brand fill), text-void (dark text on a lime fill),
+ * bg-paper (a light plate that logos sit on), and the dark hero gradient
+ * overlays (from-void / via-void / to-void).
  */
 @theme {
-  /* ---- Surfaces: dark (default) ---- */
+  /* ---- Dark surfaces ---- */
   --color-void: #030303;
   --color-raised: #121212;
   --color-sunk: #000000;
   --color-rule: #232323;
 
-  /* ---- Surfaces: light paper ---- */
+  /* ---- Light (paper) surfaces ---- */
   --color-paper: #f6f5f1;
   --color-paper-raised: #ffffff;
   --color-paper-sunk: #eceae3;
   --color-paper-rule: #dedbd1;
 
-  /* ---- Ink: text on dark surfaces ---- */
+  /* ---- Ink on dark surfaces ---- */
   --color-ink-1: #f5f5f3;
   --color-ink-2: #a8a8a3;
-  /* Tertiary text. Lightened from #6b6b67 to clear WCAG AA (4.5:1) for
-     small text on the darkest surface it appears on (raised #121212):
-     #80807c gives ~4.7:1 on raised, ~5.2:1 on void, ~5.3:1 on sunk. */
   --color-ink-3: #80807c;
 
-  /* ---- Ink: text on light/paper surfaces ---- */
+  /* ---- Ink on light surfaces ---- */
   --color-paper-ink-1: #0a0a08;
   --color-paper-ink-2: #4a4a45;
-  --color-paper-ink-3: #7a7a73;
+  /* Faint tier on paper. Darkened from #7a7a73 to #6a6a63 so small text
+     clears WCAG AA (4.5:1) on the paper surface it sits on — the light
+     theme is now the default, so this tier carries real body text. */
+  --color-paper-ink-3: #6a6a63;
 
   /* ---- Signal (lime) ---- */
-  /* Lime on black: 15.2:1 — use freely on dark surfaces. */
+  /* Lime on black: 15.2:1 — legal as text/icon only on dark surfaces.
+     Lime as a solid FILL is legal on any surface (a lime chip/button with
+     near-black text on it reads ~15:1 either way). */
   --color-lime: #c8f31d;
-  /* Lime on light: 1.2:1, fails WCAG. signal-ink is the legible
-     stand-in for signal meaning on paper surfaces (~5.4:1 on paper). */
+  /* Lime fails as text on light (1.2:1). signal-ink is the legible
+     stand-in for signal meaning on light surfaces (~5.4:1 on paper) and is
+     what `text-accent` resolves to under the light (default) theme. */
   --color-signal-ink: #5c6b00;
 
   /* ---- Radius: near-zero everywhere; full reserved for dots/pills ---- */
@@ -47,24 +55,27 @@
   --radius-lg: 4px;
   --radius-full: 9999px;
 
-  /* ---- Type scale: caption -> figure ---- */
-  --text-caption: 0.75rem;
+  /* ---- Type scale: caption -> figure ----
+     Stepped up site-wide (client: "bigger, bolder"). The three display
+     levels are fluid clamps so they read large on desktop without
+     overflowing a 360px viewport at the top end. */
+  --text-caption: 0.8125rem;
   --text-caption--line-height: 1.35;
-  --text-small: 0.8125rem;
+  --text-small: 0.9375rem;
   --text-small--line-height: 1.5;
-  --text-body: 1rem;
+  --text-body: 1.0625rem;
   --text-body--line-height: 1.6;
-  --text-lead: 1.125rem;
-  --text-lead--line-height: 1.6;
-  --text-heading-4: 1.5rem;
-  --text-heading-4--line-height: 1.3;
-  --text-heading-3: 2rem;
-  --text-heading-3--line-height: 1.2;
-  --text-heading-2: 2.75rem;
-  --text-heading-2--line-height: 1.15;
-  --text-heading-1: 3.5rem;
-  --text-heading-1--line-height: 1.05;
-  --text-figure: clamp(3.625rem, 5vw + 2.5rem, 6.5rem);
+  --text-lead: 1.25rem;
+  --text-lead--line-height: 1.55;
+  --text-heading-4: 1.75rem;
+  --text-heading-4--line-height: 1.25;
+  --text-heading-3: clamp(1.75rem, 2vw + 1.1rem, 2.5rem);
+  --text-heading-3--line-height: 1.15;
+  --text-heading-2: clamp(2rem, 4vw + 0.75rem, 3.375rem);
+  --text-heading-2--line-height: 1.1;
+  --text-heading-1: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+  --text-heading-1--line-height: 1.03;
+  --text-figure: clamp(4rem, 6vw + 2.5rem, 8rem);
   --text-figure--line-height: 1;
 
   /* ---- Motion: easings & durations (mirrors src/lib/motion.ts) ---- */
@@ -78,18 +89,28 @@
 }
 
 /*
- * Typefaces: next/font (src/app/layout.tsx) generates the actual font-face
- * declarations and exposes them as --font-general-sans / --font-clash-display
- * / --font-geist-mono / --font-instrument-serif on <html>. `inline` because
- * these theme values reference other CSS variables — Tailwind needs the
- * inline variant to resolve var()-in-var() correctly when generating
- * utilities.
+ * Semantic, THEME-AWARE tokens — this is what components use for surfaces,
+ * text, borders and emphasis. Each resolves through a runtime var (--surface,
+ * --fg, ...) that the light (default) and dark scopes below reassign. The
+ * `inline` variant is REQUIRED: it inlines `var(--surface)` into each utility
+ * so the value re-resolves against an element's own cascade — that's what
+ * makes `bg-surface` flip inside a `data-theme="dark"` subtree. Without
+ * `inline` the indirection would resolve once at :root and never flip.
  *
- * Roles: General Sans for body/UI, Clash Display for h1–h3 and the
- * oversized hero figure, Geist Mono unchanged for tabular numbers, and
- * Instrument Serif unchanged for the single serif moment.
+ * Typefaces are also declared here (they reference other CSS vars): General
+ * Sans for body/UI, Clash Display for h1–h3 + the hero figure, Geist Mono
+ * for tabular numbers, Instrument Serif for the single serif moment.
  */
 @theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunk: var(--surface-sunk);
+  --color-hairline: var(--hairline);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-faint: var(--fg-faint);
+  --color-accent: var(--accent);
+
   --font-sans: var(--font-general-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-display: var(--font-clash-display), var(--font-general-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
@@ -97,74 +118,56 @@
 }
 
 @layer base {
-  html {
+  /*
+   * LIGHT is the default theme (client reversal, 2026). The paper surfaces
+   * and dark ink are the norm site-wide; the dark palette is now reserved
+   * for sections explicitly marked data-theme="dark" — the hero, the footer
+   * and the closing-CTA band.
+   */
+  :root {
+    --surface: var(--color-paper);
+    --surface-raised: var(--color-paper-raised);
+    --surface-sunk: var(--color-paper-sunk);
+    --hairline: var(--color-paper-rule);
+    --fg: var(--color-paper-ink-1);
+    --fg-muted: var(--color-paper-ink-2);
+    --fg-faint: var(--color-paper-ink-3);
+    /* Emphasis text/icon: the legible lime stand-in on light. */
+    --accent: var(--color-signal-ink);
+    color-scheme: light;
+  }
+
+  [data-theme="dark"] {
+    --surface: var(--color-void);
+    --surface-raised: var(--color-raised);
+    --surface-sunk: var(--color-sunk);
+    --hairline: var(--color-rule);
+    --fg: var(--color-ink-1);
+    --fg-muted: var(--color-ink-2);
+    --fg-faint: var(--color-ink-3);
+    /* On dark, real lime is legal as text/icon. */
+    --accent: var(--color-lime);
     color-scheme: dark;
   }
 
   body {
-    background-color: var(--color-void);
-    color: var(--color-ink-1);
+    background-color: var(--color-surface);
+    color: var(--color-fg);
     font-family: var(--font-sans);
   }
 
   /*
-   * Display face for the top three heading levels. Tailwind's preflight
-   * already resets heading font-weight to inherit, so these render at the
-   * inherited weight — Clash Display carries its own display weight and
-   * must never be font-bold'ed on top of that.
+   * The three display heading levels: Clash Display at Semibold. Clash
+   * Display ships a real weight axis (200–700), so this is a genuine 600
+   * cut selected from the variable font — NOT a synthetic bold. Do not add
+   * Tailwind `font-bold` on top; set weight here or lean on size.
    */
   h1,
   h2,
   h3 {
     font-family: var(--font-display);
+    font-weight: 600;
   }
-}
-
-/*
- * Right-docked navigation rail.
- *
- * `--rail-collapsed` is the slim strip permanently visible at every
- * breakpoint; `--rail-expanded` is the panel's true, always-rendered
- * width. Page content is padded by --rail-collapsed so nothing ever
- * renders underneath the strip.
- */
-:root {
-  --rail-collapsed: 56px;
-  --rail-expanded: 100vw;
-}
-
-@media (min-width: 640px) {
-  :root {
-    --rail-collapsed: 64px;
-    --rail-expanded: 380px;
-  }
-}
-
-@media (min-width: 1024px) {
-  :root {
-    --rail-expanded: 420px;
-  }
-}
-
-/*
- * The width-grow, done with transform only.
- *
- * The panel is always laid out at its full --rail-expanded width inside a
- * clipping parent of the same width. Collapsed, it is pushed right by
- * (expanded - collapsed) so all but a --rail-collapsed sliver falls
- * outside the clip; expanded, it returns to translateX(0) and fills the
- * clip. No width/left/right value is ever transitioned, so this stays on
- * the compositor. The global prefers-reduced-motion hard-stop collapses
- * the transition to instant.
- */
-.rail-panel {
-  transform: translateX(calc(var(--rail-expanded) - var(--rail-collapsed)));
-  transition: transform 420ms var(--ease-standard);
-  will-change: transform;
-}
-
-.rail-panel[data-open="true"] {
-  transform: translateX(0);
 }
 
 /* Hero-slider Ken Burns: a slow, subtle push. Applied only to the active
@@ -287,15 +290,16 @@
       transform 460ms var(--ease-out) var(--reveal-delay, 0s);
   }
 
-  /* Masked image reveal (ImageReveal): a void panel wipes up while the
-     image settles from a slight zoom. Without arming there is no panel,
-     so the image is simply shown. */
+  /* Masked image reveal (ImageReveal): a panel matching the local surface
+     wipes up while the image settles from a slight zoom. Without arming
+     there is no panel, so the image is simply shown. Uses --surface so the
+     wipe matches whichever theme the section is in. */
   [data-reveal-cover].reveal-armed::after {
     content: "";
     position: absolute;
     inset: 0;
     z-index: 2;
-    background: var(--color-void);
+    background: var(--surface);
     transform-origin: bottom;
     transform: scaleY(1);
   }

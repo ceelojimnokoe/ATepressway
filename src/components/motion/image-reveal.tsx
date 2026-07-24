@@ -30,7 +30,7 @@ export function ImageReveal({ src, alt, sizes = "100vw", priority, className, de
     <div
       ref={ref}
       data-reveal-cover
-      className={cn("relative overflow-hidden bg-sunk", className)}
+      className={cn("relative overflow-hidden bg-surface-sunk", className)}
       style={delay ? ({ "--reveal-delay": `${delay}s` } as CSSProperties) : undefined}
     >
       <div data-reveal-zoom className="h-full w-full">

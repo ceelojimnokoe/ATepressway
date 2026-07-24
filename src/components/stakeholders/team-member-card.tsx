@@ -8,9 +8,9 @@ import type { TeamMember } from "@/content/project";
  */
 export function TeamMemberCard({ member }: { readonly member: TeamMember }) {
   return (
-    <div className="flex h-full flex-col gap-4 border border-rule bg-raised p-6">
+    <div className="flex h-full flex-col gap-4 border border-hairline bg-surface-raised p-6">
       <div className="flex items-center gap-4">
-        <div className="relative h-16 w-16 shrink-0 overflow-hidden border border-rule bg-sunk">
+        <div className="relative h-16 w-16 shrink-0 overflow-hidden border border-hairline bg-surface-sunk">
           {member.photo ? (
             <Image
               src={member.photo.src}
@@ -22,28 +22,28 @@ export function TeamMemberCard({ member }: { readonly member: TeamMember }) {
           ) : (
             <span
               aria-hidden="true"
-              className="figure flex h-full w-full items-center justify-center text-heading-4 text-ink-2"
+              className="figure flex h-full w-full items-center justify-center text-heading-4 text-fg-muted"
             >
               {member.initials}
             </span>
           )}
         </div>
         <div className="flex flex-col">
-          <span className="text-body text-ink-1">{member.name}</span>
-          <span className="text-small text-ink-2">{member.title}</span>
+          <span className="text-body text-fg">{member.name}</span>
+          <span className="text-small text-fg-muted">{member.title}</span>
         </div>
       </div>
 
-      <p className="text-small text-ink-2">{member.bio}</p>
+      <p className="text-small text-fg-muted">{member.bio}</p>
 
-      <details className="border-t border-rule pt-3">
-        <summary className="cursor-pointer list-none text-small text-ink-1 underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime">
+      <details className="border-t border-hairline pt-3">
+        <summary className="cursor-pointer list-none text-small text-fg underline underline-offset-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">
           View profile
         </summary>
         <ul className="mt-3 flex flex-col gap-1.5">
           {member.credentials.map((item) => (
-            <li key={item} className="flex gap-2 text-small text-ink-2">
-              <span aria-hidden="true" className="text-ink-3">
+            <li key={item} className="flex gap-2 text-small text-fg-muted">
+              <span aria-hidden="true" className="text-fg-faint">
                 —
               </span>
               <span>{item}</span>

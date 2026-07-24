@@ -24,7 +24,7 @@ export function DesignSectionCard({ section, reverse, chainage, percent }: Desig
   return (
     <div className="grid gap-6 md:grid-cols-2 md:items-center md:gap-10">
       <figure className={cn("flex flex-col gap-3", reverse && "md:order-2")}>
-        <div className="relative aspect-[16/9] w-full overflow-hidden border border-rule bg-sunk">
+        <div className="relative aspect-[16/9] w-full overflow-hidden border border-hairline bg-surface-sunk">
           <Image
             src={asset.src}
             alt={asset.alt}
@@ -34,22 +34,22 @@ export function DesignSectionCard({ section, reverse, chainage, percent }: Desig
             className="object-cover"
           />
         </div>
-        {isProposedVisual && <figcaption className="text-caption text-ink-3">{DESIGN_DISCLAIMER}</figcaption>}
+        {isProposedVisual && <figcaption className="text-caption text-fg-faint">{DESIGN_DISCLAIMER}</figcaption>}
       </figure>
 
       <div className={cn("flex flex-col gap-3", reverse && "md:order-1")}>
-        <span className="w-fit border border-rule px-2 py-1 text-caption text-ink-3 tracking-wide uppercase">
+        <span className="w-fit border border-hairline px-2 py-1 text-caption text-fg-faint tracking-wide uppercase">
           {section.status}
         </span>
-        <h3 className="text-heading-3 text-ink-1">{section.title}</h3>
-        {chainage && <span className="figure text-small text-ink-3">{chainage}</span>}
+        <h3 className="text-heading-3 text-fg">{section.title}</h3>
+        {chainage && <span className="figure text-small text-fg-faint">{chainage}</span>}
         {percent != null && (
           <div className="flex items-baseline gap-2">
-            <Figure value={`${percent}%`} className="text-heading-4 text-lime" />
-            <span className="text-small text-ink-3">complete · May 2026</span>
+            <Figure value={`${percent}%`} className="text-heading-4 text-accent" />
+            <span className="text-small text-fg-faint">complete · May 2026</span>
           </div>
         )}
-        <p className="text-body text-ink-2">{section.description}</p>
+        <p className="text-body text-fg-muted">{section.description}</p>
       </div>
     </div>
   );

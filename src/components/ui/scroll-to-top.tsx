@@ -30,8 +30,7 @@ export function ScrollToTop() {
 
   return (
     <div
-      className="pointer-events-none fixed bottom-6 left-0 z-40 flex justify-center"
-      style={{ right: "var(--rail-collapsed)" }}
+      className="pointer-events-none fixed inset-x-0 bottom-6 z-40 flex justify-center"
     >
       <AnimatePresence>
         {visible && (
@@ -43,7 +42,7 @@ export function ScrollToTop() {
             initial="hidden"
             animate="visible"
             exit="hidden"
-            className="pointer-events-auto inline-flex items-center gap-2 border border-rule bg-void/80 px-4 py-2.5 text-caption tracking-wide text-ink-1 uppercase backdrop-blur-md transition-colors duration-200 ease-out hover:border-lime/50 hover:text-lime focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime"
+            className="pointer-events-auto inline-flex items-center gap-2 border border-hairline bg-surface/80 px-4 py-2.5 text-caption tracking-wide text-fg uppercase backdrop-blur-md transition-colors duration-200 ease-out hover:border-accent/50 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <span aria-hidden="true">↑</span>
             Top

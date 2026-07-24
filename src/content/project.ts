@@ -61,6 +61,7 @@ const fundingAgency = {
   name: "Ghana Infrastructure Investment Fund",
   role: "Funding Agency",
   gloss: "The Ghana Infrastructure Investment Fund provides the project's principal infrastructure financing support.",
+  logo: "logoGiif",
 } as const satisfies Stakeholder;
 
 const employersRepresentative = {

@@ -39,13 +39,13 @@ export default async function GalleryPage({
         subtitle="Construction photography and proposed designs from along the Accra–Tema corridor, by category."
       />
 
-      <section className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
+      <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-16 sm:px-8">
         <GalleryFilter active={active} />
 
         {items.length === 0 ? (
-          <div className="flex flex-col items-start gap-4 border border-dashed border-rule bg-raised px-6 py-16 sm:items-center sm:text-center">
-            <p className="text-body text-ink-1">No images in this category yet.</p>
-            <PageTransitionLink href="/gallery" className="text-small text-ink-1 underline underline-offset-4">
+          <div className="flex flex-col items-start gap-4 border border-dashed border-hairline bg-surface-raised px-6 py-16 sm:items-center sm:text-center">
+            <p className="text-body text-fg">No images in this category yet.</p>
+            <PageTransitionLink href="/gallery" className="text-small text-fg underline underline-offset-4">
               View all images →
             </PageTransitionLink>
           </div>

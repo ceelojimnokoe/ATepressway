@@ -57,16 +57,20 @@ Emil Kowalski. Restraint over decoration. **Credibility is the product.** If a d
 - **Server Components by default.** Only reach for Client Components when interactivity requires it.
 - **No new dependencies without asking.**
 
+## Theme: light-first (client reversal, 2026)
+
+**The site is light-first.** Paper surfaces + dark ink are the default site-wide. The dark palette (`void`/`raised`/`sunk`) is now the **exception, reserved for a few sections**: the hero, the footer, and the closing-CTA band. Earlier instructions describing a dark-first default are **superseded** — do not reintroduce dark-first.
+
+Mechanically: components use the **semantic, theme-aware tokens** — `bg-surface` / `bg-surface-raised` / `bg-surface-sunk`, `border-hairline`, `text-fg` / `text-fg-muted` / `text-fg-faint`, `text-accent` — never the raw palette (`bg-void`, `text-ink-1`, …) directly. A dark section is created by putting **`data-theme="dark"`** on its wrapper; everything inside re-resolves to the dark palette automatically. See the header comment in `src/styles/globals.css` for the full token map.
+
 ## The lime rule
 
-Brand is **lime `#C8F31D` + black**.
+Brand is **lime `#C8F31D` + black**. The lime rule is unchanged by the light-first flip — only which mode is default changed.
 
-- Lime on black: **15.2:1** contrast — good, use freely on dark surfaces.
-- Lime on light: **1.2:1** contrast — **fails WCAG, never do this.**
-- The site is **dark-first.**
-- Lime is a **signal colour**: the live figure, the active state, the one CTA. It marks the single most important thing on a screen.
-- Lime is **never** a background wash and **never** body text.
-- Where a lime-adjacent signal is needed on a light surface, use the `signal-ink` token (a dark, legible variant of the same hue) instead of lime itself.
+- **Lime as text or icon on a light surface: 1.2:1 — fails WCAG, still banned.** For emphasis text/icons on light, use **`text-accent`** (resolves to the `signal-ink` token, ~5.4:1 on paper). Never lime lettering on paper.
+- **Lime as a solid fill with near-black text on top is fine** — contrast is symmetric, so a lime chip/button/badge with `text-void` reads ~15–16:1 on either theme. This is the primary way to keep the brand signal visible on a light page: filled buttons, active-state chips, progress-bar fills. Give a lime fill a **`border-accent`** edge on light so its boundary is perceivable (lime vs paper is ~1.1:1 — fails 1.4.11 without it), and put lime bar-fills on a **dark groove** (`data-theme="dark"` on the track) so the fill reads against its track.
+- **Lime as text/icon stays legal only inside the dark sections** (hero, footer, closing CTA, image lightbox) — there `text-accent` resolves to real lime.
+- Lime is a **signal colour**: the live figure, the active state, the one CTA. It marks the single most important thing on a screen. Never a background wash, never body text.
 
 ## Verified facts — per the May 2026 MPR, do not alter
 

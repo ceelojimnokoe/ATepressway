@@ -12,9 +12,9 @@ import { easing } from "@/lib/motion";
 export function ScrollCue() {
   const reduced = useReducedMotion();
   return (
-    <div className="flex items-center gap-3 text-caption text-ink-2 tracking-wide uppercase">
+    <div className="flex items-center gap-3 text-caption text-fg-muted tracking-wide uppercase">
       <span>Scroll to explore</span>
-      <span aria-hidden="true" className="relative block h-8 w-px overflow-hidden bg-rule">
+      <span aria-hidden="true" className="relative block h-8 w-px overflow-hidden bg-hairline">
         <motion.span
           className="absolute inset-x-0 top-0 block h-3 bg-lime"
           initial={{ y: -12 }}

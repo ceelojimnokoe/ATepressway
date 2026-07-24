@@ -56,9 +56,9 @@ export function MilestoneTimeline() {
   const milestones = buildMilestones();
 
   return (
-    <section className="border-b border-rule bg-raised">
+    <section className="border-b border-hairline bg-surface-raised">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
-        <h2 className="text-heading-4 text-ink-1">Milestone timeline</h2>
+        <h2 className="text-heading-4 text-fg">Milestone timeline</h2>
 
         <ol className="flex flex-col">
           {milestones.map((milestone, index) => (
@@ -68,7 +68,7 @@ export function MilestoneTimeline() {
                   aria-hidden="true"
                   className={cn(
                     "absolute top-3 left-[5px] h-full w-px",
-                    milestone.state === "upcoming" ? "bg-rule" : "bg-ink-2",
+                    milestone.state === "upcoming" ? "bg-hairline" : "bg-fg-muted",
                   )}
                 />
               )}
@@ -76,20 +76,20 @@ export function MilestoneTimeline() {
                 aria-hidden="true"
                 className={cn(
                   "relative z-10 mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full",
-                  milestone.state === "active" && "bg-lime",
-                  milestone.state === "completed" && "bg-ink-1",
-                  milestone.state === "upcoming" && "border border-rule bg-void",
+                  milestone.state === "active" && "border border-accent bg-lime",
+                  milestone.state === "completed" && "bg-fg",
+                  milestone.state === "upcoming" && "border border-hairline bg-surface",
                 )}
               />
               <div className="flex flex-col gap-1">
                 <div className="flex items-baseline gap-2">
-                  <span className="figure text-small text-ink-2">{milestone.date}</span>
+                  <span className="figure text-small text-fg-muted">{milestone.date}</span>
                   {milestone.state === "active" && (
-                    <span className="text-caption text-lime tracking-wide uppercase">Current</span>
+                    <span className="text-caption text-accent tracking-wide uppercase">Current</span>
                   )}
                 </div>
-                <span className="text-body text-ink-1">{milestone.label}</span>
-                {milestone.detail && <span className="text-caption text-ink-3">{milestone.detail}</span>}
+                <span className="text-body text-fg">{milestone.label}</span>
+                {milestone.detail && <span className="text-caption text-fg-faint">{milestone.detail}</span>}
               </div>
             </li>
           ))}

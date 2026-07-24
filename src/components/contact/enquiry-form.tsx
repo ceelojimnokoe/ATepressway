@@ -4,8 +4,8 @@ import type { FormEvent } from "react";
 import { enquiryTypes } from "@/content/contact-form";
 
 const fieldClassName =
-  "border border-rule bg-raised px-4 py-3 text-body text-ink-1 focus:border-ink-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lime";
-const labelClassName = "text-small text-ink-2";
+  "border border-hairline bg-surface-raised px-4 py-3 text-body text-fg focus:border-fg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+const labelClassName = "text-small text-fg-muted";
 
 /**
  * No backend exists yet. The submit button is genuinely disabled (not
@@ -69,11 +69,11 @@ export function EnquiryForm() {
           type="submit"
           disabled
           aria-disabled="true"
-          className="w-fit cursor-not-allowed border border-rule bg-raised px-6 py-3 text-body text-ink-3"
+          className="w-fit cursor-not-allowed border border-hairline bg-surface-raised px-6 py-3 text-body text-fg-faint"
         >
           Send enquiry
         </button>
-        <p className="text-small text-ink-2">
+        <p className="text-small text-fg-muted">
           This form isn&rsquo;t connected to a submission endpoint yet — nothing entered here is sent
           or saved.
         </p>

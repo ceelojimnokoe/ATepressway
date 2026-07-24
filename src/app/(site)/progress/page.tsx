@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/ui/page-hero";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import { AnimatedFigure } from "@/components/ui/animated-figure";
-import { AnimatedProgressBar } from "@/components/ui/animated-progress-bar";
+import { StructureProgress } from "@/components/progress/structure-progress";
 import { MilestoneTimeline } from "@/components/progress/milestone-timeline";
 import { BulletinFeed } from "@/components/progress/bulletin-feed";
 import { DownloadSummaryButton } from "@/components/progress/download-summary-button";
 import { projectFacts, progress, interchanges } from "@/content/project";
+import { mediaRegistry } from "@/content/media";
+import { structureDesignImages } from "@/content/structure-media";
 import { isPlaceholder } from "@/content/placeholder";
 import {
   REPORT_LABEL,
@@ -38,12 +40,12 @@ const statusFacts = [
 
 function QuantityList({ items }: { readonly items: readonly Quantity[] }) {
   return (
-    <ul className="flex flex-col divide-y divide-rule border-t border-b border-rule">
+    <ul className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
       {items.map((q) => (
         <li key={q.label} className="flex items-baseline justify-between gap-4 py-3">
-          <span className="text-small text-ink-2">{q.label}</span>
-          <span className="figure shrink-0 text-body text-ink-1">
-            {formatThousands(q.value)} <span className="text-small text-ink-3">{q.unit}</span>
+          <span className="text-small text-fg-muted">{q.label}</span>
+          <span className="figure shrink-0 text-body text-fg">
+            {formatThousands(q.value)} <span className="text-small text-fg-faint">{q.unit}</span>
           </span>
         </li>
       ))}
@@ -61,21 +63,21 @@ export default function ProgressPage() {
       />
 
       {/* Overall status */}
-      <section className="border-b border-rule bg-void">
+      <section className="border-b border-hairline bg-surface">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
           <div className="flex flex-col gap-3">
-            <span className="text-caption text-ink-3 tracking-wide uppercase">Overall physical progress</span>
+            <span className="text-caption text-fg-faint tracking-wide uppercase">Overall physical progress</span>
             <AnimatedFigure value={overallPct} suffix="%" signal className="text-figure" />
-            <span className="text-small text-ink-2">As of {isPlaceholder(progress.asOf) ? "May 2026" : progress.asOf} · {progress.reportSeries}</span>
+            <span className="text-small text-fg-muted">As of {isPlaceholder(progress.asOf) ? "May 2026" : progress.asOf} · {progress.reportSeries}</span>
           </div>
 
           <DownloadSummaryButton />
 
-          <dl className="grid grid-cols-1 gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
+          <dl className="grid grid-cols-1 gap-px border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
             {statusFacts.map((fact) => (
-              <div key={fact.label} className="flex flex-col gap-1 bg-void p-5">
-                <dt className="text-caption text-ink-3 tracking-wide uppercase">{fact.label}</dt>
-                <dd className="figure text-body text-ink-1">{fact.value}</dd>
+              <div key={fact.label} className="flex flex-col gap-1 bg-surface p-5">
+                <dt className="text-caption text-fg-faint tracking-wide uppercase">{fact.label}</dt>
+                <dd className="figure text-body text-fg">{fact.value}</dd>
               </div>
             ))}
           </dl>
@@ -83,103 +85,117 @@ export default function ProgressPage() {
       </section>
 
       {/* Interchange progress */}
-      <section className="border-b border-rule bg-raised">
+      <section className="border-b border-hairline bg-surface-raised">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-ink-1">Interchange progress</h2>
+          <div className="flex flex-col gap-1">
+            <h2 className="text-heading-4 text-fg">Interchange progress</h2>
+            <p className="text-small text-fg-muted">Select a structure to view its proposed design.</p>
+          </div>
           <div className="flex flex-col gap-6">
             {interchanges.map((interchange) => {
               const pkg = workPackages.find((w) => w.id === interchange.id);
               if (!pkg) return null;
+              const images = (structureDesignImages[interchange.id] ?? []).map((key) => {
+                const asset = mediaRegistry[key];
+                return {
+                  src: asset.src,
+                  alt: asset.alt,
+                  width: asset.width,
+                  height: asset.height,
+                  caption: `${interchange.name} Interchange — proposed design`,
+                };
+              });
               return (
-                <AnimatedProgressBar
+                <StructureProgress
                   key={interchange.id}
                   label={`${interchange.name} Interchange`}
                   percent={pkg.percentComplete}
                   sublabel={`${interchange.chainageLabel} · ${interchange.mayActivity}`}
+                  images={images}
                 />
               );
             })}
           </div>
-          <p className="text-caption text-ink-3">
+          <p className="text-caption text-fg-faint">
             Interchange progress figures reflect the {REPORT_LABEL.replace("Monthly", "monthly")}.
           </p>
         </ViewportReveal>
       </section>
 
       {/* Works in progress */}
-      <section className="border-b border-rule bg-void">
+      <section className="border-b border-hairline bg-surface">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-ink-1">Works in progress</h2>
+          <h2 className="text-heading-4 text-fg">Works in progress</h2>
 
           <div className="grid gap-10 lg:grid-cols-2">
             {/* Earthworks */}
             <div className="flex flex-col gap-4">
-              <h3 className="text-body text-ink-1">Earthworks</h3>
-              <p className="text-small text-ink-2">{earthworks.summary}</p>
+              <h3 className="text-body text-fg">Earthworks</h3>
+              <p className="text-small text-fg-muted">{earthworks.summary}</p>
               <QuantityList items={earthworks.quantities} />
-              <p className="text-caption text-ink-3">Cumulative quantities recorded to date in the May 2026 report.</p>
+              <p className="text-caption text-fg-faint">Cumulative quantities recorded to date in the May 2026 report.</p>
             </div>
 
             {/* Concrete */}
             <div className="flex flex-col gap-4">
-              <h3 className="text-body text-ink-1">Concrete and structural works</h3>
-              <p className="text-small text-ink-2">{concreteWorks.summary}</p>
+              <h3 className="text-body text-fg">Concrete and structural works</h3>
+              <p className="text-small text-fg-muted">{concreteWorks.summary}</p>
               <QuantityList items={concreteWorks.quantities} />
             </div>
 
             {/* Drainage */}
             <div className="flex flex-col gap-4">
-              <h3 className="text-body text-ink-1">Drainage and culverts</h3>
-              <p className="text-small text-ink-2">{drainage.summary}</p>
-              <ul className="flex flex-col divide-y divide-rule border-t border-b border-rule">
+              <h3 className="text-body text-fg">Drainage and culverts</h3>
+              <p className="text-small text-fg-muted">{drainage.summary}</p>
+              <ul className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
                 <li className="flex items-baseline justify-between py-3 text-small">
-                  <span className="text-ink-2">Box culverts in the programme</span>
-                  <span className="figure text-ink-1">{drainage.boxCulverts.programme}</span>
+                  <span className="text-fg-muted">Box culverts in the programme</span>
+                  <span className="figure text-fg">{drainage.boxCulverts.programme}</span>
                 </li>
                 <li className="flex items-baseline justify-between py-3 text-small">
-                  <span className="text-ink-2">Commenced</span>
-                  <span className="figure text-ink-1">{drainage.boxCulverts.commenced}</span>
+                  <span className="text-fg-muted">Commenced</span>
+                  <span className="figure text-fg">{drainage.boxCulverts.commenced}</span>
                 </li>
                 <li className="flex items-baseline justify-between py-3 text-small">
-                  <span className="text-ink-2">Completed</span>
-                  <span className="figure text-ink-1">{drainage.boxCulverts.completed}</span>
+                  <span className="text-fg-muted">Completed</span>
+                  <span className="figure text-fg">{drainage.boxCulverts.completed}</span>
                 </li>
                 <li className="flex items-baseline justify-between py-3 text-small">
-                  <span className="text-ink-2">Ongoing</span>
-                  <span className="figure text-ink-1">{drainage.boxCulverts.ongoing}</span>
+                  <span className="text-fg-muted">Ongoing</span>
+                  <span className="figure text-fg">{drainage.boxCulverts.ongoing}</span>
                 </li>
                 <li className="flex items-baseline justify-between py-3 text-small">
-                  <span className="text-ink-2">Outstanding</span>
-                  <span className="figure text-ink-1">{drainage.boxCulverts.outstanding}</span>
+                  <span className="text-fg-muted">Outstanding</span>
+                  <span className="figure text-fg">{drainage.boxCulverts.outstanding}</span>
                 </li>
               </ul>
-              <p className="text-small text-ink-2">{drainage.bridgeCulverts.note}</p>
+              <p className="text-small text-fg-muted">{drainage.bridgeCulverts.note}</p>
             </div>
 
             {/* Footbridges */}
             <div className="flex flex-col gap-4">
-              <h3 className="text-body text-ink-1">Footbridges</h3>
-              <p className="text-small text-ink-2">{footbridges.summary}</p>
-              <details className="border border-rule bg-raised">
-                <summary className="cursor-pointer list-none px-4 py-3 text-small text-ink-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime">
+              <h3 className="text-body text-fg">Footbridges</h3>
+              <p className="text-small text-fg-muted">{footbridges.summary}</p>
+              <details className="border border-hairline bg-surface-raised">
+                <summary className="cursor-pointer list-none px-4 py-3 text-small text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent">
                   View reported footbridge statuses
                 </summary>
-                <table className="w-full border-t border-rule text-small">
+                <table className="w-full border-t border-hairline text-small">
                   <thead>
-                    <tr className="text-ink-3">
+                    <tr className="text-fg-faint">
                       <th scope="col" className="px-4 py-2 text-left font-normal">Chainage</th>
                       <th scope="col" className="px-4 py-2 text-right font-normal">Reported status</th>
                     </tr>
                   </thead>
                   <tbody>
                     {footbridges.statuses.map((s) => (
-                      <tr key={s.chainage} className="border-t border-rule">
-                        <td className="figure px-4 py-2 text-ink-1">{s.chainage}</td>
+                      <tr key={s.chainage} className="border-t border-hairline">
+                        <td className="figure px-4 py-2 text-fg">{s.chainage}</td>
                         <td className="px-4 py-2 text-right">
                           {s.percent === null ? (
-                            <span className="text-ink-3">Not yet reported</span>
+                            <span className="text-fg-faint">Not yet reported</span>
                           ) : (
-                            <span className="figure text-ink-1">{s.percent}%</span>
+                            <span className="figure text-fg">{s.percent}%</span>
                           )}
                         </td>
                       </tr>
@@ -193,17 +209,17 @@ export default function ProgressPage() {
       </section>
 
       {/* Recent construction activity */}
-      <section className="border-b border-rule bg-raised">
+      <section className="border-b border-hairline bg-surface-raised">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-ink-1">Recent construction activity</h2>
-          <ul className="flex flex-col divide-y divide-rule border-t border-b border-rule">
+          <h2 className="text-heading-4 text-fg">Recent construction activity</h2>
+          <ul className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
             {recentActivity.map((item) => (
               <li key={`${item.location}-${item.chainage}`} className="flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
                 <div className="flex flex-col">
-                  <span className="text-body text-ink-1">{item.location}</span>
-                  <span className="figure text-caption text-ink-3">{item.chainage}</span>
+                  <span className="text-body text-fg">{item.location}</span>
+                  <span className="figure text-caption text-fg-faint">{item.chainage}</span>
                 </div>
-                <span className="text-small text-ink-2 sm:text-right">{item.activity}</span>
+                <span className="text-small text-fg-muted sm:text-right">{item.activity}</span>
               </li>
             ))}
           </ul>
@@ -211,14 +227,14 @@ export default function ProgressPage() {
       </section>
 
       {/* Construction considerations */}
-      <section className="border-b border-rule bg-void">
+      <section className="border-b border-hairline bg-surface">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-ink-1">Construction considerations</h2>
-          <div className="grid grid-cols-1 gap-px border border-rule bg-rule md:grid-cols-3">
+          <h2 className="text-heading-4 text-fg">Construction considerations</h2>
+          <div className="grid grid-cols-1 gap-px border border-hairline bg-hairline md:grid-cols-3">
             {considerations.map((c) => (
-              <div key={c.title} className="flex flex-col gap-2 bg-void p-6">
-                <h3 className="text-body text-ink-1">{c.title}</h3>
-                <p className="text-small text-ink-2">{c.body}</p>
+              <div key={c.title} className="flex flex-col gap-2 bg-surface p-6">
+                <h3 className="text-body text-fg">{c.title}</h3>
+                <p className="text-small text-fg-muted">{c.body}</p>
               </div>
             ))}
           </div>

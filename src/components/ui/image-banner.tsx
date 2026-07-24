@@ -15,7 +15,7 @@ interface ImageBannerProps {
  */
 export function ImageBanner({ image, className }: ImageBannerProps) {
   return (
-    <div className={cn("relative h-64 w-full overflow-hidden bg-sunk sm:h-96 md:h-[32rem]", className)}>
+    <div className={cn("relative h-64 w-full overflow-hidden bg-surface-sunk sm:h-96 md:h-[32rem]", className)}>
       <Image
         src={image.src}
         alt={image.alt}

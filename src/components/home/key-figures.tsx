@@ -24,7 +24,7 @@ function Stat({
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <span className="text-caption text-ink-3 tracking-wide uppercase">{label}</span>
+      <span className="text-caption text-fg-faint tracking-wide uppercase">{label}</span>
       <div className="flex items-baseline gap-1.5">
         <AnimatedFigure
           value={value}
@@ -34,7 +34,7 @@ function Stat({
           signal={signal}
           className="text-heading-2"
         />
-        {unit && <span className="text-small text-ink-2">{unit}</span>}
+        {unit && <span className="text-small text-fg-muted">{unit}</span>}
       </div>
     </div>
   );
@@ -47,7 +47,7 @@ function Stat({
  */
 export function KeyFigures() {
   return (
-    <section className="border-b border-rule bg-void">
+    <section className="border-b border-hairline bg-surface">
       <ViewportReveal className="mx-auto grid w-full max-w-5xl grid-cols-1 gap-8 px-4 py-16 sm:grid-cols-2 sm:px-8 lg:grid-cols-4">
         <Stat label="Overall Physical Progress" value={overallPct} suffix="%" signal />
         <Stat

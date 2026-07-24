@@ -18,7 +18,7 @@ interface NavLinkProps {
  * A primary-nav link that knows whether it points at the current page.
  * The active page's label is lime (the signal colour marking "you are
  * here" — the same lime as the live figures and bars); the others rest in
- * ink and warm toward a muted lime (`text-lime/70`) on hover, hinting at
+ * ink and warm toward a muted lime (`text-accent/70`) on hover, hinting at
  * where they lead. `aria-current="page"` carries the active state for
  * assistive tech, so it's never colour-only.
  */
@@ -26,7 +26,7 @@ export function NavLink({
   href,
   children,
   className,
-  inactiveClass = "text-ink-2 hover:text-lime/70",
+  inactiveClass = "text-fg-muted hover:text-accent/70",
   onClick,
 }: NavLinkProps) {
   const pathname = usePathname();
@@ -37,7 +37,7 @@ export function NavLink({
       href={href}
       onClick={onClick}
       aria-current={active ? "page" : undefined}
-      className={cn(active ? "text-lime" : inactiveClass, className)}
+      className={cn(active ? "text-accent" : inactiveClass, className)}
     >
       {children}
     </PageTransitionLink>

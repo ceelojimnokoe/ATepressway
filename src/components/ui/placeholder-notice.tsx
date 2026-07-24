@@ -24,18 +24,18 @@ export function PlaceholderNotice<T>({ value, children, size = "chip" }: Placeho
   if (isPlaceholder(value)) {
     if (size === "display") {
       return (
-        <div className="flex flex-col items-start gap-2 border border-dashed border-rule bg-raised px-6 py-8 sm:py-10">
-          <span aria-hidden="true" className="figure text-heading-1 text-ink-3">
+        <div className="flex flex-col items-start gap-2 border border-dashed border-hairline bg-surface-raised px-6 py-8 sm:py-10">
+          <span aria-hidden="true" className="figure text-heading-1 text-fg-faint">
             —
           </span>
-          <span className="text-small text-ink-3 uppercase tracking-wide">
+          <span className="text-small text-fg-faint uppercase tracking-wide">
             {value.label} · to be confirmed
           </span>
         </div>
       );
     }
     return (
-      <span className="inline-flex items-center gap-2 border border-dashed border-rule bg-raised px-3 py-1.5 text-caption text-ink-3 uppercase tracking-wide">
+      <span className="inline-flex items-center gap-2 border border-dashed border-hairline bg-surface-raised px-3 py-1.5 text-caption text-fg-faint uppercase tracking-wide">
         <span aria-hidden="true">—</span>
         {value.label} · to be confirmed
       </span>

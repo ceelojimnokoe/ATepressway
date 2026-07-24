@@ -9,6 +9,6 @@ interface FigureProps {
 /** Mono + tabular-nums number display. Every number on the site renders through this. */
 export function Figure({ value, signal = false, className }: FigureProps) {
   return (
-    <span className={cn("figure", signal ? "text-lime" : "text-ink-1", className)}>{value}</span>
+    <span className={cn("figure", signal ? "text-accent" : "text-fg", className)}>{value}</span>
   );
 }

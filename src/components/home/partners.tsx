@@ -14,15 +14,15 @@ import { CtaLink } from "@/components/ui/cta-link";
  */
 export function Partners() {
   return (
-    <section className="border-b border-rule bg-raised">
+    <section className="border-b border-hairline bg-surface-raised">
       <div className="mx-auto w-full max-w-5xl px-4 py-24 sm:px-8">
         <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-4">
-            <span className="figure text-caption text-lime tracking-[0.2em] uppercase">07 — Delivery</span>
+            <span className="figure text-caption text-accent tracking-[0.2em] uppercase">07 — Delivery</span>
             <TextReveal
               as="h2"
               text="An accountable delivery chain"
-              className="text-heading-3 text-ink-1 sm:text-heading-2"
+              className="text-heading-3 text-fg sm:text-heading-2"
             />
           </div>
           <Reveal direction="up" distance={12}>
@@ -33,7 +33,7 @@ export function Partners() {
         </div>
 
         <StaggerContainer
-          className="grid grid-cols-1 border-t border-l border-rule sm:grid-cols-2 lg:grid-cols-3"
+          className="grid grid-cols-1 border-t border-l border-hairline sm:grid-cols-2 lg:grid-cols-3"
           stagger={0.06}
         >
           {stakeholderChain.map((party) => {
@@ -41,9 +41,9 @@ export function Partners() {
             return (
               <StaggerItem
                 key={party.name}
-                className="flex flex-col gap-4 border-r border-b border-rule bg-raised p-6"
+                className="flex flex-col gap-4 border-r border-b border-hairline bg-surface-raised p-6"
               >
-                <span className="text-caption text-ink-3 tracking-wide uppercase">{party.role}</span>
+                <span className="text-caption text-fg-faint tracking-wide uppercase">{party.role}</span>
                 {logo ? (
                   <div className="flex h-12 w-fit max-w-full items-center bg-paper px-4">
                     <Image
@@ -55,7 +55,7 @@ export function Partners() {
                     />
                   </div>
                 ) : null}
-                <span className="text-body text-ink-1">{party.name}</span>
+                <span className="text-body text-fg">{party.name}</span>
               </StaggerItem>
             );
           })}

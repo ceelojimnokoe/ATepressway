@@ -118,10 +118,11 @@ export function GalleryLightbox({ images, children }: GalleryLightboxProps) {
       {open && current && (
         <div
           ref={dialogRef}
+          data-theme="dark"
           role="dialog"
           aria-modal="true"
           aria-label={current.caption}
-          className="fixed inset-0 z-50 flex flex-col bg-void/95"
+          className="fixed inset-0 z-50 flex flex-col bg-surface/95"
         >
           {/* Backdrop click-to-close (pointer only; keyboard uses Esc/Close). */}
           <button
@@ -133,14 +134,14 @@ export function GalleryLightbox({ images, children }: GalleryLightboxProps) {
           />
 
           <div className="flex items-center justify-between px-4 py-4 sm:px-8">
-            <span className="figure text-caption text-ink-3">
+            <span className="figure text-caption text-fg-faint">
               {index + 1} / {count}
             </span>
             <button
               ref={closeRef}
               type="button"
               onClick={close}
-              className="border border-rule px-3 py-1.5 text-caption text-ink-1 uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime"
+              className="border border-hairline px-3 py-1.5 text-caption text-fg uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
             >
               Close
             </button>
@@ -152,7 +153,7 @@ export function GalleryLightbox({ images, children }: GalleryLightboxProps) {
                 type="button"
                 onClick={() => step(-1)}
                 aria-label="Previous image"
-                className="figure shrink-0 border border-rule px-3 py-4 text-body text-ink-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime"
+                className="figure shrink-0 border border-hairline px-3 py-4 text-body text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
               >
                 ‹
               </button>
@@ -167,7 +168,7 @@ export function GalleryLightbox({ images, children }: GalleryLightboxProps) {
                 sizes="90vw"
                 className="h-auto max-h-[78vh] w-auto max-w-full object-contain"
               />
-              <figcaption className="text-small text-ink-2">{current.caption}</figcaption>
+              <figcaption className="text-small text-fg-muted">{current.caption}</figcaption>
             </figure>
 
             {count > 1 && (
@@ -175,7 +176,7 @@ export function GalleryLightbox({ images, children }: GalleryLightboxProps) {
                 type="button"
                 onClick={() => step(1)}
                 aria-label="Next image"
-                className="figure shrink-0 border border-rule px-3 py-4 text-body text-ink-1 focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime"
+                className="figure shrink-0 border border-hairline px-3 py-4 text-body text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
               >
                 ›
               </button>

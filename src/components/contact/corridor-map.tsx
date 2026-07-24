@@ -21,10 +21,10 @@ export function CorridorMap() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h2 className="text-heading-4 text-ink-1">Where the works are</h2>
+      <h2 className="text-heading-4 text-fg">Where the works are</h2>
 
       <figure className="flex flex-col gap-3">
-        <div className="relative aspect-[4/3] w-full overflow-hidden border border-rule bg-sunk">
+        <div className="relative aspect-[4/3] w-full overflow-hidden border border-hairline bg-surface-sunk">
           <iframe
             src={OSM_EMBED}
             title="Map of the Accra–Tema corridor on OpenStreetMap"
@@ -33,7 +33,7 @@ export function CorridorMap() {
             className="absolute inset-0 h-full w-full border-0"
           />
         </div>
-        <figcaption className="flex flex-col gap-1 text-caption text-ink-3">
+        <figcaption className="flex flex-col gap-1 text-caption text-fg-faint">
           <span>
             The Accra–Tema corridor between Tetteh Quarshie and Tema. This map shows the project
             corridor, not an office location.
@@ -44,7 +44,7 @@ export function CorridorMap() {
               href={OSM_VIEW}
               target="_blank"
               rel="noreferrer noopener"
-              className="underline underline-offset-4 hover:text-lime focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime"
+              className="underline underline-offset-4 hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
             >
               OpenStreetMap
             </a>{" "}
@@ -53,17 +53,17 @@ export function CorridorMap() {
         </figcaption>
       </figure>
 
-      <div className="flex flex-col gap-1 border border-dashed border-rule bg-raised p-5">
-        <span className="text-caption text-ink-3 tracking-wide uppercase">
+      <div className="flex flex-col gap-1 border border-dashed border-hairline bg-surface-raised p-5">
+        <span className="text-caption text-fg-faint tracking-wide uppercase">
           {addressUnresolved ? "To be confirmed" : "Office"}
         </span>
         {addressUnresolved ? (
-          <p className="text-small text-ink-2">
+          <p className="text-small text-fg-muted">
             A registered office address has not yet been published for the project. It will appear
             here once confirmed.
           </p>
         ) : (
-          <p className="text-small text-ink-1">{address}</p>
+          <p className="text-small text-fg">{address}</p>
         )}
       </div>
     </div>

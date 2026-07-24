@@ -48,8 +48,8 @@ export default function DesignPage() {
         }
       />
 
-      <div className="border-b border-rule bg-void">
-        <div className="mx-auto flex w-full max-w-5xl flex-col gap-16 px-4 py-16 sm:px-8">
+      <div className="border-b border-hairline bg-surface">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-16 px-4 py-16 sm:px-8">
           {entries.map((entry, index) => (
             <ViewportReveal key={entry.section.id}>
               <DesignSectionCard

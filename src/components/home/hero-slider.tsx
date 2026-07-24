@@ -85,7 +85,8 @@ export function HeroSlider({ slides, className, children }: HeroSliderProps) {
 
   return (
     <section
-      className={cn("relative isolate overflow-hidden", className)}
+      data-theme="dark"
+      className={cn("relative isolate overflow-hidden bg-surface", className)}
       aria-roledescription="carousel"
       aria-label="Project images"
       // Pause only while a control is focused (keyboard users) — hovering the
@@ -145,7 +146,7 @@ export function HeroSlider({ slides, className, children }: HeroSliderProps) {
             type="button"
             onClick={goPrev}
             aria-label="Previous slide"
-            className="border border-rule bg-void/50 px-3 py-2 text-caption text-ink-1 backdrop-blur-sm hover:text-lime/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime"
+            className="border border-hairline bg-surface/50 px-3 py-2 text-caption text-fg backdrop-blur-sm hover:text-accent/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
           >
             ‹
           </button>
@@ -153,7 +154,7 @@ export function HeroSlider({ slides, className, children }: HeroSliderProps) {
             type="button"
             onClick={goNext}
             aria-label="Next slide"
-            className="border border-rule bg-void/50 px-3 py-2 text-caption text-ink-1 backdrop-blur-sm hover:text-lime/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime"
+            className="border border-hairline bg-surface/50 px-3 py-2 text-caption text-fg backdrop-blur-sm hover:text-accent/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
           >
             ›
           </button>
@@ -167,8 +168,8 @@ export function HeroSlider({ slides, className, children }: HeroSliderProps) {
                 aria-label={`Go to slide ${i + 1} of ${count}`}
                 aria-current={i === index ? "true" : undefined}
                 className={cn(
-                  "block h-2 w-2 rounded-full border border-rule focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime",
-                  i === index ? "bg-lime" : "bg-void/60",
+                  "block h-2 w-2 rounded-full border border-hairline focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent",
+                  i === index ? "bg-lime" : "bg-surface/60",
                 )}
               />
             </li>

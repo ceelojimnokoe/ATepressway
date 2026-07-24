@@ -18,35 +18,35 @@ const SOCIAL_FIELDS = [
 /** Nearly everything here is a placeholder today — each field renders its own TBC state. */
 export function ContactDetails() {
   return (
-    <section className="border-b border-rule">
+    <section className="border-b border-hairline">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-16 sm:px-8">
-        <h2 className="text-heading-4 text-ink-1">Contact details</h2>
+        <h2 className="text-heading-4 text-fg">Contact details</h2>
 
-        <div className="flex flex-col divide-y divide-rule border-t border-b border-rule">
+        <div className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
           {DIRECT_FIELDS.map((field) => (
             <div
               key={field.label}
               className="flex flex-col gap-2 py-4 sm:flex-row sm:items-baseline sm:justify-between"
             >
-              <span className="text-caption text-ink-3 tracking-wide uppercase">{field.label}</span>
+              <span className="text-caption text-fg-faint tracking-wide uppercase">{field.label}</span>
               <PlaceholderNotice value={field.value}>
-                {(value) => <span className="text-body text-ink-1">{value}</span>}
+                {(value) => <span className="text-body text-fg">{value}</span>}
               </PlaceholderNotice>
             </div>
           ))}
         </div>
 
         <div className="flex flex-col gap-3">
-          <span className="text-caption text-ink-3 tracking-wide uppercase">Social</span>
-          <div className="flex flex-col divide-y divide-rule border-t border-b border-rule">
+          <span className="text-caption text-fg-faint tracking-wide uppercase">Social</span>
+          <div className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
             {SOCIAL_FIELDS.map((field) => (
               <div
                 key={field.label}
                 className="flex flex-col gap-2 py-4 sm:flex-row sm:items-baseline sm:justify-between"
               >
-                <span className="text-small text-ink-2">{field.label}</span>
+                <span className="text-small text-fg-muted">{field.label}</span>
                 <PlaceholderNotice value={field.value}>
-                  {(value) => <span className="text-body text-ink-1">{value}</span>}
+                  {(value) => <span className="text-body text-fg">{value}</span>}
                 </PlaceholderNotice>
               </div>
             ))}

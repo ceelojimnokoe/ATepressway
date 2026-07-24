@@ -15,14 +15,14 @@ const source = isPlaceholder(progress.signOffSource) ? null : progress.signOffSo
  */
 export function InterchangeProgress() {
   return (
-    <section className="border-b border-rule bg-void">
+    <section className="border-b border-hairline bg-surface">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-4 py-24 sm:px-8">
         <div className="flex flex-col gap-4">
-          <span className="figure text-caption text-lime tracking-[0.2em] uppercase">04 — Progress</span>
+          <span className="figure text-caption text-accent tracking-[0.2em] uppercase">04 — Progress</span>
           <TextReveal
             as="h2"
             text="Interchange construction, structure by structure"
-            className="max-w-3xl text-heading-3 text-ink-1 sm:text-heading-2"
+            className="max-w-3xl text-heading-3 text-fg sm:text-heading-2"
           />
         </div>
 
@@ -43,7 +43,7 @@ export function InterchangeProgress() {
         </div>
 
         {source && (
-          <p className="text-caption text-ink-3">Interchange progress figures reflect the {source}.</p>
+          <p className="text-caption text-fg-faint">Interchange progress figures reflect the {source}.</p>
         )}
       </div>
     </section>

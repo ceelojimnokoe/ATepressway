@@ -54,10 +54,10 @@ const heroMetadata = [
  */
 export function Hero() {
   return (
-    <HeroSlider slides={slides} className="border-b border-rule">
+    <HeroSlider slides={slides} className="border-b border-hairline">
       <div className="relative z-10 mx-auto flex min-h-[92svh] w-full max-w-5xl flex-col justify-end gap-6 px-4 pt-24 pb-28 sm:px-8">
         <Reveal direction="up" distance={12} delay={0.05}>
-          <span className="text-caption text-lime tracking-[0.2em] uppercase">
+          <span className="text-caption text-accent tracking-[0.2em] uppercase">
             Accra–Tema Motorway and Extensions Project
           </span>
         </Reveal>
@@ -66,11 +66,11 @@ export function Hero() {
           as="h1"
           text="Accra–Tema Expressway Ltd."
           delay={0.15}
-          className="max-w-4xl text-heading-2 text-ink-1 sm:text-heading-1"
+          className="max-w-4xl text-heading-2 text-fg sm:text-heading-1"
         />
 
         <Reveal direction="up" distance={16} delay={0.5} className="max-w-2xl">
-          <p className="text-lead text-ink-1">
+          <p className="text-lead text-fg">
             Your guide to the design, construction progress and key developments shaping the{" "}
             {projectFacts.corridorLengthKm} km corridor, including the {projectFacts.section1LengthKm}{" "}
             km Section 1 currently under construction.
@@ -95,7 +95,7 @@ export function Hero() {
         </StaggerContainer>
 
         <Reveal direction="up" distance={16} delay={0.95}>
-          <dl className="flex flex-wrap gap-x-10 gap-y-4 border-t border-rule pt-6">
+          <dl className="flex flex-wrap gap-x-10 gap-y-4 border-t border-hairline pt-6">
             {heroMetadata.map((item) => (
               <div key={item.label} className="flex flex-col gap-1">
                 <dt className="flex items-baseline gap-1.5">
@@ -107,9 +107,9 @@ export function Hero() {
                     trigger="load"
                     className="text-heading-3"
                   />
-                  {item.unit && <span className="text-small text-ink-2">{item.unit}</span>}
+                  {item.unit && <span className="text-small text-fg-muted">{item.unit}</span>}
                 </dt>
-                <dd className="text-caption text-ink-2 tracking-wide uppercase">{item.label}</dd>
+                <dd className="text-caption text-fg-muted tracking-wide uppercase">{item.label}</dd>
               </div>
             ))}
           </dl>

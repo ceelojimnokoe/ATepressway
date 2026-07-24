@@ -34,8 +34,8 @@ export function GalleryFilter({ active }: { readonly active: string }) {
             aria-pressed={isActive}
             onClick={() => select(filter.id)}
             className={cn(
-              "border px-3 py-1.5 text-caption uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-lime",
-              isActive ? "border-lime bg-lime text-void" : "border-rule text-ink-2 hover:text-ink-1",
+              "border px-3 py-1.5 text-caption uppercase tracking-wide focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent",
+              isActive ? "border-accent bg-lime text-void" : "border-hairline text-fg-muted hover:text-fg",
             )}
           >
             {filter.label}

@@ -37,20 +37,20 @@ const stats: readonly Stat[] = [
  */
 export function Statistics() {
   return (
-    <section className="border-b border-rule bg-void">
+    <section className="border-b border-hairline bg-surface">
       <div className="mx-auto w-full max-w-5xl px-4 py-24 sm:px-8">
         <div className="mb-14 flex flex-col gap-4">
-          <span className="figure text-caption text-lime tracking-[0.2em] uppercase">03 — By the numbers</span>
+          <span className="figure text-caption text-accent tracking-[0.2em] uppercase">03 — By the numbers</span>
           <TextReveal
             as="h2"
             text="The scale of the works"
-            className="text-heading-3 text-ink-1 sm:text-heading-2"
+            className="text-heading-3 text-fg sm:text-heading-2"
           />
         </div>
 
         <StaggerContainer className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3" stagger={0.08} amount={0.2}>
           {stats.map((stat) => (
-            <StaggerItem key={stat.label} className="flex flex-col gap-3 border-t border-rule pt-5">
+            <StaggerItem key={stat.label} className="flex flex-col gap-3 border-t border-hairline pt-5">
               <div className="flex items-baseline gap-1.5">
                 <AnimatedFigure
                   value={stat.value}
@@ -60,9 +60,9 @@ export function Statistics() {
                   separator={stat.separator}
                   className="text-heading-1 lg:text-heading-2"
                 />
-                {stat.unit && <span className="text-small text-ink-2">{stat.unit}</span>}
+                {stat.unit && <span className="text-small text-fg-muted">{stat.unit}</span>}
               </div>
-              <span className="text-caption text-ink-2 tracking-wide uppercase">{stat.label}</span>
+              <span className="text-caption text-fg-muted tracking-wide uppercase">{stat.label}</span>
             </StaggerItem>
           ))}
         </StaggerContainer>

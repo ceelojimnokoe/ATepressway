@@ -11,7 +11,7 @@ import { CtaLink } from "@/components/ui/cta-link";
  */
 export function ClosingCta() {
   return (
-    <section className="relative overflow-hidden bg-void">
+    <section data-theme="dark" className="relative overflow-hidden bg-surface">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.06]"
@@ -24,10 +24,10 @@ export function ClosingCta() {
         <TextReveal
           as="h2"
           text="Follow the Accra–Tema Expressway as it takes shape."
-          className="max-w-4xl text-heading-2 text-ink-1 sm:text-heading-1"
+          className="max-w-4xl text-heading-2 text-fg sm:text-heading-1"
         />
         <Reveal direction="up" distance={16} delay={0.15}>
-          <p className="max-w-xl text-lead text-ink-2">
+          <p className="max-w-xl text-lead text-fg-muted">
             Explore the design, track verified construction progress, and see the works in pictures.
           </p>
         </Reveal>
