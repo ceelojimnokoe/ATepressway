@@ -12,7 +12,7 @@ import { organizationJsonLd } from "@/content/structured-data";
  * it, inheriting just the root layout's fonts and globals. Organization
  * JSON-LD lives here rather than the root layout for the same reason:
  * it's a public-site identity claim, not something that belongs on the
- * internal tool.
+ * internal tool. Testing platform
  *
  * Navigation is a conventional sticky top header (SiteHeader). Content
  * flows normally beneath it — no side inset.
