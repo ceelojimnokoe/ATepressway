@@ -14,6 +14,14 @@ export interface Slide {
 interface HeroSliderProps {
   readonly slides: readonly Slide[];
   readonly className?: string;
+  /**
+   * Photo treatment behind the content:
+   * - "none": no wash at all — the photo is fully visible.
+   * - "scrim": the shared localised corner scrim (`.hero-scrim`) behind the
+   *   bottom-left text, fading to fully transparent before the subject side.
+   * The former full-image dark wash is gone in both cases.
+   */
+  readonly overlay?: "none" | "scrim";
   /** Overlaid hero content (positions itself over the full height). */
   readonly children?: ReactNode;
 }
@@ -33,7 +41,7 @@ const INTERVAL_MS = 4500;
  * Controls are absolutely positioned so the overlaid content can own the
  * full height.
  */
-export function HeroSlider({ slides, className, children }: HeroSliderProps) {
+export function HeroSlider({ slides, className, overlay = "none", children }: HeroSliderProps) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   /*
@@ -124,12 +132,10 @@ export function HeroSlider({ slides, className, children }: HeroSliderProps) {
         );
       })}
 
-      {/* Dark overlay — deepest at the bottom where the hero text sits. The
-          former top gradient is gone: it existed only to keep a transparent
-          nav bar legible over the imagery, and navigation is now an opaque
-          right-docked rail with no such problem. */}
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-t from-void via-void/55 to-void/30" />
-      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-gradient-to-tr from-void/70 via-transparent to-transparent" />
+      {/* Localised corner scrim behind the bottom-left text only — no
+          full-image wash. Fades to fully transparent before the subject side
+          (see .hero-scrim in globals.css). */}
+      {overlay === "scrim" && <div aria-hidden="true" className="hero-scrim absolute inset-0 -z-10" />}
 
       {children}
 

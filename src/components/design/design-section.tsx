@@ -22,14 +22,20 @@ export function DesignSectionCard({ section, reverse, chainage, percent }: Desig
   const isProposedVisual = asset.kind === "render" || asset.kind === "drawing";
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 md:items-center md:gap-10">
+    <div
+      className={cn(
+        "grid gap-6 md:items-center md:gap-10",
+        // Give the visual the larger share of the row on both alternations.
+        reverse ? "md:grid-cols-[1fr_1.35fr]" : "md:grid-cols-[1.35fr_1fr]",
+      )}
+    >
       <figure className={cn("flex flex-col gap-3", reverse && "md:order-2")}>
         <div className="relative aspect-[16/9] w-full overflow-hidden border border-hairline bg-surface-sunk">
           <Image
             src={asset.src}
             alt={asset.alt}
             fill
-            sizes="(min-width: 768px) 50vw, 100vw"
+            sizes="(min-width: 768px) 58vw, 100vw"
             loading="lazy"
             className="object-cover"
           />

@@ -6,7 +6,7 @@
  * deliberately excluded.
  */
 
-import type { MediaKey } from "./media";
+import { mediaRegistry, type MediaKey, type RegisteredMediaAsset } from "./media";
 
 export interface GalleryCategory {
   readonly id: string;
@@ -77,3 +77,43 @@ export const galleryItems: readonly GalleryItem[] = [
   { id: "cross-section", media: "designScheme", title: "Typical Road Cross-Section", category: "corridor-maps", type: "Proposed Design" },
   { id: "route-viz", media: "routeAlignmentMap", title: "Accra–Tema Corridor — Design Visualisation", category: "corridor-maps", type: "Proposed Design" },
 ] as const;
+
+export interface ResolvedGalleryItem {
+  readonly item: GalleryItem;
+  readonly asset: RegisteredMediaAsset;
+}
+
+/**
+ * Validate and resolve gallery items before render. Any entry missing a
+ * required field, or whose media key doesn't resolve to a real on-disk
+ * asset, is SKIPPED (with a dev-only warning) rather than allowed to throw —
+ * so a single bad entry or a mistyped key can never blank the whole Gallery
+ * page. The returned list is what both the grid and the lightbox render, so
+ * their indices stay aligned.
+ */
+export function resolveGalleryItems(items: readonly GalleryItem[]): ResolvedGalleryItem[] {
+  const resolved: ResolvedGalleryItem[] = [];
+  for (const item of items) {
+    const asset = item?.media
+      ? (mediaRegistry[item.media] as RegisteredMediaAsset | undefined)
+      : undefined;
+    const valid =
+      !!item?.id &&
+      !!item?.title &&
+      !!item?.category &&
+      !!asset &&
+      !!asset.src &&
+      !!asset.alt &&
+      asset.onDisk;
+    if (!valid) {
+      if (process.env.NODE_ENV !== "production") {
+        console.warn(
+          `[gallery] skipping invalid item id="${item?.id ?? "?"}" media="${String(item?.media)}"`,
+        );
+      }
+      continue;
+    }
+    resolved.push({ item, asset });
+  }
+  return resolved;
+}

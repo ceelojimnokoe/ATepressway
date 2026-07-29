@@ -191,6 +191,45 @@
     "lnum" 1;
 }
 
+/*
+ * Hero legibility — reusable across every hero (shared PageHero + the home
+ * hero slider). A LOCALISED scrim behind the text edge, never a full-image
+ * wash: it is built from --color-void (the brand near-black, NOT a navy)
+ * via color-mix, anchored to the bottom-left corner where the hero text
+ * sits, and fades to FULLY transparent well before the opposite (subject)
+ * side — so most of the photograph shows at its natural brightness. A soft
+ * multi-layer text-shadow does the rest, keeping text readable over bright
+ * and dark photos alike. Mobile switches to a bottom-anchored fade that
+ * covers a little more, since the text spans the full width there.
+ */
+.hero-scrim {
+  background: linear-gradient(
+    to top right,
+    color-mix(in srgb, var(--color-void) 84%, transparent) 0%,
+    color-mix(in srgb, var(--color-void) 46%, transparent) 28%,
+    color-mix(in srgb, var(--color-void) 14%, transparent) 50%,
+    transparent 66%
+  );
+}
+
+@media (max-width: 640px) {
+  .hero-scrim {
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-void) 86%, transparent) 0%,
+      color-mix(in srgb, var(--color-void) 56%, transparent) 34%,
+      color-mix(in srgb, var(--color-void) 14%, transparent) 62%,
+      transparent 82%
+    );
+  }
+}
+
+.hero-text-shadow {
+  text-shadow:
+    0 1px 2px rgb(0 0 0 / 0.55),
+    0 4px 16px rgb(0 0 0 / 0.4);
+}
+
 /* Hard stop: every animation and transition collapses to effectively
    instant when the user has asked for reduced motion. No per-component
    opt-out — this is enforced globally. */

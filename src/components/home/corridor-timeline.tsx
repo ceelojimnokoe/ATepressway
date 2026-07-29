@@ -7,12 +7,28 @@ import { isPlaceholder } from "@/content/placeholder";
 import { formatLongDate } from "@/lib/format";
 import { Reveal } from "@/components/motion/reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
-import { ImageReveal } from "@/components/motion/image-reveal";
-import { mediaRegistry } from "@/content/media";
+import { ImageSlideshow, type SlideshowImage } from "@/components/ui/image-slideshow";
+import { mediaRegistry, type MediaKey } from "@/content/media";
 import { cn } from "@/lib/cn";
 
-/** Aerial of a major corridor junction — supports the journey narrative. */
-const journeyImage = mediaRegistry.atelJunctionRoundabout;
+/**
+ * Five real construction photographs spanning different stages/aspects of
+ * the works — underpass, bridge deck, pier, overpass, corridor-wide — not
+ * five near-identical frames. Drawn straight from the media registry, so
+ * alt text and dimensions come with them.
+ */
+const journeySlides: readonly SlideshowImage[] = (
+  [
+    "atelJunctionUnderpass",
+    "atelBridgeDeckRebar",
+    "atelPierConcreting",
+    "atelOverpassDeck",
+    "atelCorridorPiersWide",
+  ] as const satisfies readonly MediaKey[]
+).map((key) => {
+  const asset = mediaRegistry[key];
+  return { src: asset.src, alt: asset.alt, width: asset.width, height: asset.height };
+});
 
 type MilestoneState = "done" | "current" | "upcoming";
 
@@ -77,12 +93,12 @@ export function CorridorTimeline() {
         </div>
 
         {/*
-         * Timeline and supporting photograph sit side by side from `lg`. On
-         * mobile they stack with the image LAST: the milestones are the
-         * substance of the section and should follow the heading directly,
-         * with the photograph as closing context.
+         * Timeline and slideshow sit side by side from `lg`, with the
+         * slideshow given the larger share (~57%). On mobile they stack with
+         * the slideshow LAST: the milestones are the substance of the section
+         * and should follow the heading directly, the imagery as context.
          */}
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start lg:gap-12">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.15fr)] lg:items-center lg:gap-12">
         <ol ref={ref} className="relative flex flex-col gap-12">
           <span aria-hidden="true" className="absolute top-2 bottom-2 left-2 w-px bg-hairline" />
           <motion.span
@@ -115,13 +131,15 @@ export function CorridorTimeline() {
         </ol>
 
           <figure className="flex flex-col gap-3">
-            <ImageReveal
-              src={journeyImage.src}
-              alt={journeyImage.alt}
-              sizes="(min-width: 1024px) 40vw, 100vw"
-              className="aspect-[16/10] w-full border border-hairline"
+            <ImageSlideshow
+              slides={journeySlides}
+              ariaLabel="Construction stages along the corridor"
+              sizes="(min-width: 1024px) 58vw, 100vw"
+              className="aspect-[4/3] w-full border border-hairline"
             />
-            <figcaption className="text-caption text-fg-faint">{journeyImage.alt}</figcaption>
+            <figcaption className="text-caption text-fg-faint">
+              Construction under way across the Section 1 corridor.
+            </figcaption>
           </figure>
         </div>
       </div>

@@ -1,26 +1,35 @@
 import Image from "next/image";
 import { mediaRegistry, type MediaKey } from "@/content/media";
 import type { ReactNode } from "react";
+import { cn } from "@/lib/cn";
 
 interface PageHeroProps {
   readonly media: MediaKey;
   readonly title: string;
   readonly subtitle?: ReactNode;
   readonly priority?: boolean;
+  /**
+   * CSS object-position for the hero image, so an important subject isn't
+   * cropped out on a given photo (e.g. "center 30%"). Defaults to centre.
+   */
+  readonly objectPosition?: string;
 }
 
 /**
- * Shared full-bleed page hero used by Project, Design and Progress: a
- * responsive image with a bottom-weighted dark overlay and the page title.
- * The image aspect is reserved by the fixed min-height, so there's no
- * layout shift while it loads.
+ * Shared full-bleed page hero (Project, Design, Progress, Gallery, Contact,
+ * Stakeholders). The image shows at its natural brightness — there is no
+ * full-image wash. Legibility comes from a LOCALISED corner scrim
+ * (`.hero-scrim`) behind the bottom-left text plus a soft text-shadow, so
+ * the rest of the photo stays uncovered. The text column is capped at
+ * ~672px. Responsive min-heights reserve the aspect (no layout shift) and
+ * give inner-page heroes more room than before.
  */
-export function PageHero({ media, title, subtitle, priority = true }: PageHeroProps) {
+export function PageHero({ media, title, subtitle, priority = true, objectPosition }: PageHeroProps) {
   const asset = mediaRegistry[media];
   return (
     <section
       data-theme="dark"
-      className="relative isolate flex min-h-[19rem] flex-col justify-end overflow-hidden border-b border-hairline bg-surface sm:min-h-[24rem]"
+      className="relative isolate flex min-h-[27rem] flex-col justify-end overflow-hidden border-b border-hairline bg-surface sm:min-h-[32rem] lg:min-h-[35rem]"
     >
       <Image
         src={asset.src}
@@ -29,18 +38,16 @@ export function PageHero({ media, title, subtitle, priority = true }: PageHeroPr
         priority={priority}
         sizes="100vw"
         quality={70}
-        className="-z-10 object-cover object-center"
+        className={cn("-z-10 object-cover", !objectPosition && "object-center")}
+        style={objectPosition ? { objectPosition } : undefined}
       />
-      {/* Bottom-weighted overlay carries the title. The former top gradient
-          is gone: it existed only to keep a transparent nav bar legible over
-          hero imagery, and navigation is now an opaque right-docked rail. */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-t from-void/88 via-void/50 to-void/25"
-      />
-      <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-3 px-4 pt-16 pb-12 sm:px-8">
-        <h1 className="text-heading-2 text-fg sm:text-heading-1">{title}</h1>
-        {subtitle && <div className="max-w-2xl text-body text-fg-muted">{subtitle}</div>}
+      {/* Localised scrim behind the text only — no full-image overlay. */}
+      <div aria-hidden="true" className="hero-scrim absolute inset-0 -z-10" />
+      <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-3 px-4 pt-20 pb-12 sm:px-8">
+        <div className="flex max-w-[42rem] flex-col gap-3">
+          <h1 className="hero-text-shadow text-heading-2 text-fg sm:text-heading-1">{title}</h1>
+          {subtitle && <div className="hero-text-shadow max-w-2xl text-body text-fg-muted">{subtitle}</div>}
+        </div>
       </div>
     </section>
   );

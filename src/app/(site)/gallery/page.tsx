@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
-import { galleryItems, galleryCategories, type GalleryCategoryId } from "@/content/gallery";
-import { mediaRegistry } from "@/content/media";
+import {
+  galleryItems,
+  galleryCategories,
+  resolveGalleryItems,
+  type GalleryCategoryId,
+} from "@/content/gallery";
 import { GalleryFilter } from "@/components/gallery/gallery-filter";
 import { GalleryCard } from "@/components/gallery/gallery-tile";
 import { GalleryLightbox, type LightboxImage } from "@/components/gallery/gallery-lightbox";
@@ -24,12 +28,18 @@ export default async function GalleryPage({
   readonly searchParams: Promise<{ readonly [key: string]: string | string[] | undefined }>;
 }) {
   const active = normalizeCategory((await searchParams).category);
-  const items = active === "all" ? galleryItems : galleryItems.filter((item) => item.category === active);
+  const filtered = active === "all" ? galleryItems : galleryItems.filter((item) => item.category === active);
 
-  const lightboxImages: LightboxImage[] = items.map((item) => {
-    const asset = mediaRegistry[item.media];
-    return { src: asset.src, alt: asset.alt, width: asset.width, height: asset.height, caption: item.title };
-  });
+  // Validate + resolve so a bad entry skips gracefully instead of crashing.
+  const resolved = resolveGalleryItems(filtered);
+
+  const lightboxImages: LightboxImage[] = resolved.map(({ item, asset }) => ({
+    src: asset.src,
+    alt: asset.alt,
+    width: asset.width,
+    height: asset.height,
+    caption: item.title,
+  }));
 
   return (
     <>
@@ -42,7 +52,7 @@ export default async function GalleryPage({
       <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-16 sm:px-8">
         <GalleryFilter active={active} />
 
-        {items.length === 0 ? (
+        {resolved.length === 0 ? (
           <div className="flex flex-col items-start gap-4 border border-dashed border-hairline bg-surface-raised px-6 py-16 sm:items-center sm:text-center">
             <p className="text-body text-fg">No images in this category yet.</p>
             <PageTransitionLink href="/gallery" className="text-small text-fg underline underline-offset-4">
@@ -52,7 +62,7 @@ export default async function GalleryPage({
         ) : (
           <GalleryLightbox images={lightboxImages}>
             <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {items.map((item, index) => (
+              {resolved.map(({ item }, index) => (
                 <li key={item.id}>
                   <GalleryCard item={item} lightboxIndex={index} />
                 </li>
