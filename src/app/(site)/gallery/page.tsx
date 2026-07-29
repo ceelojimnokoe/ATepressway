@@ -8,6 +8,7 @@ import {
 import { GalleryFilter } from "@/components/gallery/gallery-filter";
 import { GalleryCard } from "@/components/gallery/gallery-tile";
 import { GalleryLightbox, type LightboxImage } from "@/components/gallery/gallery-lightbox";
+import { SafeBoundary } from "@/components/gallery/safe-boundary";
 import { PageHero } from "@/components/ui/page-hero";
 import { PageTransitionLink } from "@/components/layout/page-transition-link";
 import { buildMetadata } from "@/lib/page-metadata";
@@ -50,7 +51,11 @@ export default async function GalleryPage({
       />
 
       <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-16 sm:px-8">
-        <GalleryFilter active={active} />
+        {/* Interactive filter — isolated so a hydration failure can't blank
+            the grid below (which is a pure server component sibling). */}
+        <SafeBoundary label="filter">
+          <GalleryFilter active={active} />
+        </SafeBoundary>
 
         {resolved.length === 0 ? (
           <div className="flex flex-col items-start gap-4 border border-dashed border-hairline bg-surface-raised px-6 py-16 sm:items-center sm:text-center">
@@ -60,7 +65,10 @@ export default async function GalleryPage({
             </PageTransitionLink>
           </div>
         ) : (
-          <GalleryLightbox images={lightboxImages}>
+          <>
+            {/* The grid is a plain server-rendered list — it does NOT depend on
+                any client component to be visible. Tiles carry a
+                data-lightbox-index that the standalone lightbox listens for. */}
             <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
               {resolved.map(({ item }, index) => (
                 <li key={item.id}>
@@ -68,7 +76,13 @@ export default async function GalleryPage({
                 </li>
               ))}
             </ul>
-          </GalleryLightbox>
+
+            {/* Standalone, isolated. If it fails to hydrate the grid is
+                untouched; it renders nothing until a tile is opened. */}
+            <SafeBoundary label="lightbox">
+              <GalleryLightbox images={lightboxImages} />
+            </SafeBoundary>
+          </>
         )}
       </section>
     </>
