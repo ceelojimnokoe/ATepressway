@@ -22,16 +22,20 @@ export function GalleryCard({
   const asset = mediaRegistry[item.media];
   return (
     <figure className="flex flex-col gap-3">
-      <div className="relative aspect-[16/10] w-full overflow-hidden border border-hairline bg-surface-sunk">
-        <button
-          type="button"
-          data-lightbox-index={lightboxIndex}
-          aria-label={`View larger: ${item.title}`}
-          className="absolute inset-0 block cursor-zoom-in focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
-        >
+      {/* The button is the block-level wrapper; the aspect box is the DIRECT
+          parent of the fill image, so the image always has a real height
+          (aspect-ratio) and a positioned parent — it can never collapse to
+          zero height. */}
+      <button
+        type="button"
+        data-lightbox-index={lightboxIndex}
+        aria-label={`View larger: ${item.title}`}
+        className="block w-full cursor-zoom-in overflow-hidden border border-hairline bg-surface-sunk focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
+      >
+        <div className="relative aspect-[16/10] w-full overflow-hidden">
           <Image src={asset.src} alt={asset.alt} fill sizes={TILE_SIZES} loading="lazy" className="object-cover" />
-        </button>
-      </div>
+        </div>
+      </button>
       <figcaption className="flex flex-col gap-1">
         <span className="text-small text-fg">{item.title}</span>
         <span className="text-caption text-fg-faint tracking-wide uppercase">

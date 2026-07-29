@@ -230,6 +230,21 @@
     0 4px 16px rgb(0 0 0 / 0.4);
 }
 
+/* Gallery category filter — a client-side progressive enhancement.
+   The grid is fully server-rendered and STATIC; the filter just sets
+   data-gallery-filter on the scope and these rules hide the tiles whose
+   data-gallery-cat doesn't match. The default ("all") matches no rule, so
+   every tile is shown — the grid is never hidden if JS is off or the
+   filter fails to hydrate. */
+[data-gallery-filter="interchanges"] [data-gallery-cat]:not([data-gallery-cat="interchanges"]),
+[data-gallery-filter="bridges"] [data-gallery-cat]:not([data-gallery-cat="bridges"]),
+[data-gallery-filter="drainage"] [data-gallery-cat]:not([data-gallery-cat="drainage"]),
+[data-gallery-filter="earthworks"] [data-gallery-cat]:not([data-gallery-cat="earthworks"]),
+[data-gallery-filter="proposed-designs"] [data-gallery-cat]:not([data-gallery-cat="proposed-designs"]),
+[data-gallery-filter="corridor-maps"] [data-gallery-cat]:not([data-gallery-cat="corridor-maps"]) {
+  display: none;
+}
+
 /* Hard stop: every animation and transition collapses to effectively
    instant when the user has asked for reduced motion. No per-component
    opt-out — this is enforced globally. */
