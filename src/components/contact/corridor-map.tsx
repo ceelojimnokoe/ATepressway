@@ -1,12 +1,10 @@
-import { contact } from "@/content/project";
-import { isPlaceholder } from "@/content/placeholder";
-
 /**
  * OpenStreetMap's own embed — free, no API key, no tracking, and licensed
  * for this use with the attribution the embed itself renders. It frames the
- * Accra–Tema corridor, NOT an office: `contact.address` is still an
- * unresolved placeholder, so dropping a pin would invent a location the
- * project has not published. The address panel states that plainly.
+ * Accra–Tema corridor, NOT an office: the project has no physical office
+ * address, so this map shows WHERE THE WORKS ARE. A "Project location" badge
+ * on the map, the heading and the caption all make that unambiguous, so it
+ * can never be mistaken for an office pin.
  *
  * Requires `frame-src https://www.openstreetmap.org` in the CSP
  * (next.config.ts) — the default policy is otherwise 'self' only.
@@ -16,15 +14,15 @@ const OSM_EMBED = `https://www.openstreetmap.org/export/embed.html?bbox=${encode
 const OSM_VIEW = "https://www.openstreetmap.org/#map=12/5.6400/-0.0850";
 
 export function CorridorMap() {
-  const address = contact.address;
-  const addressUnresolved = isPlaceholder(address);
-
   return (
     <div className="flex flex-col gap-4">
       <h2 className="text-heading-4 text-fg">Where the works are</h2>
 
       <figure className="flex flex-col gap-3">
         <div className="relative aspect-[4/3] w-full overflow-hidden border border-hairline bg-surface-sunk">
+          <span className="pointer-events-none absolute top-3 left-3 z-10 border border-hairline bg-surface-raised px-2.5 py-1 text-caption tracking-wide text-fg uppercase">
+            Project location
+          </span>
           <iframe
             src={OSM_EMBED}
             title="Map of the Accra–Tema corridor on OpenStreetMap"
@@ -35,8 +33,8 @@ export function CorridorMap() {
         </div>
         <figcaption className="flex flex-col gap-1 text-caption text-fg-faint">
           <span>
-            The Accra–Tema corridor between Tetteh Quarshie and Tema. This map shows the project
-            corridor, not an office location.
+            The Accra–Tema corridor between Tetteh Quarshie and Tema — where the construction work is
+            taking place. This map shows the project location, not an office.
           </span>
           <span>
             Map data ©{" "}
@@ -52,20 +50,6 @@ export function CorridorMap() {
           </span>
         </figcaption>
       </figure>
-
-      <div className="flex flex-col gap-1 border border-dashed border-hairline bg-surface-raised p-5">
-        <span className="text-caption text-fg-faint tracking-wide uppercase">
-          {addressUnresolved ? "To be confirmed" : "Office"}
-        </span>
-        {addressUnresolved ? (
-          <p className="text-small text-fg-muted">
-            A registered office address has not yet been published for the project. It will appear
-            here once confirmed.
-          </p>
-        ) : (
-          <p className="text-small text-fg">{address}</p>
-        )}
-      </div>
     </div>
   );
 }

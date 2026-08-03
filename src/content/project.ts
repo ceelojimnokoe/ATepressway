@@ -564,14 +564,15 @@ export interface ContactSocial {
 export interface Contact {
   readonly email: string | Placeholder<string>;
   readonly hotline: string | Placeholder<string>;
-  readonly address: string | Placeholder<string>;
   readonly social: ContactSocial;
 }
 
+// The project has no physical office, so there is deliberately no address
+// field — the corridor map on /contact shows where the works are, not an
+// office location.
 export const contact: Contact = {
   email: placeholder<string>("Public contact email", ""),
   hotline: placeholder<string>("Public hotline number", ""),
-  address: placeholder<string>("Registered / office address", ""),
   social: {
     twitter: placeholder<string>("X / Twitter handle", ""),
     facebook: placeholder<string>("Facebook handle", ""),

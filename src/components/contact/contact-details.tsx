@@ -5,7 +5,6 @@ import { ViewportReveal } from "@/components/motion/viewport-reveal";
 const DIRECT_FIELDS = [
   { label: "Email", value: contact.email },
   { label: "Hotline", value: contact.hotline },
-  { label: "Address", value: contact.address },
 ] as const;
 
 const SOCIAL_FIELDS = [

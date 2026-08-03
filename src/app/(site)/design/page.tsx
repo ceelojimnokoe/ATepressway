@@ -38,7 +38,7 @@ export default function DesignPage() {
   return (
     <>
       <PageHero
-        media="heroCorridorAerial"
+        media="atelJunctionRoundabout"
         title="Design & Infrastructure"
         subtitle={
           <>

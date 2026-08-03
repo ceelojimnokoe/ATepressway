@@ -48,10 +48,17 @@ export function Statistics() {
           />
         </div>
 
-        <StaggerContainer className="grid grid-cols-1 gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3" stagger={0.08} amount={0.2}>
+        <StaggerContainer
+          className="grid grid-cols-1 gap-x-16 gap-y-16 sm:grid-cols-2 lg:grid-cols-3"
+          stagger={0.08}
+          amount={0.2}
+        >
           {stats.map((stat) => (
-            <StaggerItem key={stat.label} className="flex flex-col gap-3 border-t border-hairline pt-5">
-              <div className="flex items-baseline gap-1.5">
+            <StaggerItem
+              key={stat.label}
+              className="flex flex-col items-center gap-3 border-t border-hairline pt-6 text-center"
+            >
+              <div className="flex items-baseline justify-center gap-1.5">
                 <AnimatedFigure
                   value={stat.value}
                   prefix={stat.prefix}

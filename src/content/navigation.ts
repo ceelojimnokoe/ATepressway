@@ -20,5 +20,6 @@ export const primaryNav: readonly NavItem[] = [
   { label: "Progress", href: "/progress" },
   { label: "Gallery", href: "/gallery" },
   { label: "Stakeholders", href: "/stakeholders" },
+  { label: "FAQ", href: "/faq" },
   { label: "Contact", href: "/contact" },
 ] as const;

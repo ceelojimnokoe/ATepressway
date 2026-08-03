@@ -1,20 +1,23 @@
-import Image from "next/image";
-import { stakeholderChain } from "@/content/project";
-import { mediaRegistry } from "@/content/media";
+import { stakeholders } from "@/content/project";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { StaggerContainer, StaggerItem } from "@/components/motion/stagger";
 import { Reveal } from "@/components/motion/reveal";
 import { CtaLink } from "@/components/ui/cta-link";
+import { StakeholderCard } from "@/components/stakeholders/stakeholder-card";
 
 /**
- * Delivery chain as a static grid (five parties — too few for a marquee).
- * Where a logo is supplied it sits on a light plate at its natural
- * proportions; otherwise the name stands in. Border-per-item, so an odd
- * count never leaves a filled gap cell.
+ * Delivery teaser: the two parties a visitor most needs to place — the
+ * Employer (ATEL, who commissions and oversees) and the EPC Contractor
+ * (Maripoma, who actually builds). It reuses the /stakeholders card so the
+ * styling stays identical, and links through to the full delivery chain.
+ * Keeping ATEL and Maripoma side by side makes the Employer/Contractor
+ * distinction — load-bearing for the site's credibility — unmissable.
  */
+const featured = [stakeholders.employer, stakeholders.epcContractor];
+
 export function Partners() {
   return (
-    <section className="border-b border-hairline bg-surface-raised">
+    <section className="border-b border-hairline bg-surface-sunk">
       <div className="mx-auto w-full max-w-5xl px-4 py-24 sm:px-8">
         <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-4">
@@ -32,33 +35,12 @@ export function Partners() {
           </Reveal>
         </div>
 
-        <StaggerContainer
-          className="grid grid-cols-1 border-t border-l border-hairline sm:grid-cols-2 lg:grid-cols-3"
-          stagger={0.06}
-        >
-          {stakeholderChain.map((party) => {
-            const logo = party.logo ? mediaRegistry[party.logo] : null;
-            return (
-              <StaggerItem
-                key={party.name}
-                className="flex flex-col gap-4 border-r border-b border-hairline bg-surface-raised p-6"
-              >
-                <span className="text-caption text-fg-faint tracking-wide uppercase">{party.role}</span>
-                {logo ? (
-                  <div className="flex h-12 w-fit max-w-full items-center bg-paper px-4">
-                    <Image
-                      src={logo.src}
-                      alt={logo.alt}
-                      width={logo.width}
-                      height={logo.height}
-                      className="h-7 w-auto max-w-full object-contain"
-                    />
-                  </div>
-                ) : null}
-                <span className="text-body text-fg">{party.name}</span>
-              </StaggerItem>
-            );
-          })}
+        <StaggerContainer className="grid grid-cols-1 gap-6 sm:grid-cols-2" stagger={0.08}>
+          {featured.map((party) => (
+            <StaggerItem key={party.name} className="h-full">
+              <StakeholderCard stakeholder={party} />
+            </StaggerItem>
+          ))}
         </StaggerContainer>
       </div>
     </section>

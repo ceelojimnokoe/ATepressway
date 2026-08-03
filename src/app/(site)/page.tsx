@@ -7,6 +7,7 @@ import { InterchangeProgress } from "@/components/home/interchange-progress";
 import { DesignPreview } from "@/components/home/design-preview";
 import { GalleryPreview } from "@/components/home/gallery-preview";
 import { Partners } from "@/components/home/partners";
+import { BoardPreview } from "@/components/home/board-preview";
 import { ClosingCta } from "@/components/home/closing-cta";
 import { JsonLd } from "@/components/seo/json-ld";
 import { corridorPlaceJsonLd } from "@/content/structured-data";
@@ -27,6 +28,7 @@ export default function Home() {
       <DesignPreview />
       <GalleryPreview />
       <Partners />
+      <BoardPreview />
       <ClosingCta />
     </>
   );

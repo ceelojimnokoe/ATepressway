@@ -51,6 +51,12 @@ export const routes = {
     description:
       "The delivery structure for the Accra–Tema Motorway and Extensions Project — Employer, funding agency, Employer's Representative, Employer's Representative's Agent and EPC contractor.",
   },
+  faq: {
+    path: "/faq",
+    title: `FAQ — ${BRAND}`,
+    description:
+      "Answers to common questions about the Accra–Tema Motorway and Extensions Project — the corridor, the works, funding, tolling and the delivery chain, drawn from the project record.",
+  },
   contact: {
     path: "/contact",
     title: `Contact — ${BRAND}`,

@@ -53,13 +53,13 @@ export function SiteHeader() {
           aria-label={`${organization.shortName} — home`}
           className="flex items-center gap-2.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-md border border-hairline bg-surface-sunk p-1">
+          <span className="flex h-12 w-12 items-center justify-center rounded-md border border-hairline bg-surface-raised p-1">
             <Image
               src={logoMark.src}
               alt=""
               width={logoMark.width}
               height={logoMark.height}
-              sizes="36px"
+              sizes="48px"
               className="h-full w-full object-contain"
             />
           </span>

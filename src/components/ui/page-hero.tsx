@@ -46,7 +46,7 @@ export function PageHero({ media, title, subtitle, priority = true, objectPositi
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-3 px-4 pt-20 pb-12 sm:px-8">
         <div className="flex max-w-[42rem] flex-col gap-3">
           <h1 className="hero-text-shadow text-heading-2 text-fg sm:text-heading-1">{title}</h1>
-          {subtitle && <div className="hero-text-shadow max-w-2xl text-body text-fg-muted">{subtitle}</div>}
+          {subtitle && <div className="hero-text-shadow max-w-2xl text-body text-fg">{subtitle}</div>}
         </div>
       </div>
     </section>

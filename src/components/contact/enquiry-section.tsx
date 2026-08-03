@@ -3,9 +3,10 @@ import { EnquiryForm } from "./enquiry-form";
 import { CorridorMap } from "./corridor-map";
 
 /**
- * Two columns below the FAQs: the enquiry form and the corridor map. Stacks
- * to a single column on small screens. The form itself is the only client
- * leaf here — this wrapper stays server.
+ * Two columns: the enquiry form and the corridor map (which shows the
+ * project location, not an office). Stacks to a single column on small
+ * screens. The form itself is the only client leaf here — this wrapper
+ * stays server.
  */
 export function EnquirySection() {
   return (
