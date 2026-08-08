@@ -1,4 +1,5 @@
-import { organization, sections, projectFacts } from "./project";
+import { organization, sections, projectFacts, contact } from "./project";
+import { isPlaceholder } from "./placeholder";
 import { mediaRegistry, isRenderable } from "./media";
 import { SITE_URL } from "@/lib/site";
 
@@ -17,6 +18,13 @@ export function organizationJsonLd() {
     alternateName: organization.shortName,
     description: organization.description,
     url: SITE_URL,
+    // Real contact details are surfaced here for search engines; each is
+    // omitted while it is still an unresolved placeholder, never shipped blank.
+    ...(isPlaceholder(contact.email) ? {} : { email: contact.email }),
+    ...(isPlaceholder(contact.phone) ? {} : { telephone: contact.phone }),
+    ...(isPlaceholder(contact.address)
+      ? {}
+      : { address: { "@type": "PostalAddress", streetAddress: contact.address, addressCountry: "GH" } }),
     // The confirmed ATEL logo from the registry; omitted only if it ever
     // becomes unrenderable, never pointed at an empty src.
     ...(isRenderable(mediaRegistry.logoAtel)

@@ -16,6 +16,17 @@ export default function ContactPage() {
         subtitle="Questions about the corridor, your route, or the works — and how to reach the project team."
       />
 
+      {/* Discoverable callout so suggestions/complaints aren't buried in the
+          form's dropdown. */}
+      <div className="border-b border-hairline bg-surface-raised">
+        <div className="mx-auto w-full max-w-5xl px-4 py-4 sm:px-8">
+          <p className="border-l-2 border-accent pl-4 text-small text-fg">
+            Have a suggestion or a concern? Use the form below and select{" "}
+            <span className="font-medium">“Suggestion or complaint.”</span>
+          </p>
+        </div>
+      </div>
+
       <ContactDetails />
       <EnquirySection />
     </>

@@ -132,6 +132,11 @@ export const organization = {
   shortName: "ATEL",
   description:
     "Official project information, design highlights and construction progress for the Accra–Tema Motorway and Extensions Project.",
+  // Footer "about" line — a plain-language statement of ATEL's role and
+  // ownership (client-confirmed copy, August 2026). Kept separate from
+  // `description` (which is the SEO/meta blurb) so the two can differ.
+  footerBlurb:
+    "The concessionaire responsible for the financing, development, operation, and maintenance of the Accra–Tema Motorway and Extensions Project, and currently wholly owned by the Ghana Infrastructure Investment Fund.",
 } as const;
 
 /**
@@ -452,9 +457,15 @@ export interface Progress {
  * placeholder — do not back-derive them from the per-structure figures.
  */
 export const progress: Progress = {
-  overallPercentComplete: 46,
-  asOf: "May 2026",
-  signOffSource: "Monthly Progress Report, May 2026",
+  // Overall raised to 50% per a Board of Directors update (August 2026) — a
+  // separate source from the May 2026 MPR, so it is attributed to the Board,
+  // not falsely to the MPR. NOTE: the per-structure workPackages below are
+  // unchanged and still cite "MPR May 2026"; they now sit beneath a higher
+  // overall from a different, later source. Left as-is pending confirmation
+  // of refreshed per-structure figures — do not back-derive them.
+  overallPercentComplete: 50,
+  asOf: "August 2026",
+  signOffSource: "Board of Directors update, August 2026",
   reportSeries: "Monthly Progress Report",
   sections: placeholder<readonly SectionProgress[]>("Per-section progress percentages", []),
   workPackages: [
@@ -563,16 +574,19 @@ export interface ContactSocial {
 
 export interface Contact {
   readonly email: string | Placeholder<string>;
-  readonly hotline: string | Placeholder<string>;
+  readonly phone: string | Placeholder<string>;
+  readonly address: string | Placeholder<string>;
   readonly social: ContactSocial;
 }
 
-// The project has no physical office, so there is deliberately no address
-// field — the corridor map on /contact shows where the works are, not an
-// office location.
+// Real, client-confirmed contact details (August 2026). The address is
+// textual contact information only: the /contact map continues to show the
+// project corridor, not an office pin. Social handles remain placeholders
+// until supplied.
 export const contact: Contact = {
-  email: placeholder<string>("Public contact email", ""),
-  hotline: placeholder<string>("Public hotline number", ""),
+  email: "info@atexpressway.com",
+  phone: "0332092401",
+  address: "157 Yantabri Road, Labone, Accra, Ghana",
   social: {
     twitter: placeholder<string>("X / Twitter handle", ""),
     facebook: placeholder<string>("Facebook handle", ""),
@@ -610,6 +624,20 @@ export interface TeamMember {
  */
 export const team: readonly TeamMember[] = [
   {
+    name: "Ing. Kwabena Bempong",
+    title: "Chief Resident Engineer",
+    photo: null,
+    initials: "KB",
+    bio: "Ing. Kwabena Bempong is a civil and road engineer with more than 30 years of design and construction-supervision experience. He holds an MSc with honours in Road and Pavement Engineering and is Chief Executive Officer of Associated Consultants Limited. His major assignments include the Pokuase Interchange, the Ofankor–Nsawam Road, the Ashaiman–Akosombo dual carriageway and the Accra–Tema Motorway expansion project, where he serves as Chief Resident Engineer.",
+    credentials: [
+      "MSc, Road and Pavement Engineering",
+      "Chief Executive Officer, Associated Consultants Limited",
+      "Immediate Past President, Ghana Institution of Engineering",
+      "President, Ghana Consulting Engineers Association",
+      "More than 30 years of engineering experience",
+    ],
+  },
+  {
     name: "Koffi Togbenou",
     title: "Resident Engineer — Bridges and Structures",
     photo: {
@@ -625,20 +653,6 @@ export const team: readonly TeamMember[] = [
       "Buipe, Yapei, Daboya and Nawuni Bridges",
       "Padma Multipurpose Bridge",
       "Guene–Ouenou Road",
-    ],
-  },
-  {
-    name: "Ing. Kwabena Bempong",
-    title: "Chief Resident Engineer",
-    photo: null,
-    initials: "KB",
-    bio: "Ing. Kwabena Bempong is a civil and road engineer with more than 30 years of design and construction-supervision experience. He holds an MSc with honours in Road and Pavement Engineering and is Chief Executive Officer of Associated Consultants Limited. His major assignments include the Pokuase Interchange, the Ofankor–Nsawam Road, the Ashaiman–Akosombo dual carriageway and the Accra–Tema Motorway expansion project, where he serves as Chief Resident Engineer.",
-    credentials: [
-      "MSc, Road and Pavement Engineering",
-      "Chief Executive Officer, Associated Consultants Limited",
-      "Immediate Past President, Ghana Institution of Engineering",
-      "President, Ghana Consulting Engineers Association",
-      "More than 30 years of engineering experience",
     ],
   },
 ] as const;

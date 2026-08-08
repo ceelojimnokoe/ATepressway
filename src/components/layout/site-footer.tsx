@@ -22,18 +22,21 @@ export function SiteFooter() {
     <footer data-theme="dark" className="border-t border-hairline bg-surface text-fg">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-12 sm:px-8">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex max-w-sm flex-col gap-2">
-            {/* next/image, not a raw <img>: the raw tag skipped resizing and
-                modern-format conversion entirely. */}
-            <Image
-              src={logoMark.src}
-              alt={logoMark.alt}
-              width={logoMark.width}
-              height={logoMark.height}
-              sizes="96px"
-              className="h-8 w-auto object-contain"
-            />
-            <p className="text-small text-fg-muted">{organization.description}</p>
+          <div className="flex max-w-sm flex-col gap-4">
+            {/* Logo on a fixed light plate (bg-paper) so the mark reads on the
+                dark footer, and noticeably larger than before. next/image,
+                not a raw <img>, for resizing + modern-format conversion. */}
+            <span className="flex h-16 w-16 items-center justify-center rounded-md bg-paper p-1.5">
+              <Image
+                src={logoMark.src}
+                alt={logoMark.alt}
+                width={logoMark.width}
+                height={logoMark.height}
+                sizes="64px"
+                className="h-full w-full object-contain"
+              />
+            </span>
+            <p className="text-small text-fg-muted">{organization.footerBlurb}</p>
           </div>
 
           <nav aria-label="Footer">
@@ -61,6 +64,8 @@ export function SiteFooter() {
 
         <div className="flex flex-col gap-2 border-t border-hairline pt-6 text-caption text-fg-faint">
           <PlaceholderNotice value={contact.email}>{(value) => <span>{value}</span>}</PlaceholderNotice>
+          <PlaceholderNotice value={contact.phone}>{(value) => <span>{value}</span>}</PlaceholderNotice>
+          <PlaceholderNotice value={contact.address}>{(value) => <span>{value}</span>}</PlaceholderNotice>
           <span>
             © {year} {organization.name}
           </span>

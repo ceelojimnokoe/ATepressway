@@ -165,8 +165,8 @@ export default function StyleguidePage() {
               realLabel="Real value"
               realValue={stakeholders.epcContractor.name}
               realPath="stakeholders.epcContractor.name"
-              unresolvedValue={contact.email}
-              unresolvedPath="contact.email"
+              unresolvedValue={contact.social.twitter}
+              unresolvedPath="contact.social.twitter"
             />
           </Section>
         </ViewportReveal>

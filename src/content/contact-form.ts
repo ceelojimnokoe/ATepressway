@@ -12,6 +12,7 @@ export interface EnquiryType {
 export const enquiryTypes: readonly EnquiryType[] = [
   { value: "general", label: "General" },
   { value: "safety", label: "Report a road or safety concern" },
+  { value: "suggestion-complaint", label: "Suggestion or complaint" },
   { value: "media", label: "Media & press" },
   { value: "business", label: "Business & contractor" },
 ] as const;

@@ -68,7 +68,7 @@ export default function ProgressPage() {
           <div className="flex flex-col gap-3">
             <span className="text-caption text-fg-faint tracking-wide uppercase">Overall physical progress</span>
             <AnimatedFigure value={overallPct} suffix="%" signal className="text-figure" />
-            <span className="text-small text-fg-muted">As of {isPlaceholder(progress.asOf) ? "May 2026" : progress.asOf} · {progress.reportSeries}</span>
+            <span className="text-small text-fg-muted">Source: {isPlaceholder(progress.signOffSource) ? `${progress.reportSeries}, ${isPlaceholder(progress.asOf) ? "May 2026" : progress.asOf}` : progress.signOffSource}</span>
           </div>
 
           <DownloadSummaryButton />
