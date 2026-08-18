@@ -32,7 +32,7 @@ export default function StakeholdersPage() {
           <h2 className="text-heading-4 text-fg">Project Team</h2>
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {team.map((member) => (
-              <TeamMemberCard key={member.name} member={member} />
+              <TeamMemberCard key={member.name} member={member} variant="feature" />
             ))}
           </div>
         </ViewportReveal>
@@ -47,9 +47,9 @@ export default function StakeholdersPage() {
               published once confirmed by the stakeholders.
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {boardMembers.map((member, i) => (
-              <BoardMemberCard key={`board-seat-${i + 1}`} member={member} />
+              <BoardMemberCard key={`board-seat-${i + 1}`} member={member} variant="feature" />
             ))}
           </div>
         </ViewportReveal>

@@ -26,13 +26,13 @@ export function SiteFooter() {
             {/* Logo on a fixed light plate (bg-paper) so the mark reads on the
                 dark footer, and noticeably larger than before. next/image,
                 not a raw <img>, for resizing + modern-format conversion. */}
-            <span className="flex h-16 w-16 items-center justify-center rounded-md bg-paper p-1.5">
+            <span className="flex h-32 w-32 items-center justify-center rounded-md bg-paper p-2">
               <Image
                 src={logoMark.src}
                 alt={logoMark.alt}
                 width={logoMark.width}
                 height={logoMark.height}
-                sizes="64px"
+                sizes="128px"
                 className="h-full w-full object-contain"
               />
             </span>

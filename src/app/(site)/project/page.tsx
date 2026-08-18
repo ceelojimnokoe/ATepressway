@@ -3,6 +3,7 @@ import Image from "next/image";
 import { PageHero } from "@/components/ui/page-hero";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import { JsonLd } from "@/components/seo/json-ld";
+import { CorridorExplorer } from "@/components/corridor/corridor-explorer";
 import { Figure } from "@/components/ui/figure";
 import { sections, projectFacts, scopeOfWorks } from "@/content/project";
 import { mediaRegistry } from "@/content/media";
@@ -57,6 +58,23 @@ export default function ProjectPage() {
           </>
         }
       />
+
+      {/* Interactive corridor explorer — ADDITIVE. The detailed sections below
+          it (the three-section grid, why-reconstruction, scope) all remain as
+          the full/fallback view. */}
+      <section className="border-b border-hairline bg-surface-raised">
+        <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
+          <div className="flex flex-col gap-3">
+            <h2 className="text-heading-4 text-fg">Explore the corridor</h2>
+            <p className="max-w-3xl text-body text-fg-muted">
+              Move along the {projectFacts.corridorLengthKm} km corridor to see its three sections,
+              their boundaries and the interchanges. Select any point for its detail; interchange
+              positions are approximate, drawn from reported chainage and pending confirmation.
+            </p>
+          </div>
+          <CorridorExplorer />
+        </ViewportReveal>
+      </section>
 
       {/* The three design sections */}
       <section className="border-b border-hairline bg-surface">
