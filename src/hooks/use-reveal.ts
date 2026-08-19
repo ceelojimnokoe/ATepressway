@@ -83,7 +83,16 @@ export function useReveal<T extends HTMLElement = HTMLDivElement>(options: UseRe
             }
           }
         },
-        { threshold: amount, rootMargin },
+        // threshold 0, NOT `amount`: a section taller than (viewport / amount)
+        // can never reach `amount` (e.g. 30%) visibility, so with a positive
+        // threshold the callback never fires and the element stays armed-hidden
+        // forever. This was the mobile bug — tall sections (esp. the Board of
+        // Directors, one column and very tall on a phone) never revealed unless
+        // the page happened to load already scrolled to them. Firing on any
+        // intersection (threshold 0) + the rootMargin below triggers reliably at
+        // every height; `rootMargin`'s -8% still holds the entrance until the
+        // element is a little into view. `amount` is kept for API compatibility.
+        { threshold: 0, rootMargin },
       );
       observer.observe(el);
     }

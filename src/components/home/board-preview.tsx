@@ -48,7 +48,7 @@ export function BoardPreview() {
 
         {/* Two seats per page; the same cards keep their grid slot as pages
             change so nothing below jumps. */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
+        <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
           {shown.map((member, i) => (
             <BoardMemberCard key={`board-seat-${start + i + 1}`} member={member} />
           ))}
@@ -56,8 +56,8 @@ export function BoardPreview() {
 
         <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="max-w-xl text-small text-fg-faint">
-            Seats are reserved; names, positions and profiles are provisional and will be published
-            once confirmed by the stakeholders.
+            A preview of the Board of Directors. See every member and their full profile on the
+            stakeholders page.
           </p>
           {pageCount > 1 && (
             <div className="flex items-center gap-3">

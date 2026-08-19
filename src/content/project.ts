@@ -658,53 +658,147 @@ export const team: readonly TeamMember[] = [
 ] as const;
 
 /**
- * Mirrors {@link TeamMember} so the board renders through the same card
- * layout as the project team. The identity fields are Placeholders rather
- * than plain strings: nothing here is confirmed, so a naive render can't
- * ship an invented name or title.
+ * Board of Directors. Data-driven so the card is written once and every
+ * member is one record. `bio` is an array of paragraphs. Where a portrait
+ * has not been supplied, `photo` is null and the card renders an initials
+ * avatar — never a fake photo and never a broken image. Confirmed members
+ * carry plain strings; the two still-unconfirmed seats keep their supplied
+ * portraits but wrap the identity fields in placeholder() so the card shows
+ * an explicit "to be confirmed" state. Adding a photo later is a one-line
+ * change (set `photo`).
  */
 export interface BoardMember {
   readonly name: string | Placeholder<string>;
-  readonly title: string | Placeholder<string>;
+  /** Contractual role — "Board Member", or "Chairman, Board of Directors". */
+  readonly role: string;
   /** Supplied portrait, or null to fall back to an initials avatar. */
   readonly photo: ImageAsset | null;
   readonly initials: string;
-  readonly bio: string | Placeholder<string>;
-  readonly credentials: readonly string[];
+  /** Biography as paragraphs. */
+  readonly bio: readonly string[] | Placeholder<readonly string[]>;
+  /** Chair gets a subtle badge and leads the list. */
+  readonly isChairman?: boolean;
 }
 
 /**
- * ⚠ PLACEHOLDER SEATS — the five board portraits are real, client-supplied
- * files, but no name, position or biography has been confirmed. Every
- * identity field is wrapped in placeholder() so the cards render an
- * explicit "to be confirmed" state and the layout is reserved. Filling
- * these in once the client approves is a content-only change: swap each
- * placeholder() for the confirmed string, nothing else moves.
- *
- * The photo `src` values use the exact on-disk filenames (note the
- * uppercase .JPEG on board-member2) so they resolve on case-sensitive hosts.
+ * A still-unconfirmed seat: the portrait on file is real, but no name or
+ * biography has been confirmed, so the identity fields render an explicit
+ * "to be confirmed" state. The photo `src` uses the exact on-disk filename
+ * (note the uppercase .JPEG on board-member2) so it resolves on
+ * case-sensitive hosts.
  */
-function boardSeat(seatNumber: number, photoSrc: string): BoardMember {
+function reservedSeat(seatNumber: number, photoSrc: string): BoardMember {
   const seat = String(seatNumber).padStart(2, "0");
   return {
     name: placeholder<string>(`Board member ${seat} — full name`, `Board Member ${seat}`),
-    title: placeholder<string>(`Board member ${seat} — position`, "Position to be confirmed"),
+    role: "Board Member",
     photo: { src: photoSrc, alt: "Board member portrait — profile to be confirmed" },
     initials: seat,
-    bio: placeholder<string>(
-      `Board member ${seat} — profile`,
+    bio: placeholder<readonly string[]>(`Board member ${seat} — profile`, [
       "Official board member profile information will be added following stakeholder approval.",
-    ),
-    credentials: [],
+    ]),
   };
 }
 
 export const boardMembers: readonly BoardMember[] = [
-  boardSeat(1, "/images/board-member1.jpeg"),
-  boardSeat(2, "/images/board-member2.JPEG"),
-  boardSeat(3, "/images/board-member3.jpeg"),
-  boardSeat(4, "/images/board-member4.jpeg"),
-  boardSeat(5, "/images/board-member5.jpeg"),
+  {
+    name: "Mr. Samuel Kwasi Akuoku",
+    role: "Chairman, Board of Directors",
+    isChairman: true,
+    photo: null,
+    initials: "SA",
+    bio: [
+      "Mr. Samuel Kwasi Akuoku (Board Chairman) is an accomplished infrastructure and governance professional with extensive experience in the development, management and oversight of strategic public infrastructure projects in Ghana. As Chairman of the Board of A.T. Expressway Ltd, he provides strategic leadership and governance oversight for the implementation of the Accra–Tema Motorway and Extensions Project, one of Ghana's most significant transport infrastructure initiatives.",
+      "With a distinguished career spanning the public infrastructure sector, Mr. Akuoku has contributed significantly to the planning, execution and supervision of major road infrastructure programmes. His leadership is driven by a strong commitment to transparency, operational excellence, prudent corporate governance and sustainable infrastructure financing.",
+      "As Board Chairman, he works closely with Management and key stakeholders to ensure that A.T. Expressway Ltd delivers a modern, efficient and safe motorway network that supports national economic growth, regional connectivity and improved mobility.",
+    ],
+  },
+  {
+    name: "Mr. Louis Harrison",
+    role: "Board Member",
+    photo: {
+      src: "/images/board-member5.jpeg",
+      alt: "Portrait of Mr. Louis Harrison, Board Member of A.T. Expressway Ltd",
+    },
+    initials: "LH",
+    bio: [
+      "Louis is an infrastructure finance and investment professional with over 15 years' experience in project finance, business planning and strategy, and capital raising. To date, Louis has managed deal flow in Ghana in excess of US$2 billion in energy, downstream oil & gas, and transport infrastructure as well as waste, water & sanitation, and healthcare. Louis currently works with the Ghana Infrastructure Investment Fund as its Chief Investment Officer.",
+      "Prior to that, he was the Head of Corporate Finance & Advisory at Jospong Group of Companies (Ghana's largest holding company) with responsibilities for developing a pipeline of good quality investment opportunities, evaluating, structuring, negotiating, and closing new transactions, portfolio restructurings, equity sales, etc.",
+      "He previously worked for Merson Capital Limited as the Transaction Advisory Manager where he executed corporate strategy in respect of deal flow and capital raising. At Merson, he was a transaction advisor to TAG Thermal Plant, Bulk Oil Storage & Transport Company Limited (BOST), and Tema Oil Refinery (TOR) in their capital investment programs.",
+      "Other positions held include Head of Corporate Finance of KBL Venture Capital (a PE Fund), and Analyst at Main Investments Limited.",
+      "He holds an MPhil and Bachelor of Arts in Economics with specializations in Corporate Finance, Banking, and Taxation from the University of Ghana, and is a certified investment professional by the Securities & Exchange Commission of Ghana.",
+    ],
+  },
+  {
+    name: "Hon. Theresa Lardi Awuni",
+    role: "Board Member",
+    photo: {
+      src: "/images/board-member4.jpeg",
+      alt: "Portrait of Hon. Theresa Lardi Awuni, Board Member of A.T. Expressway Ltd",
+    },
+    initials: "TA",
+    bio: [
+      "Hon. Theresa Lardi Awuni is a Member of Parliament for Okaikwe North and an experienced public administrator with a passion for inclusive development, governance and public service. She serves on the Board of the Ghana Infrastructure Investment Fund (GIIF), contributing to national efforts to mobilise investment for transformative infrastructure projects.",
+      "She holds a first degree in Project Management from the Ghana Institute of Management and Public Administration (GIMPA) and a Masters in International Relations from Liverpool John Moores University.",
+      "As a Board Member of A.T. Expressway Ltd, Hon. Awuni brings valuable perspectives on public policy, stakeholder engagement and sustainable development.",
+      "Her commitment to accountability and inclusive decision-making supports the Board's objective of delivering world-class road infrastructure that benefits communities and strengthens Ghana's economy.",
+    ],
+  },
+  {
+    name: "Ms. Victoria Addotey",
+    role: "Board Member",
+    photo: {
+      src: "/images/board-member3.jpeg",
+      alt: "Portrait of Ms. Victoria Addotey, Board Member of A.T. Expressway Ltd",
+    },
+    initials: "VA",
+    bio: [
+      "Victoria Adotey is a seasoned lawyer and cybersecurity legislation expert with a distinguished career in law and public service. She holds a Bachelor of Business Administration and a Law Degree from the Ghana Institute of Management and Public Administration (GIMPA), an LL.B from the Ghana School of Law, and an LL.M in International Arbitration from the University of Law, UK.",
+      "Currently serving as a prosecutor at the Office of the Attorney General in Ghana, Victoria has a decade of experience and a strong track record of winning high-profile cases for the government. She has also worked on complex international arbitration cases.",
+      "Victoria also founded an NGO to advocate for stronger laws against cybercrime, especially Child Sexual Abuse Material (CSAM), in addition to her work in criminal prosecution.",
+      "She played a key role in developing the Legislative Instrument for the Cybersecurity Act of Ghana 2020 (Act 1038) while on secondment at the Cybersecurity Authority of Ghana. She has been instrumental in shaping Ghana's cybersecurity landscape and has represented Ghana at various international cybersecurity conferences.",
+      "With her extensive academic credentials, professional experience, and commitment to public service, Victoria Adotey is a respected figure in Ghana's legal and cybersecurity communities.",
+    ],
+  },
+  {
+    name: "Mr. Patrick Nomo",
+    role: "Board Member",
+    photo: null,
+    initials: "PN",
+    bio: [
+      "Mr. Patrick Nomo is a seasoned public finance and public sector management expert with extensive experience in economic policy, public financial management, institutional development and governance. He currently serves as the Chief Director of Ghana's Ministry of Finance, where he provides strategic administrative leadership and supports the formulation and implementation of national fiscal policies.",
+      "As a member of the Board of A.T. Expressway Ltd, Mr. Nomo contributes valuable expertise in financial governance, public investment management and institutional accountability. His experience in managing complex government programmes strengthens the Board's oversight of infrastructure financing, risk management and long-term sustainability.",
+      "His contributions continue to support sound decision-making aimed at delivering strategic infrastructure investments that enhance Ghana's socio-economic development.",
+    ],
+  },
+  {
+    name: "Hon. Dr. Eric Afful",
+    role: "Board Member",
+    photo: null,
+    initials: "EA",
+    bio: [
+      "Hon. Dr. Eric Afful is a Member of Parliament for Amenfi West and an experienced public servant with a strong interest in national development, governance and infrastructure. He also serves on the Board of the Ghana Infrastructure Investment Fund (GIIF), reflecting his involvement in promoting strategic national infrastructure investment.",
+      "He holds a first degree in Social Science from the University of Cape Coast (UCC) and a Masters in Human Resource Development from the same university. He also has a Masters in Economic Planning Development from the Kwame Nkrumah University of Science and Technology.",
+      "Hon. Afful is also a certified Chartered Economist and has a Ph.D in Human Letters from the Elohim Theological Seminary College, United States of America.",
+      "As a Board Member of A.T. Expressway Ltd, Dr. Afful provides strategic guidance on policy alignment, stakeholder engagement and public sector governance. His understanding of legislative processes and national development priorities contributes to the effective oversight of the Accra–Tema Motorway and Extensions Project.",
+      "He is committed to supporting infrastructure initiatives that improve transportation, stimulate economic growth and create lasting value for Ghana.",
+    ],
+  },
+  {
+    name: "Surv. Mallam Issah Ishak",
+    role: "Board Member",
+    photo: null,
+    initials: "MI",
+    bio: [
+      "Surv. Mallam Issah Ishak is an accomplished surveying and highway engineering professional with decades of experience in Ghana's road infrastructure sector. Until his appointment, he served as the Director of Quantity Surveying at the Authority, and is a highly experienced and skilled Quantity Surveyor with a proven track record in Project Management, Cost Engineering, Cost Control, Infrastructural Development and Procurement.",
+      "As a value Engineer, he brings a wealth of experience and expertise in maximizing value by balancing cost and function. We are confident that under his guidance, the Authority will continue to advance the development and maintenance of our nation's trunk road network, ensuring safety and efficiency for all road users.",
+      "He currently serves as the Acting Chief Executive of the Ghana Highway Authority (GHA), where he provides strategic leadership for the planning, development, maintenance and management of the country's trunk road network.",
+      "His extensive technical expertise in highway development, engineering management and infrastructure planning positions him as a valuable member of the Board of A.T. Expressway Ltd. He contributes strategic guidance on engineering standards, project delivery, road asset management and operational excellence.",
+      "His commitment to quality infrastructure development continues to support the delivery of safe, resilient and sustainable road networks across Ghana.",
+    ],
+  },
+  reservedSeat(1, "/images/board-member1.jpeg"),
+  reservedSeat(2, "/images/board-member2.JPEG"),
 ];
 
 // ---------------------------------------------------------------------------

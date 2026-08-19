@@ -193,71 +193,101 @@ export function CorridorExplorer() {
 
   return (
     <div id={ROOT_ID} className="flex flex-col gap-8">
-      {/* --- The proportional bar with clickable demarcations --- */}
-      <div className="flex flex-col gap-2">
-        <div className="flex items-baseline justify-between text-caption text-fg-muted">
-          <span>{segments[0]?.displayFrom}</span>
-          <span>{segments[segments.length - 1]?.displayTo}</span>
+      {/* --- The proportional gauge with clickable demarcations. It sits in a
+              dark groove (data-theme="dark") so the lime active state, the
+              light ticks and the handle all read at full contrast against a
+              near-black track rather than on the pale page surface. --- */}
+      <div className="flex flex-col gap-3">
+        <div className="flex items-baseline justify-between">
+          <span className="text-small font-medium text-fg">{segments[0]?.displayFrom}</span>
+          <span className="text-small font-medium text-fg">{segments[segments.length - 1]?.displayTo}</span>
         </div>
 
-        <div
-          ref={trackRef}
-          onPointerDown={onPointerDown}
-          onPointerMove={onPointerMove}
-          onPointerUp={onPointerUp}
-          onPointerCancel={onPointerUp}
-          className="relative h-4 w-full touch-none select-none"
-        >
-          {/* Segments — proportional to real km. */}
-          <div className="absolute inset-0 flex overflow-hidden bg-hairline">
-            {segments.map((segment, index) => (
-              <div
-                key={segment.section.id}
-                style={{ flexGrow: segment.section.lengthKm, flexBasis: 0 }}
-                className={cn("h-full bg-surface-sunk", index > 0 && "border-l border-hairline")}
-              />
-            ))}
-          </div>
+        <div data-theme="dark" className="flex flex-col gap-3 overflow-x-clip border border-hairline bg-surface p-4 sm:p-5">
+          <div
+            ref={trackRef}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerUp}
+            className="relative h-6 w-full touch-none select-none sm:h-7"
+          >
+            {/* Segments — proportional to real km, clearly divided. */}
+            <div className="absolute inset-0 flex overflow-hidden bg-surface-sunk">
+              {segments.map((segment, index) => (
+                <div
+                  key={segment.section.id}
+                  style={{ flexGrow: segment.section.lengthKm, flexBasis: 0 }}
+                  className={cn("h-full bg-surface-raised", index > 0 && "border-l-2 border-hairline")}
+                />
+              ))}
+            </div>
 
-          {/* Demarcation markers. Boundaries are solid ticks; interchanges are
-              hollow (approximate). The active one gets the lime signal. */}
-          {points
-            .filter((p) => p.kind !== "endpoint")
-            .map((p) => {
-              const isActive = p.id === active.id;
-              return (
-                <button
-                  key={p.id}
-                  type="button"
-                  onClick={() => select(p)}
-                  aria-label={`${p.name}${p.approximate ? " (approximate position)" : ""}`}
-                  aria-pressed={isActive}
-                  style={{ left: `${kmToPercent(p.km, totalKm)}%` }}
-                  className="group absolute top-1/2 z-10 flex h-11 w-6 -translate-x-1/2 -translate-y-1/2 items-center justify-center focus:outline-none"
-                >
-                  <span
-                    className={cn(
-                      "block h-6 w-[3px] rounded-full transition-colors",
-                      p.kind === "interchange"
-                        ? cn("border border-accent", isActive ? "bg-lime" : "bg-surface group-hover:bg-lime")
-                        : cn(isActive ? "bg-lime" : "bg-fg-muted group-hover:bg-fg"),
-                      "group-focus-visible:ring-2 group-focus-visible:ring-accent group-focus-visible:ring-offset-2 group-focus-visible:ring-offset-surface",
+            {/* Markers: section boundaries are bright ticks, interchanges are
+                circles (hollow = approximate position). Hover/focus enlarge
+                them; the active point turns solid lime. */}
+            {points
+              .filter((p) => p.kind !== "endpoint")
+              .map((p) => {
+                const isActive = p.id === active.id;
+                const isInterchange = p.kind === "interchange";
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => select(p)}
+                    aria-label={`${p.name}${p.approximate ? " (approximate position)" : ""}`}
+                    aria-pressed={isActive}
+                    style={{ left: `${kmToPercent(p.km, totalKm)}%` }}
+                    className="group absolute top-1/2 z-10 flex h-11 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-surface"
+                  >
+                    {isInterchange ? (
+                      <span
+                        className={cn(
+                          "block rounded-full border-2 transition-all",
+                          isActive
+                            ? "h-4 w-4 border-accent bg-lime"
+                            : "h-3.5 w-3.5 border-fg bg-surface group-hover:h-4 group-hover:w-4 group-hover:border-accent group-hover:bg-lime",
+                        )}
+                      />
+                    ) : (
+                      <span
+                        className={cn(
+                          "block h-full w-[3px] rounded-full transition-colors",
+                          isActive ? "bg-lime" : "bg-fg group-hover:bg-lime",
+                        )}
+                      />
                     )}
-                  />
-                </button>
-              );
-            })}
+                  </button>
+                );
+              })}
 
-          {/* Drag-spring handle — reuses the scrubber pattern. */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-full">
-            <div className="absolute inset-y-0 left-0 w-full" style={{ transform: `translateX(${handlePercent}%)` }}>
-              <div
-                aria-hidden="true"
-                className="absolute top-1/2 left-0 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
-              >
-                <span className="block h-5 w-5 rounded-full border-2 border-accent bg-surface" />
+            {/* Drag-spring handle — the selected-position indicator, a bold
+                lime ring that reads clearly against the dark track. */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-full">
+              <div className="absolute inset-y-0 left-0 w-full" style={{ transform: `translateX(${handlePercent}%)` }}>
+                <div
+                  aria-hidden="true"
+                  className="absolute top-1/2 left-0 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+                >
+                  <span className="block h-6 w-6 rounded-full border-[3px] border-accent bg-surface ring-2 ring-accent/30" />
+                </div>
               </div>
             </div>
+          </div>
+
+          {/* Section road labels, aligned to each segment's real length, so the
+              three sections are legible at a glance. */}
+          <div className="flex">
+            {segments.map((segment) => (
+              <span
+                key={segment.section.id}
+                style={{ flexGrow: segment.section.lengthKm, flexBasis: 0 }}
+                className="text-center text-caption text-fg-muted"
+              >
+                {segment.section.road}
+              </span>
+            ))}
           </div>
         </div>
 
@@ -334,7 +364,7 @@ export function CorridorExplorer() {
 
       {/* --- Tap-through card strip: the mobile browse (horizontal snap) and a
               quick nav on desktop. Every point is a full-size tap target. --- */}
-      <div className="-mx-4 flex snap-x snap-mandatory gap-3 overflow-x-auto px-4 pb-2 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0">
+      <div className="flex snap-x gap-3 overflow-x-auto pb-2 sm:flex-wrap sm:overflow-visible sm:pb-0">
         {points.map((p) => {
           const isActive = p.id === active.id;
           return (

@@ -43,11 +43,12 @@ export default function StakeholdersPage() {
           <div className="flex flex-col gap-2">
             <h2 className="text-heading-4 text-fg">Board of Directors</h2>
             <p className="max-w-2xl text-small text-fg-faint">
-              Seats are reserved below. Names, positions and profiles are provisional and will be
-              published once confirmed by the stakeholders.
+              The Board provides strategic leadership and governance oversight for the project.
+              Profiles are shown as confirmed; any remaining seats will be updated as information is
+              provided. Select “View profile” for each member&rsquo;s full biography.
             </p>
           </div>
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {boardMembers.map((member, i) => (
               <BoardMemberCard key={`board-seat-${i + 1}`} member={member} variant="feature" />
             ))}
