@@ -1,9 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
-
-const STORAGE_KEY = "atel-corridor-coach-v1";
 
 const STEPS = [
   { title: "Drag the handle", body: "Slide it along the corridor to read any point by kilometre." },
@@ -52,73 +50,33 @@ function MiniDemo() {
 }
 
 /**
- * First-use coachmark for the corridor explorer. Shows once per visitor when
- * the section is first reached (localStorage-guarded, SSR-safe — the check
- * runs only in an effect), with a persistent "How it works" control to replay
- * it. Under prefers-reduced-motion it drops the animated demo and shows the
- * same information as a plain labelled list of steps.
+ * Corridor explorer walkthrough. It NEVER appears on its own — it opens only
+ * when the visitor clicks the "How it works" control, and closes on dismiss
+ * (no first-visit auto-show, no "seen it" storage). Under
+ * prefers-reduced-motion it drops the animated demo and shows the same
+ * information as a plain labelled list of steps.
  */
 export function CorridorTutorial() {
   const reduced = useReducedMotion();
   const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  // First-visit auto-show, gated on reaching the section. Every storage
-  // access is wrapped so a private window / blocked storage can't throw.
-  useEffect(() => {
-    let seen = false;
-    try {
-      seen = window.localStorage.getItem(STORAGE_KEY) === "1";
-    } catch {
-      seen = false;
-    }
-    if (seen) return;
-
-    const el = rootRef.current;
-    if (!el || typeof IntersectionObserver === "undefined") {
-      setOpen(true);
-      return;
-    }
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            setOpen(true);
-            observer.disconnect();
-          }
-        }
-      },
-      { threshold: 0, rootMargin: "0px 0px -25% 0px" },
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   // Esc closes the panel while it's open.
   useEffect(() => {
     if (!open) return;
     function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") dismiss();
+      if (event.key === "Escape") setOpen(false);
     }
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [open]);
 
-  function dismiss() {
-    setOpen(false);
-    try {
-      window.localStorage.setItem(STORAGE_KEY, "1");
-    } catch {
-      /* storage unavailable — the coachmark simply shows again next visit */
-    }
-  }
-
   return (
-    <div ref={rootRef} className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3">
       <div className="flex justify-end">
         <button
           type="button"
-          onClick={() => setOpen(true)}
+          onClick={() => setOpen((v) => !v)}
+          aria-expanded={open}
           className="flex items-center gap-1.5 border border-hairline px-3 py-1.5 text-caption text-fg-muted uppercase tracking-wide transition-colors hover:border-accent hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
         >
           <span aria-hidden="true" className="figure">?</span> How it works
@@ -135,7 +93,7 @@ export function CorridorTutorial() {
             <h3 className="text-heading-4 text-fg">How to explore the corridor</h3>
             <button
               type="button"
-              onClick={dismiss}
+              onClick={() => setOpen(false)}
               aria-label="Dismiss"
               className="figure -mt-1 shrink-0 px-2 text-body text-fg-muted hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
             >
@@ -162,7 +120,7 @@ export function CorridorTutorial() {
           <div>
             <button
               type="button"
-              onClick={dismiss}
+              onClick={() => setOpen(false)}
               className="border border-accent bg-lime px-4 py-2 text-caption tracking-wide text-void uppercase focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               Got it

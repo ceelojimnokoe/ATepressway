@@ -1,24 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { boardMembers } from "@/content/project";
+import { team } from "@/content/project";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { Reveal } from "@/components/motion/reveal";
 import { CtaLink } from "@/components/ui/cta-link";
-import { BoardMemberCard } from "@/components/stakeholders/board-member-card";
+import { TeamMemberCard } from "@/components/stakeholders/team-member-card";
 
 const PER_PAGE = 2;
 
 /**
- * Management teaser on the home page. Shows a couple of board members at a
- * time and pages through the rest IN PLACE (next/prev), so a visitor can see
- * the whole board without leaving the page; a "View all" link still leads to
- * the full list on /stakeholders. It reuses the Board of Directors data and
- * BoardMemberCard, so every seat renders the same honest "to be confirmed"
- * state — no name is fabricated.
+ * Project Team teaser on the home page — the project professionals (Ing.
+ * Kwadwo Bempong and Koffi Togbenou), drawn from the Team dataset. It reuses
+ * the same paginated slider mechanism as before (with two members they sit on
+ * a single page) and TeamMemberCard. The full Project Team and Board of
+ * Directors sections live, unchanged, on /stakeholders.
  */
-export function BoardPreview() {
-  const members = boardMembers;
+export function TeamPreview() {
+  const members = team;
   const pageCount = Math.ceil(members.length / PER_PAGE);
   const [page, setPage] = useState(0);
 
@@ -32,32 +31,32 @@ export function BoardPreview() {
       <div className="mx-auto w-full max-w-5xl px-4 py-24 sm:px-8">
         <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-4">
-            <span className="figure text-caption text-accent tracking-[0.2em] uppercase">08 — Management</span>
+            <span className="figure text-caption text-accent tracking-[0.2em] uppercase">08 — People</span>
             <TextReveal
               as="h2"
-              text="Board of Directors"
+              text="Project Team"
               className="text-heading-3 text-fg sm:text-heading-2"
             />
           </div>
           <Reveal direction="up" distance={12}>
-            <CtaLink href="/stakeholders#board" variant="secondary">
-              View all
+            <CtaLink href="/stakeholders" variant="secondary">
+              All stakeholders
             </CtaLink>
           </Reveal>
         </div>
 
-        {/* Two seats per page; the same cards keep their grid slot as pages
-            change so nothing below jumps. */}
+        {/* Same slider grid; the cards keep their slot as pages change so
+            nothing below jumps. */}
         <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2">
-          {shown.map((member, i) => (
-            <BoardMemberCard key={`board-seat-${start + i + 1}`} member={member} />
+          {shown.map((member) => (
+            <TeamMemberCard key={member.name} member={member} />
           ))}
         </div>
 
         <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="max-w-xl text-small text-fg-faint">
-            A preview of the Board of Directors. See every member and their full profile on the
-            stakeholders page.
+            The project professionals leading delivery. See the full team and the Board of Directors
+            on the stakeholders page.
           </p>
           {pageCount > 1 && (
             <div className="flex items-center gap-3">

@@ -67,16 +67,9 @@ export function BoardMemberCard({
           <div className="relative aspect-square w-full overflow-hidden border border-hairline bg-surface-sunk">
             {avatar}
           </div>
-          <div className="flex flex-col gap-2">
-            {member.isChairman && (
-              <span className="w-fit border border-accent bg-lime px-2 py-0.5 text-caption tracking-wide text-void uppercase">
-                Chairman
-              </span>
-            )}
-            <div className="flex flex-col gap-1">
-              <h3 className="text-heading-4 text-fg">{name}</h3>
-              <span className="text-small text-fg-muted">{member.role}</span>
-            </div>
+          <div className="flex flex-col gap-1">
+            <h3 className="text-heading-4 text-fg">{name}</h3>
+            <span className="text-small text-fg-muted">{member.role}</span>
           </div>
         </>
       ) : (
@@ -84,15 +77,8 @@ export function BoardMemberCard({
           <div className="relative h-16 w-16 shrink-0 overflow-hidden border border-hairline bg-surface-sunk">
             {avatar}
           </div>
-          <div className="flex flex-col gap-1">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-body text-fg">{name}</span>
-              {member.isChairman && (
-                <span className="border border-accent bg-lime px-1.5 py-0.5 text-caption tracking-wide text-void uppercase">
-                  Chair
-                </span>
-              )}
-            </div>
+          <div className="flex flex-col">
+            <span className="text-body text-fg">{name}</span>
             <span className="text-small text-fg-muted">{member.role}</span>
           </div>
         </div>
