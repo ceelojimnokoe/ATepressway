@@ -11,6 +11,7 @@ import { isPlaceholder } from "@/content/placeholder";
 import { mediaRegistry, type MediaKey } from "@/content/media";
 import { structureDesignImages } from "@/content/structure-media";
 import { GalleryLightbox, type LightboxImage } from "@/components/gallery/gallery-lightbox";
+import { CorridorTutorial } from "./corridor-tutorial";
 
 type PointKind = "endpoint" | "boundary" | "interchange";
 
@@ -193,6 +194,8 @@ export function CorridorExplorer() {
 
   return (
     <div id={ROOT_ID} className="flex flex-col gap-8">
+      <CorridorTutorial />
+
       {/* --- The proportional gauge with clickable demarcations. It sits in a
               dark groove (data-theme="dark") so the lime active state, the
               light ticks and the handle all read at full contrast against a
@@ -203,7 +206,7 @@ export function CorridorExplorer() {
           <span className="text-small font-medium text-fg">{segments[segments.length - 1]?.displayTo}</span>
         </div>
 
-        <div data-theme="dark" className="flex flex-col gap-3 overflow-x-clip border border-hairline bg-surface p-4 sm:p-5">
+        <div className="flex flex-col gap-3 overflow-x-clip border border-hairline bg-surface-sunk p-4 sm:p-5">
           <div
             ref={trackRef}
             onPointerDown={onPointerDown}
@@ -213,12 +216,12 @@ export function CorridorExplorer() {
             className="relative h-6 w-full touch-none select-none sm:h-7"
           >
             {/* Segments — proportional to real km, clearly divided. */}
-            <div className="absolute inset-0 flex overflow-hidden bg-surface-sunk">
+            <div className="absolute inset-0 flex overflow-hidden bg-surface-raised">
               {segments.map((segment, index) => (
                 <div
                   key={segment.section.id}
                   style={{ flexGrow: segment.section.lengthKm, flexBasis: 0 }}
-                  className={cn("h-full bg-surface-raised", index > 0 && "border-l-2 border-hairline")}
+                  className={cn("h-full", index > 0 && "border-l-2 border-hairline")}
                 />
               ))}
             </div>
@@ -270,7 +273,7 @@ export function CorridorExplorer() {
                   aria-hidden="true"
                   className="absolute top-1/2 left-0 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center"
                 >
-                  <span className="block h-6 w-6 rounded-full border-[3px] border-accent bg-surface ring-2 ring-accent/30" />
+                  <span className="block h-6 w-6 rounded-full border-[3px] border-fg bg-lime" />
                 </div>
               </div>
             </div>

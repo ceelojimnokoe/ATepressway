@@ -617,18 +617,17 @@ export interface TeamMember {
   readonly credentials: readonly string[];
 }
 
-/**
- * Only the two confirmed professionals. Ing. Kwabena Bempong has no
- * supplied photograph, so his card renders an initials avatar rather than
- * an invented portrait.
- */
+/** The two confirmed project professionals, both with supplied portraits. */
 export const team: readonly TeamMember[] = [
   {
-    name: "Ing. Kwabena Bempong",
+    name: "Ing. Kwadwo Bempong",
     title: "Chief Resident Engineer",
-    photo: null,
+    photo: {
+      src: "/images/bempong.png",
+      alt: "Portrait of Ing. Kwadwo Bempong, Chief Resident Engineer",
+    },
     initials: "KB",
-    bio: "Ing. Kwabena Bempong is a civil and road engineer with more than 30 years of design and construction-supervision experience. He holds an MSc with honours in Road and Pavement Engineering and is Chief Executive Officer of Associated Consultants Limited. His major assignments include the Pokuase Interchange, the Ofankor–Nsawam Road, the Ashaiman–Akosombo dual carriageway and the Accra–Tema Motorway expansion project, where he serves as Chief Resident Engineer.",
+    bio: "Ing. Kwadwo Bempong is a civil and road engineer with more than 30 years of design and construction-supervision experience. He holds an MSc with honours in Road and Pavement Engineering and is Chief Executive Officer of Associated Consultants Limited. His major assignments include the Pokuase Interchange, the Ofankor–Nsawam Road, the Ashaiman–Akosombo dual carriageway and the Accra–Tema Motorway expansion project, where he serves as Chief Resident Engineer.",
     credentials: [
       "MSc, Road and Pavement Engineering",
       "Chief Executive Officer, Associated Consultants Limited",
@@ -639,10 +638,14 @@ export const team: readonly TeamMember[] = [
   },
   {
     name: "Koffi Togbenou",
-    title: "Resident Engineer — Bridges and Structures",
+    title: "Bridge & Tunnel Engineer",
+    // Enhanced from the (low-res 137×199) source via denoise + unsharp + a
+    // lanczos upscale to 420px — a modest, honest improvement in delivered
+    // resolution, not a recovery of detail. A proper replacement photo is
+    // still the real fix.
     photo: {
-      src: "/images/koffitogbenou.png",
-      alt: "Portrait of Koffi Togbenou, Resident Engineer for bridges and structures",
+      src: "/images/koffitogbenou-enhanced.png",
+      alt: "Portrait of Koffi Togbenou, Bridge & Tunnel Engineer",
     },
     initials: "KT",
     bio: "Koffi Togbenou is a structural engineer with approximately eight years of experience in bridge design, analysis and construction supervision. As Resident Engineer for bridges on the Accra–Tema Motorway and Extensions Project, he oversees bridge, interchange and associated structural works, with a strong focus on technical compliance, quality control and site execution.",
@@ -661,11 +664,10 @@ export const team: readonly TeamMember[] = [
  * Board of Directors. Data-driven so the card is written once and every
  * member is one record. `bio` is an array of paragraphs. Where a portrait
  * has not been supplied, `photo` is null and the card renders an initials
- * avatar — never a fake photo and never a broken image. Confirmed members
- * carry plain strings; the two still-unconfirmed seats keep their supplied
- * portraits but wrap the identity fields in placeholder() so the card shows
- * an explicit "to be confirmed" state. Adding a photo later is a one-line
- * change (set `photo`).
+ * avatar — never a fake photo and never a broken image. Members whose
+ * biography has not yet been supplied wrap `bio` in placeholder() so the
+ * card shows an explicit "to be confirmed" profile. Adding a bio or photo
+ * later is a one-line change.
  */
 export interface BoardMember {
   readonly name: string | Placeholder<string>;
@@ -680,32 +682,15 @@ export interface BoardMember {
   readonly isChairman?: boolean;
 }
 
-/**
- * A still-unconfirmed seat: the portrait on file is real, but no name or
- * biography has been confirmed, so the identity fields render an explicit
- * "to be confirmed" state. The photo `src` uses the exact on-disk filename
- * (note the uppercase .JPEG on board-member2) so it resolves on
- * case-sensitive hosts.
- */
-function reservedSeat(seatNumber: number, photoSrc: string): BoardMember {
-  const seat = String(seatNumber).padStart(2, "0");
-  return {
-    name: placeholder<string>(`Board member ${seat} — full name`, `Board Member ${seat}`),
-    role: "Board Member",
-    photo: { src: photoSrc, alt: "Board member portrait — profile to be confirmed" },
-    initials: seat,
-    bio: placeholder<readonly string[]>(`Board member ${seat} — profile`, [
-      "Official board member profile information will be added following stakeholder approval.",
-    ]),
-  };
-}
-
 export const boardMembers: readonly BoardMember[] = [
   {
     name: "Mr. Samuel Kwasi Akuoku",
     role: "Chairman, Board of Directors",
     isChairman: true,
-    photo: null,
+    photo: {
+      src: "/images/board-member1.jpeg",
+      alt: "Portrait of Mr. Samuel Kwasi Akuoku, Chairman of the Board of A.T. Expressway Ltd",
+    },
     initials: "SA",
     bio: [
       "Mr. Samuel Kwasi Akuoku (Board Chairman) is an accomplished infrastructure and governance professional with extensive experience in the development, management and oversight of strategic public infrastructure projects in Ghana. As Chairman of the Board of A.T. Expressway Ltd, he provides strategic leadership and governance oversight for the implementation of the Accra–Tema Motorway and Extensions Project, one of Ghana's most significant transport infrastructure initiatives.",
@@ -763,7 +748,10 @@ export const boardMembers: readonly BoardMember[] = [
   {
     name: "Mr. Patrick Nomo",
     role: "Board Member",
-    photo: null,
+    photo: {
+      src: "/images/patrick.jpg",
+      alt: "Portrait of Mr. Patrick Nomo, Board Member of A.T. Expressway Ltd",
+    },
     initials: "PN",
     bio: [
       "Mr. Patrick Nomo is a seasoned public finance and public sector management expert with extensive experience in economic policy, public financial management, institutional development and governance. He currently serves as the Chief Director of Ghana's Ministry of Finance, where he provides strategic administrative leadership and supports the formulation and implementation of national fiscal policies.",
@@ -774,7 +762,10 @@ export const boardMembers: readonly BoardMember[] = [
   {
     name: "Hon. Dr. Eric Afful",
     role: "Board Member",
-    photo: null,
+    photo: {
+      src: "/images/afful.jpg",
+      alt: "Portrait of Hon. Dr. Eric Afful, Board Member of A.T. Expressway Ltd",
+    },
     initials: "EA",
     bio: [
       "Hon. Dr. Eric Afful is a Member of Parliament for Amenfi West and an experienced public servant with a strong interest in national development, governance and infrastructure. He also serves on the Board of the Ghana Infrastructure Investment Fund (GIIF), reflecting his involvement in promoting strategic national infrastructure investment.",
@@ -787,7 +778,10 @@ export const boardMembers: readonly BoardMember[] = [
   {
     name: "Surv. Mallam Issah Ishak",
     role: "Board Member",
-    photo: null,
+    photo: {
+      src: "/images/ishak.jpg",
+      alt: "Portrait of Surv. Mallam Issah Ishak, Board Member of A.T. Expressway Ltd",
+    },
     initials: "MI",
     bio: [
       "Surv. Mallam Issah Ishak is an accomplished surveying and highway engineering professional with decades of experience in Ghana's road infrastructure sector. Until his appointment, he served as the Director of Quantity Surveying at the Authority, and is a highly experienced and skilled Quantity Surveyor with a proven track record in Project Management, Cost Engineering, Cost Control, Infrastructural Development and Procurement.",
@@ -797,8 +791,30 @@ export const boardMembers: readonly BoardMember[] = [
       "His commitment to quality infrastructure development continues to support the delivery of safe, resilient and sustainable road networks across Ghana.",
     ],
   },
-  reservedSeat(1, "/images/board-member1.jpeg"),
-  reservedSeat(2, "/images/board-member2.JPEG"),
+  {
+    name: "Ing. Emmanuel Tetteh",
+    role: "Resident Engineer, Roads",
+    photo: {
+      src: "/images/tetteh.jpg",
+      alt: "Portrait of Ing. Emmanuel Tetteh, Resident Engineer (Roads)",
+    },
+    initials: "ET",
+    bio: placeholder<readonly string[]>("Emmanuel Tetteh — profile", [
+      "A full profile for Ing. Emmanuel Tetteh will be added following stakeholder approval.",
+    ]),
+  },
+  {
+    name: "Gifty Dua Boakye",
+    role: "Board Secretary",
+    photo: {
+      src: "/images/board-member2.JPEG",
+      alt: "Portrait of Gifty Dua Boakye, Board Secretary of A.T. Expressway Ltd",
+    },
+    initials: "GB",
+    bio: placeholder<readonly string[]>("Gifty Dua Boakye — profile", [
+      "A full profile for Gifty Dua Boakye will be added following stakeholder approval.",
+    ]),
+  },
 ];
 
 // ---------------------------------------------------------------------------
