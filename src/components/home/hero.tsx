@@ -1,5 +1,5 @@
 import { mediaRegistry } from "@/content/media";
-import { projectFacts, progress } from "@/content/project";
+import { organization, projectFacts, progress } from "@/content/project";
 import { isPlaceholder } from "@/content/placeholder";
 import { HeroSlider, type Slide } from "./hero-slider";
 import { ScrollCue } from "./scroll-cue";
@@ -12,7 +12,7 @@ import { AnimatedFigure } from "@/components/ui/animated-figure";
 
 // Approved slide order for the hero backdrop.
 const slides: readonly Slide[] = (
-  ["teshieLinkRemodel", "flowerPotRemodel", "ogHeroBg", "routeAlignmentMap"] as const
+  ["progAshaiman", "progUnderpassKm16105A", "flowerPotRemodel", "progTBeam"] as const
 ).map((key) => {
   const asset = mediaRegistry[key];
   return { src: asset.src, alt: asset.alt, width: asset.width, height: asset.height };
@@ -62,7 +62,7 @@ function HeroContent() {
 
       <TextReveal
         as="h1"
-        text="Accra–Tema Expressway Ltd."
+        text={organization.name}
         delay={0.15}
         className="max-w-4xl text-heading-2 text-fg sm:text-heading-1"
       />

@@ -26,7 +26,7 @@ export const corridorOverview: DesignSection = {
   id: "corridor-overview",
   title: "Corridor design overview",
   description:
-    "The reconstruction rebuilds the Section 1 corridor as two full access-controlled two-lane expressways alongside two partial access-controlled three-lane urban highways, with grade-separated interchanges, footbridges, toll plazas and upgraded drainage.",
+    "The reconstruction rebuilds the Section 1 corridor as two full access-controlled two-lane expressways alongside two partial access-controlled three-lane urban highways, with grade-separated interchanges, footbridges and upgraded drainage.",
   media: "designScheme",
   status: "Proposed Design",
 };
@@ -44,7 +44,7 @@ export const interchangeSections: readonly DesignSection[] = [
     title: "Tetteh Quarshie Interchange",
     description:
       "The existing Tetteh Quarshie Interchange is reconstructed to improve capacity and grade separation at the Accra end of Section 1.",
-    media: "tettehQuarshieRender",
+    media: "tettehQuarshieProposed",
     status: "Proposed Design",
   },
   {
@@ -53,7 +53,7 @@ export const interchangeSections: readonly DesignSection[] = [
     title: "Teshie Link Interchange",
     description:
       "A new grade-separated interchange providing free-flowing connections between the motorway and the Teshie Link corridor.",
-    media: "teshieLinkRemodel",
+    media: "teshieLinkProposed",
     status: "Proposed Design",
   },
   {
@@ -62,7 +62,7 @@ export const interchangeSections: readonly DesignSection[] = [
     title: "Community 18 Interchange",
     description:
       "A new interchange carrying the mainline over the local cross road, with an underpass and connecting ramps.",
-    media: "comm18Render",
+    media: "comm18Proposed",
     status: "Proposed Design",
   },
   {
@@ -89,8 +89,10 @@ export const structureSections: readonly DesignSection[] = [
   {
     id: "toll-plazas",
     title: "Toll plazas",
+    // Client (Aug 2026): no official communication on the number of toll
+    // plazas, so no count is stated here.
     description:
-      "Eight toll plazas along the corridor, with canopy structures and lane arrangements that keep traffic moving through collection.",
+      "Toll plazas along the corridor, with canopy structures and lane arrangements that keep traffic moving through collection. Official confirmation on the total number of toll plazas is not yet available.",
     media: "tollPlazaRender",
     status: "Proposed Design",
   },

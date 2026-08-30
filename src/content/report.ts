@@ -66,7 +66,7 @@ export interface FootbridgeStatus {
 
 export const footbridges = {
   summary:
-    "Ten pedestrian footbridges / crossing points form part of the Section 1 scope. Construction had started at several locations by May 2026; the most advanced was at CH 12+350, reported at 72%.",
+    "Ten pedestrian footbridges / crossing points form part of the Section 1 scope. Construction has started at several locations, with the most advanced at CH 12+350, reported at 72%.",
   mostAdvanced: { chainage: "CH 12+350", percent: 72 },
   statuses: [
     { chainage: "CH 0+080", percent: 20 },

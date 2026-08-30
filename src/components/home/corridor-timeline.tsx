@@ -8,27 +8,27 @@ import { formatLongDate } from "@/lib/format";
 import { Reveal } from "@/components/motion/reveal";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { ImageSlideshow, type SlideshowImage } from "@/components/ui/image-slideshow";
-import { mediaRegistry, type MediaKey } from "@/content/media";
 import { cn } from "@/lib/cn";
+import { galleryItems, resolveGalleryItems } from "@/content/gallery";
+
+const JOURNEY_SLIDE_COUNT = 4;
 
 /**
- * Five real construction photographs spanning different stages/aspects of
- * the works — underpass, bridge deck, pier, overpass, corridor-wide — not
- * five near-identical frames. Drawn straight from the media registry, so
- * alt text and dimensions come with them.
+ * The latest real construction photographs, newest first — driven entirely by
+ * `addedOn` on each gallery item via the SAME sort `resolveGalleryItems`
+ * already uses for the Gallery page (src/content/gallery.ts), not a second
+ * copy of the sort logic. Restricted to "Construction Photo" so a proposed
+ * design render (a drawing, not built work) can never lead the "journey" — the
+ * whole point of this section is showing progress on the ground. Adding a new,
+ * later-dated construction photo to the registry makes it appear here with no
+ * code change: this array is recomputed from the live gallery data, not
+ * hand-picked.
  */
-const journeySlides: readonly SlideshowImage[] = (
-  [
-    "atelJunctionUnderpass",
-    "atelBridgeDeckRebar",
-    "atelPierConcreting",
-    "atelOverpassDeck",
-    "atelCorridorPiersWide",
-  ] as const satisfies readonly MediaKey[]
-).map((key) => {
-  const asset = mediaRegistry[key];
-  return { src: asset.src, alt: asset.alt, width: asset.width, height: asset.height };
-});
+const journeySlides: readonly SlideshowImage[] = resolveGalleryItems(
+  galleryItems.filter((item) => item.type === "Construction Photo"),
+)
+  .slice(0, JOURNEY_SLIDE_COUNT)
+  .map(({ asset }) => ({ src: asset.src, alt: asset.alt, width: asset.width, height: asset.height }));
 
 type MilestoneState = "done" | "current" | "upcoming";
 
@@ -85,7 +85,7 @@ export function CorridorTimeline() {
       <div className="py-24">
         <div className="mx-auto w-full max-w-6xl px-4 sm:px-8">
           <div className="mb-10 flex flex-col gap-4">
-            <span className="figure text-caption text-accent tracking-[0.2em] uppercase">02 — The journey</span>
+            <span className="figure text-caption text-accent tracking-[0.2em] uppercase">03 — The journey</span>
             <TextReveal
               as="h2"
               text="From award to completion, on a fixed programme"

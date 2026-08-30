@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/hero";
 import { Intro } from "@/components/home/intro";
+import { AboutPreview } from "@/components/home/about-preview";
 import { CorridorTimeline } from "@/components/home/corridor-timeline";
 import { Statistics } from "@/components/home/statistics";
 import { InterchangeProgress } from "@/components/home/interchange-progress";
@@ -22,6 +23,7 @@ export default function Home() {
       <JsonLd data={corridorPlaceJsonLd()} />
       <Hero />
       <Intro />
+      <AboutPreview />
       <CorridorTimeline />
       <Statistics />
       <InterchangeProgress />

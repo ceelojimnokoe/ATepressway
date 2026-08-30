@@ -11,8 +11,17 @@ export interface RouteMeta {
   readonly description: string;
 }
 
-/** SEO brand string, per the client (2026-07-17): the abbreviated "Ltd." form. */
-export const BRAND = "Accra–Tema Expressway Ltd.";
+/**
+ * SEO brand string. Matches `organization.name` (the single confirmed name
+ * form, client 2026-08-28/30) — was stale at "Accra–Tema Expressway Ltd."
+ * until this fix, which had been silently leaking into every page's <title>.
+ * The content-template row for the Contact page literally asked for the
+ * spelled-out "A.T. Expressway Limited" for that one page only; using a
+ * second brand string for a single page would reintroduce the inconsistency
+ * this rename was meant to remove, so the same BRAND is used everywhere
+ * instead. Flagged in the delivery report.
+ */
+export const BRAND = "A.T. Expressway Ltd.";
 
 export const routes = {
   home: {
@@ -20,6 +29,12 @@ export const routes = {
     title: `${BRAND} | Motorway and Extensions Project`,
     description:
       "Official project information, design highlights and construction progress for the Accra–Tema Motorway and Extensions Project.",
+  },
+  about: {
+    path: "/about",
+    title: `About Us — ${BRAND}`,
+    description:
+      "A.T. Expressway Ltd. (ATEL) is the concessionaire delivering the Accra–Tema Motorway & Extensions PPP Project — Ghana’s first road public–private partnership.",
   },
   project: {
     path: "/project",

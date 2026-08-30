@@ -5,8 +5,14 @@ import { AnimatedFigure } from "@/components/ui/animated-figure";
 import { StructureProgress } from "@/components/progress/structure-progress";
 import { MilestoneTimeline } from "@/components/progress/milestone-timeline";
 import { BulletinFeed } from "@/components/progress/bulletin-feed";
-import { DownloadSummaryButton } from "@/components/progress/download-summary-button";
-import { projectFacts, progress, interchanges } from "@/content/project";
+import Image from "next/image";
+import {
+  projectFacts,
+  progress,
+  interchanges,
+  activityHighlights,
+  latestMonthlyUpdate,
+} from "@/content/project";
 import { mediaRegistry } from "@/content/media";
 import { structureDesignImages } from "@/content/structure-media";
 import { isPlaceholder } from "@/content/placeholder";
@@ -16,7 +22,6 @@ import {
   concreteWorks,
   drainage,
   footbridges,
-  recentActivity,
   considerations,
   type Quantity,
 } from "@/content/report";
@@ -57,9 +62,9 @@ export default function ProgressPage() {
   return (
     <>
       <PageHero
-        media="bridgeDeckPour"
+        media="progUnderpassKm2701"
         title="Construction Progress"
-        subtitle={<>Verified highlights from the May 2026 monthly progress report.</>}
+        subtitle={<>Verified construction progress along the Section 1 corridor, updated monthly.</>}
       />
 
       {/* Overall status */}
@@ -70,8 +75,6 @@ export default function ProgressPage() {
             <AnimatedFigure value={overallPct} suffix="%" signal className="text-figure" />
             <span className="text-small text-fg-muted">Source: {isPlaceholder(progress.signOffSource) ? `${progress.reportSeries}, ${isPlaceholder(progress.asOf) ? "May 2026" : progress.asOf}` : progress.signOffSource}</span>
           </div>
-
-          <DownloadSummaryButton />
 
           <dl className="grid grid-cols-1 gap-px border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
             {statusFacts.map((fact) => (
@@ -110,14 +113,22 @@ export default function ProgressPage() {
                   key={interchange.id}
                   label={`${interchange.name} Interchange`}
                   percent={pkg.percentComplete}
-                  sublabel={`${interchange.chainageLabel} · ${interchange.mayActivity}`}
+                  sublabel={
+                    // Once a structure is reported complete, drop the "current
+                    // activity" line — it is the May 2026 activity and would
+                    // contradict a 100% bar. No replacement text is invented.
+                    pkg.percentComplete >= 100
+                      ? interchange.chainageLabel
+                      : `${interchange.chainageLabel} · ${interchange.mayActivity}`
+                  }
                   images={images}
                 />
               );
             })}
           </div>
           <p className="text-caption text-fg-faint">
-            Interchange progress figures reflect the {REPORT_LABEL.replace("Monthly", "monthly")}.
+            Interchange progress figures are sourced from the{" "}
+            {workPackages[0]?.source ?? REPORT_LABEL}.
           </p>
         </ViewportReveal>
       </section>
@@ -208,23 +219,131 @@ export default function ProgressPage() {
         </ViewportReveal>
       </section>
 
-      {/* Recent construction activity */}
+      {/* Recent construction activity — photo-led, plain language. Replaces the
+          chainage-by-chainage engineering list the client flagged as too
+          technical for a public audience. */}
       <section className="border-b border-hairline bg-surface-raised">
-        <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-fg">Recent construction activity</h2>
-          <ul className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
-            {recentActivity.map((item) => (
-              <li key={`${item.location}-${item.chainage}`} className="flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6">
-                <div className="flex flex-col">
-                  <span className="text-body text-fg">{item.location}</span>
-                  <span className="figure text-caption text-fg-faint">{item.chainage}</span>
-                </div>
-                <span className="text-small text-fg-muted sm:text-right">{item.activity}</span>
-              </li>
-            ))}
+        <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-heading-4 text-fg">Recent construction activity</h2>
+            <p className="max-w-2xl text-small text-fg-faint">
+              What has been built recently along the corridor, in pictures.
+            </p>
+          </div>
+          <ul className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {activityHighlights.map((item) => {
+              const asset = mediaRegistry[item.media];
+              return (
+                <li key={item.media} className="flex flex-col gap-3">
+                  <div className="relative aspect-[16/10] w-full overflow-hidden border border-hairline bg-surface-sunk">
+                    <Image
+                      src={asset.src}
+                      alt={asset.alt}
+                      fill
+                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      loading="lazy"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-body text-fg">{item.title}</span>
+                    <span className="text-small text-fg-muted">{item.detail}</span>
+                  </div>
+                </li>
+              );
+            })}
           </ul>
         </ViewportReveal>
       </section>
+
+      {/* This month / next month. The work-plan sheets are deliberately kept on
+          the PLANNED side — they describe September's programme, not work already
+          done, and must never be presented as completed-work imagery. */}
+      {latestMonthlyUpdate && (
+        <section className="border-b border-hairline bg-surface">
+          <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
+            <h2 className="text-heading-4 text-fg">This month and next</h2>
+            <div className="grid gap-10 lg:grid-cols-2">
+              <div className="flex flex-col gap-4">
+                <h3 className="text-body text-fg">Completed in {latestMonthlyUpdate.month}</h3>
+                <ul className="flex flex-col gap-2">
+                  {latestMonthlyUpdate.completed.map((entry) => (
+                    <li key={entry} className="flex gap-2 text-small text-fg-muted">
+                      <span aria-hidden="true" className="text-accent">
+                        —
+                      </span>
+                      <span>{entry}</span>
+                    </li>
+                  ))}
+                </ul>
+                {latestMonthlyUpdate.completedImages && (
+                  <ul className="mt-1 grid grid-cols-2 gap-3">
+                    {latestMonthlyUpdate.completedImages.map((key) => {
+                      const asset = mediaRegistry[key];
+                      return (
+                        <li
+                          key={key}
+                          className="relative aspect-[16/10] overflow-hidden border border-hairline bg-surface-sunk"
+                        >
+                          <Image
+                            src={asset.src}
+                            alt={asset.alt}
+                            fill
+                            sizes="(min-width: 1024px) 22vw, 45vw"
+                            loading="lazy"
+                            className="object-cover"
+                          />
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <h3 className="text-body text-fg">Planned for September 2026</h3>
+                <ul className="flex flex-col gap-2">
+                  {latestMonthlyUpdate.planned.map((entry) => (
+                    <li key={entry} className="flex gap-2 text-small text-fg-muted">
+                      <span aria-hidden="true" className="text-fg-faint">
+                        —
+                      </span>
+                      <span>{entry}</span>
+                    </li>
+                  ))}
+                </ul>
+                {latestMonthlyUpdate.plannedImages && (
+                  <div className="mt-1 flex flex-col gap-2">
+                    <span className="text-caption text-fg-faint tracking-wide uppercase">
+                      Contractor work plan
+                    </span>
+                    <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                      {latestMonthlyUpdate.plannedImages.map((key) => {
+                        const asset = mediaRegistry[key];
+                        return (
+                          <li
+                            key={key}
+                            className="relative aspect-[16/9] overflow-hidden border border-hairline bg-surface-sunk"
+                          >
+                            <Image
+                              src={asset.src}
+                              alt={asset.alt}
+                              fill
+                              sizes="(min-width: 640px) 22vw, 90vw"
+                              loading="lazy"
+                              className="object-cover"
+                            />
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          </ViewportReveal>
+        </section>
+      )}
 
       {/* Construction considerations */}
       <section className="border-b border-hairline bg-surface">

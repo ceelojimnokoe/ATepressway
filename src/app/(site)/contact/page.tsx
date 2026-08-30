@@ -13,7 +13,7 @@ export default function ContactPage() {
       <PageHero
         media="atelOverpassDeck"
         title="Contact"
-        subtitle="Questions about the corridor, your route, or the works — and how to reach the project team."
+        subtitle="Questions about the corridor, your route, or the works — and how to reach the concession."
       />
 
       {/* Discoverable callout so suggestions/complaints aren't buried in the

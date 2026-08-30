@@ -1,6 +1,7 @@
 import Image from "next/image";
-import { organization, contact } from "@/content/project";
-import { isPlaceholder } from "@/content/placeholder";
+import { organization, contact, siteLastUpdated } from "@/content/project";
+import { formatLongDate } from "@/lib/format";
+import { NewsletterSignup } from "./newsletter-signup";
 import { primaryNav } from "@/content/navigation";
 import { mediaRegistry } from "@/content/media";
 import { PlaceholderNotice } from "@/components/ui/placeholder-notice";
@@ -8,12 +9,6 @@ import { NavLink } from "./nav-link";
 
 const logoMark = mediaRegistry.atelLogoMark;
 
-const SOCIAL_LINKS = [
-  { key: "twitter", value: contact.social.twitter },
-  { key: "facebook", value: contact.social.facebook },
-  { key: "instagram", value: contact.social.instagram },
-  { key: "linkedin", value: contact.social.linkedin },
-].filter((entry) => !isPlaceholder(entry.value));
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
@@ -52,11 +47,21 @@ export function SiteFooter() {
           </nav>
         </div>
 
-        {SOCIAL_LINKS.length > 0 && (
-          <ul className="flex gap-4 border-t border-hairline pt-6">
-            {SOCIAL_LINKS.map((entry) => (
-              <li key={entry.key} className="text-small text-fg-muted">
-                {String(entry.value)}
+        <NewsletterSignup />
+
+        {contact.social.length > 0 && (
+          <ul className="flex flex-wrap gap-x-5 gap-y-2 border-t border-hairline pt-6">
+            {contact.social.map((entry) => (
+              <li key={entry.platform}>
+                <a
+                  href={entry.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-small text-fg-muted underline decoration-transparent underline-offset-4 transition-colors hover:text-accent hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {entry.platform}
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
               </li>
             ))}
           </ul>
@@ -69,6 +74,7 @@ export function SiteFooter() {
           <span>
             © {year} {organization.name}
           </span>
+          <span>Site last updated: {formatLongDate(siteLastUpdated)}</span>
         </div>
       </div>
     </footer>

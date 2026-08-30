@@ -205,9 +205,9 @@
 .hero-scrim {
   background: linear-gradient(
     to top right,
-    color-mix(in srgb, var(--color-void) 84%, transparent) 0%,
-    color-mix(in srgb, var(--color-void) 46%, transparent) 28%,
-    color-mix(in srgb, var(--color-void) 14%, transparent) 50%,
+    color-mix(in srgb, var(--color-void) 70%, transparent) 0%,
+    color-mix(in srgb, var(--color-void) 38%, transparent) 28%,
+    color-mix(in srgb, var(--color-void) 11%, transparent) 50%,
     transparent 66%
   );
 }
@@ -216,9 +216,9 @@
   .hero-scrim {
     background: linear-gradient(
       to top,
-      color-mix(in srgb, var(--color-void) 86%, transparent) 0%,
-      color-mix(in srgb, var(--color-void) 56%, transparent) 34%,
-      color-mix(in srgb, var(--color-void) 14%, transparent) 62%,
+      color-mix(in srgb, var(--color-void) 74%, transparent) 0%,
+      color-mix(in srgb, var(--color-void) 46%, transparent) 34%,
+      color-mix(in srgb, var(--color-void) 11%, transparent) 62%,
       transparent 82%
     );
   }

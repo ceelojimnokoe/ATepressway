@@ -8,6 +8,7 @@ import { mediaRegistry } from "@/content/media";
 import { primaryNav } from "@/content/navigation";
 import { PageTransitionLink } from "./page-transition-link";
 import { NavLink } from "./nav-link";
+import { LatestUpdates } from "./latest-updates";
 import { useScrollPast } from "@/hooks/use-scroll-past";
 import { cn } from "@/lib/cn";
 
@@ -68,8 +69,8 @@ export function SiteHeader() {
           </span>
         </PageTransitionLink>
 
-        <nav aria-label="Primary" className="hidden md:block">
-          <ul className="flex items-center gap-6">
+        <nav aria-label="Primary" className="hidden lg:block">
+          <ul className="flex items-center gap-5 xl:gap-6">
             {primaryNav.map((item) => (
               <li key={item.href}>
                 <NavLink
@@ -84,13 +85,15 @@ export function SiteHeader() {
           </ul>
         </nav>
 
-        <button
+        <div className="flex items-center gap-3">
+          <LatestUpdates />
+          <button
           type="button"
           onClick={() => setMenuOpen((v) => !v)}
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className="text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent md:hidden"
+          className="text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent lg:hidden"
         >
           <span aria-hidden="true" className="relative block h-4 w-6">
             <span
@@ -112,14 +115,15 @@ export function SiteHeader() {
               )}
             />
           </span>
-        </button>
+          </button>
+        </div>
       </div>
 
       {menuOpen && (
         <nav
           id="mobile-menu"
           aria-label="Primary"
-          className="border-t border-hairline bg-surface-raised md:hidden"
+          className="border-t border-hairline bg-surface-raised lg:hidden"
         >
           <ul className="mx-auto flex w-full max-w-5xl flex-col px-4 py-2 sm:px-8">
             {primaryNav.map((item) => (

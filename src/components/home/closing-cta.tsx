@@ -23,7 +23,7 @@ export function ClosingCta() {
       <div className="relative mx-auto flex w-full max-w-5xl flex-col items-start gap-8 px-4 py-28 sm:px-8">
         <TextReveal
           as="h2"
-          text="Follow the Accra–Tema Expressway as it takes shape."
+          text="Follow the Accra–Tema Motorway and Extensions Project as it takes shape."
           className="max-w-4xl text-heading-2 text-fg sm:text-heading-1"
         />
         <Reveal direction="up" distance={16} delay={0.15}>

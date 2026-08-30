@@ -4,7 +4,7 @@ Instructions for Claude Code (and any other agent) working in this repository.
 
 ## What this project is
 
-A public information website for **ATEL (Accra–Tema Expressway Limited)**, the Ghanaian company delivering the reconstruction of the Accra–Tema Motorway corridor. The confirmed company name (client, 2026-07-17) is **"Accra–Tema Expressway Limited"** — used for both `organization.name` and the Employer (`stakeholders.employer.name`). Do not reintroduce the earlier "A.T. Expressway Ltd" or "Accra–Tema Motorway Expressway Limited" forms. Note "Accra–Tema Motorway" (no "Expressway Limited") is the **road/corridor** name and stays as-is.
+A public information website for **ATEL (Accra–Tema Expressway Limited)**, the Ghanaian company delivering the reconstruction of the Accra–Tema Motorway corridor. The confirmed company name (client, 2026-08-28, and used throughout the client’s own source documents) is **"A.T. Expressway Ltd."** — one form everywhere, for `organization.name`, the SEO brand string and `stakeholders.employer.name`. This SUPERSEDES the earlier 2026-07-17 guidance that mandated "Accra–Tema Expressway Limited" and banned the "A.T. Expressway Ltd" form. Note "Accra–Tema Motorway" (no "Expressway Limited") is the **road/corridor** name and stays as-is.
 
 ## Source of truth
 
@@ -18,11 +18,11 @@ ATEL's contractual role is **Employer**. It commissions and oversees the works; 
 
 | Entity | Role |
 |---|---|
-| **Accra–Tema Expressway Limited** (ATEL) | Employer |
+| **A.T. Expressway Ltd.** (ATEL) | Concessionaire |
 | **GIIF** | Funding Agency |
 | **Ghana Highway Authority** | Employer's Representative |
 | **Associated Consultants Ltd** | Employer's Representative's Agent |
-| **Maripoma Enterprise Ltd** | EPC Contractor |
+| **Maripoma Enterprise Ltd** | EPC Contractor for Section 1 |
 
 Outside the chain, always visually subordinate to it:
 
@@ -31,7 +31,7 @@ Outside the chain, always visually subordinate to it:
 | **Limmark Energy Solutions Ltd** | Specialist Contractor — Electrical Relocation |
 | **Dakal Construction Works Ltd** | Specialist Contractor — Water Relocation |
 
-**Never describe ATEL as the contractor.** Maripoma builds the road. This distinction is load-bearing for the site's credibility and must hold in every headline, caption, and meta description.
+**Never describe ATEL as the contractor.** ATEL is the **Concessionaire** (client, 2026-08-28) — it commissions, finances and oversees the works and will operate and maintain them under a 30-year concession. Maripoma builds the road (Section 1 only). This distinction is load-bearing for the site's credibility and must hold in every headline, caption, and meta description.
 
 ## Audience & tone
 
@@ -80,17 +80,17 @@ Brand is **lime `#C8F31D` + black**. The lime rule is unchanged by the light-fir
   - **S2** — George Bush Highway (N1), **5.7km**, Tetteh Quarshie → Apenkwa
   - **S3** — Nsawam Road (N6), **2.5km**, Apenkwa → Neoplan
 - Original road **opened 1964** under Nkrumah.
-- **Dates**: contract award **21 March 2024**; contractor commencement **2 August 2024**; scheduled completion **2 August 2027** — a **36-month window** from commencement.
+- **Dates**: contract award **12 March 2024** — CONFIRMED by the client (2026-08-29), superseding the May 2026 MPR’s 21 March 2024; needs written confirmation from ATEL; contractor commencement **2 August 2024**; scheduled completion **2 August 2027** — a **36-month window** from commencement.
 - **Works scope (MPR)**:
   - **Reconstruction of Tetteh Quarshie Interchange**
   - **New interchanges at Teshie Link, Community 18, and Lashibi**
-  - **8 toll plazas**
+  - ~~8 toll plazas~~ — WITHDRAWN from display (client, 30 Aug 2026: "no official communication on it"). The scope item was removed and no toll-plaza count is shown on Home, /project, /design or the FAQ. `projectFacts.tollPlazaCount` is retained in data but must not be rendered as a count until ATEL confirms
   - **10 pedestrian crossing points** (MPR scope: "Construction of 10 No. Pedestrian Crossing Points"; the MPR quantities table confirms 10)
   - **Enhancement of roadway traffic in the Lagos Avenue / Lagos Link area**
   - **Rehabilitation and widening of Liberation Road to Polo Club, with overpass**
   - Do **not** use the old "five interchanges" framing. **Fiesta Royale exists only as a design visualisation** — never present it as works scope. Neoplan does not appear in the MPR scope and was dropped from the interchange list (flagged 2026-07-16; restore only on client confirmation).
-- **Progress: 46% overall — OFFICIAL** (source string: "Monthly Progress Report, May 2026").
-- **Per-structure progress** (each sourced "MPR May 2026"): Tetteh Quarshie **88%** · Teshie Link **74.5%** · Community 18 **67.5%** · Lashibi **30%** · Footbridges **3.15/10** · Box culverts **12.85/20** · Bridge culverts **1.2/3**.
+- **Progress: 52% overall** (source string: "Client meeting, 28 August 2026"). Maripoma’s own chart (`progress-update-1.jpeg`, 28 Aug 2026) shows one continuous series — Jan 38% · May 46% · Jul 50% · Aug 52% — so the earlier 46% and 50% figures are the same series at earlier months, not competing sources. The per-structure breakdown is now the 28 Aug 2026 set (applied on client instruction, 2026-08-29), so overall and per-structure figures share a reporting date.
+- **Per-structure progress** (each sourced "Maripoma work plan, 28 August 2026"): Tetteh Quarshie **100%** · Teshie Link **74.7%** · Community 18 **67.5%** · Lashibi **37%** · Footbridges **4.45/10** · Box culverts **18.25/20** · Bridge culverts **1.3/3**. These replace the May 2026 MPR set and are on the same reporting date as the 52% overall.
 - **10-lane configuration**: 4 lanes reinforced concrete freeway + 6 lanes urban highway.
 - **Why reconstruction**: the existing pavement was designed for a **20-year life**. It now shows **fatigue cracking, joint failures, and pumping under wheel load**. Use this language as given — it is what makes the case credible; do not soften it into marketing copy.
 
@@ -101,5 +101,8 @@ These figures are fixed until a newer MPR supersedes them. If other information 
 Real, client-supplied files are catalogued in `src/content/media.ts` (the registry: `src`, alt text, `sourceSlide?`, `verified`). Logo candidates enter the registry `verified: false` until the client renames/confirms them; a file whose content contradicts its filename also stays `verified: false`. Temporary stock assets live in `src/content/stock-media.ts` and are never presented as project imagery.
 
 ## Content process
+
+`contact.social` is an ORDERED ARRAY of `{ platform, url }` (LinkedIn first), not a fixed-key object — display order is content, and new platforms need no type change.
+
 
 **No CMS.** Content updates arrive weekly by email and we deploy. The client's Monthly Progress Report arrives monthly and is authoritative (see "Source of truth"). All content lives in `src/content/` as typed TypeScript, not in a database or headless CMS.

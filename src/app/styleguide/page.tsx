@@ -5,7 +5,7 @@ import {
   projectFacts,
   sections,
   interchanges,
-  contact,
+  statementOfIntent,
 } from "@/content/project";
 import { Section } from "./_components/section";
 import { ColorTokens } from "./_components/color-tokens";
@@ -165,8 +165,8 @@ export default function StyleguidePage() {
               realLabel="Real value"
               realValue={stakeholders.epcContractor.name}
               realPath="stakeholders.epcContractor.name"
-              unresolvedValue={contact.social.twitter}
-              unresolvedPath="contact.social.twitter"
+              unresolvedValue={statementOfIntent}
+              unresolvedPath="statementOfIntent"
             />
           </Section>
         </ViewportReveal>

@@ -21,6 +21,18 @@ const bgDataUri = `data:image/jpeg;base64,${readFileSync(
   join(process.cwd(), "public/images/og-hero-bg.jpg"),
 ).toString("base64")}`;
 
+/**
+ * The ATEL mark, composited onto the card rather than used raw: the logo file
+ * is a portrait-ish square (599x496) with a dark wordmark, so dropping it
+ * straight onto a 1200x630 dark photo would both distort and disappear. It sits
+ * on a light plate at its own aspect ratio, the same treatment the header and
+ * footer use. This is a DIFFERENT asset from the favicon (icon.tsx), which is a
+ * 32px square.
+ */
+const logoDataUri = `data:image/png;base64,${readFileSync(
+  join(process.cwd(), "public/images/atel-logo.png"),
+).toString("base64")}`;
+
 export function renderOgImage() {
   const pct = isPlaceholder(progress.overallPercentComplete)
     ? null
@@ -53,6 +65,24 @@ export function renderOgImage() {
               "linear-gradient(to top, rgba(3,3,3,0.94), rgba(3,3,3,0.5) 55%, rgba(3,3,3,0.15))",
           }}
         />
+
+        {/* Brand mark, top-left, on a light plate so the dark wordmark reads. */}
+        <div
+          style={{
+            position: "absolute",
+            top: 64,
+            left: 80,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "18px 22px",
+            borderRadius: 6,
+            backgroundColor: "#FFFFFF",
+          }}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={logoDataUri} width={150} height={124} alt="" />
+        </div>
 
         <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
           <div style={{ fontSize: 26, color: "#A8A8A3", textTransform: "uppercase", letterSpacing: 4 }}>

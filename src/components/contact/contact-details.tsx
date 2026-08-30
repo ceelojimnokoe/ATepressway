@@ -8,13 +8,6 @@ const DIRECT_FIELDS = [
   { label: "Address", value: contact.address },
 ] as const;
 
-const SOCIAL_FIELDS = [
-  { label: "Twitter / X", value: contact.social.twitter },
-  { label: "Facebook", value: contact.social.facebook },
-  { label: "Instagram", value: contact.social.instagram },
-  { label: "LinkedIn", value: contact.social.linkedin },
-] as const;
-
 /** Nearly everything here is a placeholder today — each field renders its own TBC state. */
 export function ContactDetails() {
   return (
@@ -38,19 +31,25 @@ export function ContactDetails() {
 
         <div className="flex flex-col gap-3">
           <span className="text-caption text-fg-faint tracking-wide uppercase">Social</span>
-          <div className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
-            {SOCIAL_FIELDS.map((field) => (
-              <div
-                key={field.label}
+          <ul className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
+            {contact.social.map((entry) => (
+              <li
+                key={entry.platform}
                 className="flex flex-col gap-2 py-4 sm:flex-row sm:items-baseline sm:justify-between"
               >
-                <span className="text-small text-fg-muted">{field.label}</span>
-                <PlaceholderNotice value={field.value}>
-                  {(value) => <span className="text-body text-fg">{value}</span>}
-                </PlaceholderNotice>
-              </div>
+                <span className="text-small text-fg-muted">{entry.platform}</span>
+                <a
+                  href={entry.url}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="text-body text-fg underline decoration-hairline underline-offset-4 transition-colors hover:text-accent hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  {entry.url.replace("https://", "").replace("www.", "")}
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </ViewportReveal>
     </section>

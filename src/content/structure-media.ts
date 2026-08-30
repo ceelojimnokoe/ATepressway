@@ -11,8 +11,13 @@ import type { MediaKey } from "./media";
  * structure" would be an invented association.
  */
 export const structureDesignImages: Record<string, readonly MediaKey[]> = {
-  "tetteh-quarshie": ["tettehQuarshieProposed", "tettehQuarshieRender"],
-  "teshie-link": ["teshieLinkProposed", "teshieLinkRemodel"],
-  "community-18": ["comm18Proposed", "comm18Render"],
+  // Only drawings whose subject is labelled INSIDE the image are listed. The
+  // three unlabelled 3D renders that used to appear here made interchange
+  // claims that could not be verified (teshie-link-remodel.png is a full
+  // cloverleaf, which is geometrically incompatible with Teshie Link’s own
+  // labelled CAD drawing). Flagged to ATEL for correctly-identified renders.
+  "tetteh-quarshie": ["tettehQuarshieProposed"],
+  "teshie-link": ["teshieLinkProposed"],
+  "community-18": ["comm18Proposed"],
   lashibi: ["lashibiProposed", "lashibiRender"],
 };

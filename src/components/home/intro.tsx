@@ -1,4 +1,3 @@
-import { projectFacts } from "@/content/project";
 import { TextReveal } from "@/components/motion/text-reveal";
 import { Reveal } from "@/components/motion/reveal";
 
@@ -24,9 +23,7 @@ export function Intro() {
           <Reveal direction="up" distance={16} delay={0.1} className="max-w-2xl">
             <p className="text-lead text-fg-muted">
               The Accra–Tema Motorway and Extensions Project reconstructs and expands a critical
-              corridor in Ghana&rsquo;s national road network. The May 2026 monthly progress report
-              focuses on Section 1 — the {projectFacts.section1LengthKm} km Accra–Tema Motorway
-              corridor from Tema Roundabout to Tetteh Quarshie Interchange — currently being built.
+              corridor in Ghana&rsquo;s national road network.
             </p>
           </Reveal>
         </div>

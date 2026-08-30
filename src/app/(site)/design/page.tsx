@@ -22,6 +22,8 @@ interface Entry {
   readonly section: DesignSection;
   readonly chainage?: string;
   readonly percent?: number | null;
+  /** Short display date the percent is as of, e.g. "August 2026" — per structure, not one shared label. */
+  readonly asOf?: string;
 }
 
 const entries: readonly Entry[] = [
@@ -29,7 +31,12 @@ const entries: readonly Entry[] = [
   ...interchangeSections.map((section): Entry => {
     const interchange = interchanges.find((i) => i.id === section.interchangeId);
     const pkg = workPackages.find((w) => w.id === section.interchangeId);
-    return { section, chainage: interchange?.chainageLabel, percent: pkg?.percentComplete ?? null };
+    return {
+      section,
+      chainage: interchange?.chainageLabel,
+      percent: pkg?.percentComplete ?? null,
+      asOf: pkg?.asOf,
+    };
   }),
   ...structureSections.map((section): Entry => ({ section })),
 ];
@@ -38,7 +45,7 @@ export default function DesignPage() {
   return (
     <>
       <PageHero
-        media="atelJunctionRoundabout"
+        media="progBridgeKm16556B"
         title="Design & Infrastructure"
         subtitle={
           <>
@@ -57,6 +64,7 @@ export default function DesignPage() {
                 reverse={index % 2 === 1}
                 chainage={entry.chainage}
                 percent={entry.percent}
+                asOf={entry.asOf}
               />
             </ViewportReveal>
           ))}

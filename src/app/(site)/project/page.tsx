@@ -4,6 +4,7 @@ import { PageHero } from "@/components/ui/page-hero";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import { JsonLd } from "@/components/seo/json-ld";
 import { CorridorExplorer } from "@/components/corridor/corridor-explorer";
+import { FullScope } from "@/components/project/full-scope";
 import { Figure } from "@/components/ui/figure";
 import { sections, projectFacts, scopeOfWorks } from "@/content/project";
 import { mediaRegistry } from "@/content/media";
@@ -47,17 +48,19 @@ export default function ProjectPage() {
     <>
       <JsonLd data={corridorPlaceJsonLd()} />
       <PageHero
-        media="corridorAerial"
+        media="flowerPotRemodel"
         title="The Project"
         subtitle={
           <>
             The Accra–Tema Motorway and Extensions Project is a {projectFacts.corridorLengthKm} km
-            overall design programme. The May 2026 report focuses on the{" "}
-            {projectFacts.section1LengthKm} km Section 1 corridor — Tema Roundabout to Tetteh
-            Quarshie Interchange — which is currently under construction.
+            overall design project. Section 1 corridor — Tema Roundabout to Tetteh Quarshie
+            Interchange — is the phase currently under construction.
           </>
         }
       />
+
+      {/* The whole plan first, then the interactive way to dig into it. */}
+      <FullScope />
 
       {/* Interactive corridor explorer — ADDITIVE. The detailed sections below
           it (the three-section grid, why-reconstruction, scope) all remain as
@@ -83,8 +86,8 @@ export default function ProjectPage() {
             <h2 className="text-heading-4 text-fg">A 27.7 km design, one section under construction</h2>
             <p className="max-w-3xl text-body text-fg-muted">
               The full design programme spans three sections. Section 1 — the 19.5 km Accra–Tema
-              Motorway corridor — is the section currently being built and the focus of the May 2026
-              monthly progress report. Sections 2 and 3 form part of the wider design programme.
+              Motorway corridor — is the section currently being built, and Sections 2 and 3 form
+              part of the wider design programme.
             </p>
           </div>
 
@@ -125,13 +128,26 @@ export default function ProjectPage() {
             <div className="flex flex-col gap-4">
               <h2 className="text-heading-4 text-fg">Why the motorway is being reconstructed</h2>
               <p className="text-body text-fg-muted">
-                The Accra–Tema corridor is a critical part of Ghana&rsquo;s national road network,
-                linking the capital, major residential and industrial communities and the Tema
-                transport and logistics area. Increasing commuter and freight activity has placed
-                significant pressure on the existing motorway and its connecting corridors.
+                The Accra-Tema Motorway &amp; Extensions PPP Project is Ghana&rsquo;s first road
+                public private partnership (PPP) project.
               </p>
               <p className="text-body text-fg-muted">
-                The reconstruction and expansion programme is intended to improve mobility and
+                The Accra - Tema Motorway dual carriageway links Accra and the industrial city of
+                Tema, where Ghana&rsquo;s main port is located. It was opened as a freeway in 1964
+                under Ghana&rsquo;s first president, Kwame Nkrumah. The design life of the motorway
+                was intended for 20 years and the pavement has outlived its terminal level of
+                serviceability with visible fatigue-cracking, joint failures and pumping under
+                wheel load and requires reconstruction.
+              </p>
+              <p className="text-body text-fg-muted">
+                The project scope of the ATMP covers 27.7 km and involves an upgrade of 27.7KM of
+                the national road network in the Greater Accra Region together with the operation
+                and maintenance of the road, including toll road system on certain sections. The
+                Project will be delivered in two phases, ensuring timely delivery and efficiency
+                providing solutions to address the challenges with the freeway.
+              </p>
+              <p className="text-body text-fg-muted">
+                The reconstruction and extension project is intended to improve mobility and
                 accessibility, ease congestion across the N1, N4, Liberation Road and N6 corridors,
                 strengthen regional integration and provide safer and more reliable transport
                 infrastructure — supporting Ghana&rsquo;s broader goal of an integrated, efficient
@@ -166,8 +182,8 @@ export default function ProjectPage() {
             ))}
           </ul>
           <p className="text-caption text-fg-faint">
-            The Section 1 scope includes {projectFacts.tollPlazaCount} toll plazas and{" "}
-            {projectFacts.pedestrianFootbridges} pedestrian crossing points, per the May 2026 report.
+            The Section 1 scope includes {projectFacts.pedestrianFootbridges} pedestrian crossing
+            points.
           </p>
         </ViewportReveal>
       </section>

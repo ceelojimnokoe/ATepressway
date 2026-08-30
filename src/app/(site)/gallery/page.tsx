@@ -33,9 +33,9 @@ export default function GalleryPage() {
   return (
     <>
       <PageHero
-        media="atelJunctionUnderpass"
+        media="progRetainingKm12120B"
         title="Gallery"
-        subtitle="Construction photography and proposed designs from along the Accra–Tema corridor, by category."
+        subtitle="Construction photography and proposed designs from along the Accra–Tema motorway corridor by category."
       />
 
       <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-16 sm:px-8">

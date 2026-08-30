@@ -9,6 +9,8 @@ interface DesignSectionCardProps {
   readonly reverse?: boolean;
   readonly chainage?: string;
   readonly percent?: number | null;
+  /** Short display date the percent is as of, e.g. "August 2026" — per structure, never hardcoded. */
+  readonly asOf?: string;
 }
 
 /**
@@ -17,7 +19,7 @@ interface DesignSectionCardProps {
  * drawings only; real site photographs (footbridges, drainage) are
  * labelled honestly as work in progress and carry no such disclaimer.
  */
-export function DesignSectionCard({ section, reverse, chainage, percent }: DesignSectionCardProps) {
+export function DesignSectionCard({ section, reverse, chainage, percent, asOf }: DesignSectionCardProps) {
   const asset = mediaRegistry[section.media];
   const isProposedVisual = asset.kind === "render" || asset.kind === "drawing";
 
@@ -52,7 +54,7 @@ export function DesignSectionCard({ section, reverse, chainage, percent }: Desig
         {percent != null && (
           <div className="flex items-baseline gap-2">
             <Figure value={`${percent}%`} className="text-heading-4 text-accent" />
-            <span className="text-small text-fg-faint">complete · May 2026</span>
+            {asOf && <span className="text-small text-fg-faint">complete · {asOf}</span>}
           </div>
         )}
         <p className="text-body text-fg-muted">{section.description}</p>

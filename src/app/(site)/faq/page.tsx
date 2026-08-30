@@ -16,7 +16,7 @@ export default function FaqPage() {
   return (
     <>
       <PageHero
-        media="atelCarriagewaySection"
+        media="retainingWall"
         title="FAQ"
         subtitle="Answers about the corridor, the works, funding, tolling and who is responsible — drawn from the project record. Where something has not been published, the answer says so."
       />

@@ -31,7 +31,7 @@ export function TeamPreview() {
       <div className="mx-auto w-full max-w-5xl px-4 py-24 sm:px-8">
         <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-4">
-            <span className="figure text-caption text-accent tracking-[0.2em] uppercase">08 — People</span>
+            <span className="figure text-caption text-accent tracking-[0.2em] uppercase">09 — People</span>
             <TextReveal
               as="h2"
               text="Project Team"

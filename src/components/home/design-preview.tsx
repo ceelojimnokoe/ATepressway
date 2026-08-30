@@ -21,7 +21,7 @@ const slots = [
     kind: "Drawing",
   },
   {
-    key: "tettehQuarshieRender",
+    key: "tettehQuarshieProposed",
     caption: "Tetteh Quarshie Interchange — proposed design",
     kind: "Design",
   },
@@ -38,7 +38,7 @@ export function DesignPreview() {
       <div className="mx-auto w-full max-w-5xl px-4 py-24 sm:px-8">
         <div className="mb-12 flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div className="flex flex-col gap-4">
-            <span className="figure text-caption text-accent tracking-[0.2em] uppercase">05 — Design</span>
+            <span className="figure text-caption text-accent tracking-[0.2em] uppercase">06 — Design</span>
             <TextReveal
               as="h2"
               text="A ten-lane corridor, built in two surfaces"

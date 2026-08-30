@@ -22,6 +22,15 @@ export { isPlaceholder, type Placeholder } from "./placeholder";
 /** Source tag carried by every per-structure figure taken from the May 2026 MPR. */
 const MPR_MAY_2026 = "MPR May 2026";
 
+/**
+ * Per-structure progress source as of the 28 Aug 2026 client meeting: Maripoma’s
+ * own work-plan sheet (public/images/progress-update-7.jpeg), which reports each
+ * structure as a completed fraction of its total quantity. Two figures carried
+ * over unchanged from the May MPR (Teshie Link 0.747 ≈ 74.5%, Community 18 0.675
+ * = 67.5%), confirming both documents measure on the same basis.
+ */
+const WORK_PLAN_AUG_2026 = "Maripoma work plan, 28 August 2026";
+
 // ---------------------------------------------------------------------------
 // Organization & stakeholders
 // ---------------------------------------------------------------------------
@@ -38,37 +47,46 @@ export interface Stakeholder {
    * an unconfirmed or missing logo never renders as a broken image.
    */
   readonly logo?: MediaKey;
+  /** Official website, linked from the party's name/logo. Opens in a new tab. */
+  readonly website?: string;
 }
 
 /**
- * Contractual structure per the May 2026 MPR. ATEL's contractual role is
- * Employer — it commissions and oversees the works; it does not build
- * the road. Never describe ATEL as the contractor — see CLAUDE.md.
+ * Contractual structure. ATEL's contractual role is CONCESSIONAIRE (client,
+ * 28 Aug 2026) — it commissions, finances and oversees the works and will
+ * operate and maintain them; it does not build the road. Never describe ATEL
+ * as the contractor — see CLAUDE.md.
  *
- * Chain, top to bottom: Employer → Funding Agency → Employer's
- * Representative → Employer's Representative's Agent → EPC Contractor.
- * The relocation specialists sit outside that chain and render visually
- * subordinate to it.
+ * Chain, top to bottom: Concessionaire → Funding Agency → Employer's
+ * Representative → Employer's Representative's Agent → EPC Contractor for
+ * Section 1. The relocation specialists sit outside that chain and render
+ * visually subordinate to it.
  */
 const employer = {
   name: "A.T. Expressway Ltd.",
-  role: "Employer",
-  gloss: "A.T. Expressway Ltd. is the employer responsible for the delivery framework of the Accra–Tema Motorway and Extensions Project.",
+  // Concessionaire, not Employer (client, 28 Aug 2026). This also resolves a
+  // long-standing internal inconsistency: the footer already described ATEL as
+  // "the concessionaire responsible for...". Per the client's own FAQ pack,
+  // MRH acting through GHA awarded ATEL a 30-year concession.
+  role: "Concessionaire",
+  gloss: "A.T. Expressway Ltd. is the Concessionaire responsible for the design, financing, construction, operation and maintenance of the Accra–Tema Motorway and Extensions Project under a 30-year concession.",
   logo: "logoAtel",
 } as const satisfies Stakeholder;
 
 const fundingAgency = {
   name: "Ghana Infrastructure Investment Fund",
   role: "Funding Agency",
-  gloss: "The Ghana Infrastructure Investment Fund provides the project's principal infrastructure financing support.",
+  gloss: "The Ghana Infrastructure Investment Fund established ATEL to deliver the project and is currently its sole shareholder.",
   logo: "logoGiif",
+  website: "https://giif.gov.gh",
 } as const satisfies Stakeholder;
 
 const employersRepresentative = {
   name: "Ghana Highway Authority",
   role: "Employer's Representative",
-  gloss: "The Ghana Highway Authority serves as the employer's representative, providing technical oversight and coordination for the project.",
+  gloss: "The Ghana Highway Authority is the Contracting Authority for the concession and the Employer's Representative, providing technical oversight and coordination for the project.",
   logo: "logoGha",
+  website: "https://www.highways.gov.gh/",
 } as const satisfies Stakeholder;
 
 const employersRepAgent = {
@@ -76,12 +94,15 @@ const employersRepAgent = {
   role: "Employer's Representative's Agent",
   gloss: "Associated Consultants Limited provides engineering consultancy, design review and construction-supervision services for the project.",
   logo: "logoAssociatedConsultants",
+  website: "https://associatedconsultantsltd.com/",
 } as const satisfies Stakeholder;
 
 const epcContractor = {
   name: "Maripoma Enterprise Limited",
-  role: "EPC Contractor",
-  gloss: "Maripoma Enterprise Limited is the engineering, procurement and construction contractor delivering the Section 1 works.",
+  // "for Section 1" is load-bearing: Maripoma designed all three sections but
+  // constructs Section 1 only (client FAQ pack; Phase 2 EPC is still being procured).
+  role: "EPC Contractor for Section 1",
+  gloss: "Maripoma Enterprise Limited is the EPC contractor responsible for engineering, procurement and construction, delivering the Section 1 works under Phase 1 — which also covers the design of all three sections.",
   logo: "logoMaripoma",
 } as const satisfies Stakeholder;
 
@@ -123,12 +144,14 @@ export const specialistContractors: readonly Stakeholder[] = [
 ];
 
 /**
- * Website / brand identity. The client distinguishes the public brand
- * ("Accra–Tema Expressway Ltd.") from the Employer legal entity
- * ("A.T. Expressway Ltd.", see stakeholders.employer). Both are ATEL.
+ * Website / brand identity. As of the 28 Aug 2026 client meeting the site uses
+ * ONE name form everywhere — "A.T. Expressway Ltd." — matching the client's own
+ * source documents (the Website Text Corrections doc and the FAQ pack both use
+ * "A.T. Expressway Ltd (ATEL)"). This supersedes the earlier split between a
+ * public brand and a separate legal-entity name.
  */
 export const organization = {
-  name: "Accra–Tema Expressway Ltd.",
+  name: "A.T. Expressway Ltd.",
   shortName: "ATEL",
   description:
     "Official project information, design highlights and construction progress for the Accra–Tema Motorway and Extensions Project.",
@@ -190,8 +213,13 @@ export const projectFacts = {
   section1LengthKm: 19.5,
   openedYear: 1964,
   openedUnder: "Kwame Nkrumah",
-  /** ISO 8601, per the May 2026 MPR. */
-  contractAwardDate: "2024-03-21",
+  /**
+   * CONFIRMED by the client (2026-08-29): the contract award date is
+   * 12 March 2024. This supersedes the May 2026 MPR, which stated 21 March
+   * 2024 — the client has confirmed the MPR date was incorrect. Do not revert
+   * to the MPR value.
+   */
+  contractAwardDate: "2024-03-12",
   /** ISO 8601, per the May 2026 MPR. The 36-month window runs from this date. */
   commencementDate: "2024-08-02",
   /** ISO 8601, per the May 2026 MPR — commencement + 36 months. */
@@ -209,6 +237,102 @@ export const projectFacts = {
   pedestrianFootbridges: 10,
   tollPlazaCount: 8,
 } as const;
+
+/**
+ * When the site's content was last refreshed. ONE value, rendered wherever the
+ * "site last updated" indicator appears — update this line and every instance
+ * changes. ISO 8601 so it can be formatted per locale at the render site.
+ */
+export const siteLastUpdated = "2026-08-29";
+
+/**
+ * "By the numbers", per section plus a combined total.
+ *
+ * Only verified facts appear here. Section 1 (Phase 1) is the section under
+ * construction, so it carries the contract, programme and quantity figures from
+ * the MPR. Sections 2 and 3 are Phase 2 — designed but not yet under
+ * construction — so they carry only what the client has actually published:
+ * length, lane count on completion, road designation and phase. Nothing is
+ * back-derived or estimated to fill the grid.
+ *
+ * Lane counts and the interchange split are from the client's own FAQ pack
+ * ("a 10-lane Section 1, 12-lane Section 2, and a 6-lane Section 3 ... five (5)
+ * new interchanges and two (2) remodelled interchanges").
+ */
+export interface SectionStat {
+  readonly value: number;
+  readonly prefix?: string;
+  readonly suffix?: string;
+  readonly unit?: string;
+  readonly decimals?: number;
+  readonly separator?: boolean;
+  readonly label: string;
+}
+
+export interface SectionStatGroup {
+  readonly id: string;
+  readonly label: string;
+  readonly summary: string;
+  readonly stats: readonly SectionStat[];
+}
+
+export const sectionStatGroups: readonly SectionStatGroup[] = [
+  {
+    id: "s1",
+    label: "Section 1",
+    summary:
+      "The 19.5 km Accra–Tema Motorway — Phase 1, currently under construction and the focus of monthly progress reporting.",
+    stats: [
+      { value: 19.5, decimals: 1, unit: "km", label: "Length" },
+      { value: 10, label: "Lanes on completion" },
+      { value: 338.9, prefix: "US$", suffix: "M", decimals: 1, label: "Contract price before tax" },
+      { value: 1095, separator: true, unit: "days", label: "Contract duration" },
+      { value: 4, label: "Interchanges" },
+      { value: 10, label: "Pedestrian crossings" },
+      // Client (Aug 2026): the toll-plaza count is withdrawn pending official
+      // communication. Days elapsed replaces it, giving the 1,095-day contract
+      // duration the "755 days covered so far" context the client asked for.
+      { value: 755, separator: true, unit: "days", label: "Programme days elapsed" },
+      { value: 284, label: "Equipment recorded on site" },
+    ],
+  },
+  {
+    id: "s2",
+    label: "Section 2",
+    summary:
+      "The 5.7 km George Bush Highway — Phase 2. Designed under the current EPC contract; construction is not yet under way.",
+    stats: [
+      { value: 5.7, decimals: 1, unit: "km", label: "Length" },
+      { value: 12, label: "Lanes on completion" },
+      { value: 2, label: "Phase" },
+    ],
+  },
+  {
+    id: "s3",
+    label: "Section 3",
+    summary:
+      "The 2.5 km Nsawam Road link — Phase 2. Designed under the current EPC contract; construction is not yet under way.",
+    stats: [
+      { value: 2.5, decimals: 1, unit: "km", label: "Length" },
+      { value: 6, label: "Lanes on completion" },
+      { value: 2, label: "Phase" },
+    ],
+  },
+  {
+    id: "total",
+    label: "Total",
+    summary:
+      "The full 27.7 km design scope across all three sections, delivered under a 30-year concession.",
+    stats: [
+      { value: 27.7, decimals: 1, unit: "km", label: "Total corridor" },
+      { value: 3, label: "Sections" },
+      { value: 5, label: "New interchanges" },
+      { value: 2, label: "Remodelled interchanges" },
+      { value: 30, unit: "years", label: "Concession term" },
+      { value: 2, label: "Delivery phases" },
+    ],
+  },
+];
 
 export interface LaneGroup {
   readonly lanes: number;
@@ -297,11 +421,6 @@ export const scopeOfWorks: readonly ScopeItem[] = [
   {
     id: "new-interchanges",
     description: "Construction of new interchanges at Teshie Link, Community 18, and Lashibi",
-    source: MPR_MAY_2026,
-  },
-  {
-    id: "toll-plazas",
-    description: "Construction of 8 toll plazas",
     source: MPR_MAY_2026,
   },
   {
@@ -433,6 +552,15 @@ export interface WorkPackageProgress {
   readonly percentComplete: number;
   readonly unitsComplete?: number;
   readonly unitsTotal?: number;
+  /**
+   * Short display date for this figure, e.g. "August 2026" — mirrors
+   * `Progress.asOf` (vs. `source`, the full citation). Every structure
+   * currently shares the same Aug 2026 work-plan date, but the field is
+   * per-item on purpose: if a future report updates only some structures,
+   * each card can show its own real date instead of one shared label
+   * silently implying every structure is equally current.
+   */
+  readonly asOf: string;
   readonly source: string;
 }
 
@@ -457,65 +585,81 @@ export interface Progress {
  * placeholder — do not back-derive them from the per-structure figures.
  */
 export const progress: Progress = {
-  // Overall raised to 50% per a Board of Directors update (August 2026) — a
-  // separate source from the May 2026 MPR, so it is attributed to the Board,
-  // not falsely to the MPR. NOTE: the per-structure workPackages below are
-  // unchanged and still cite "MPR May 2026"; they now sit beneath a higher
-  // overall from a different, later source. Left as-is pending confirmation
-  // of refreshed per-structure figures — do not back-derive them.
-  overallPercentComplete: 50,
+  // Overall physical progress is 52% per the 28 Aug 2026 client meeting.
+  //
+  // RECONCILIATION — now largely explained. Maripoma's own progress chart
+  // (public/images/progress-update-1.jpeg, dated 28 Aug 2026) shows a single
+  // continuous monthly series: Jan 38% · Feb 40% · Mar 42% · Apr 44% ·
+  // May 46% · Jun 48% · Jul 50% · Aug 52%. So the three figures on record
+  // (46% MPR → 50% Board → 52% now) are NOT competing sources; they are the
+  // same series read at three different months.
+  //
+  // RESOLVED (client instruction, 2026-08-29): the per-structure workPackages
+  // below have been updated from Maripoma’s 28 Aug 2026 work plan
+  // (public/images/progress-update-7.jpeg) and now sit on the same reporting
+  // date as the 52% overall. They are cited as WORK_PLAN_AUG_2026, not the MPR.
+  overallPercentComplete: 52,
   asOf: "August 2026",
-  signOffSource: "Board of Directors update, August 2026",
+  signOffSource: "Client meeting, 28 August 2026",
   reportSeries: "Monthly Progress Report",
   sections: placeholder<readonly SectionProgress[]>("Per-section progress percentages", []),
   workPackages: [
     {
       id: "tetteh-quarshie",
       name: "Tetteh Quarshie Interchange",
-      percentComplete: 88,
-      source: MPR_MAY_2026,
+      // Reported complete (1 of 1) in the Aug 2026 work plan, up from 88% in May.
+      percentComplete: 100,
+      asOf: "August 2026",
+      source: WORK_PLAN_AUG_2026,
     },
     {
       id: "teshie-link",
       name: "Teshie Link Interchange",
-      percentComplete: 74.5,
-      source: MPR_MAY_2026,
+      percentComplete: 74.7,
+      asOf: "August 2026",
+      source: WORK_PLAN_AUG_2026,
     },
     {
       id: "community-18",
       name: "Community 18 Interchange",
       percentComplete: 67.5,
-      source: MPR_MAY_2026,
+      asOf: "August 2026",
+      source: WORK_PLAN_AUG_2026,
     },
     {
       id: "lashibi",
       name: "Lashibi Interchange",
-      percentComplete: 30,
-      source: MPR_MAY_2026,
+      percentComplete: 37,
+      asOf: "August 2026",
+      source: WORK_PLAN_AUG_2026,
     },
     {
       id: "footbridges",
       name: "Pedestrian footbridges",
-      percentComplete: 31.5,
-      unitsComplete: 3.15,
+      percentComplete: 44.5,
+      unitsComplete: 4.45,
       unitsTotal: 10,
-      source: MPR_MAY_2026,
+      asOf: "August 2026",
+      source: WORK_PLAN_AUG_2026,
     },
     {
       id: "box-culverts",
       name: "Box culverts",
-      percentComplete: 64.25,
-      unitsComplete: 12.85,
+      percentComplete: 91.25,
+      unitsComplete: 18.25,
       unitsTotal: 20,
-      source: MPR_MAY_2026,
+      asOf: "August 2026",
+      source: WORK_PLAN_AUG_2026,
     },
     {
       id: "bridge-culverts",
       name: "Bridge culverts",
-      percentComplete: 40,
-      unitsComplete: 1.2,
+      // 1.3 of 3 = 43.33...%; stored to 1dp so no float artefact can reach a render.
+      percentComplete: 43.3,
+      unitsComplete: 1.3,
       unitsTotal: 3,
-      source: MPR_MAY_2026,
+      asOf: "August 2026",
+      source: WORK_PLAN_AUG_2026,
     },
   ],
 };
@@ -541,6 +685,52 @@ export const progress: Progress = {
 // then.
 // ---------------------------------------------------------------------------
 
+/**
+ * Plain-language construction highlights for a public audience, each paired
+ * with a real photograph from the 28 Aug 2026 progress pack. This replaces the
+ * chainage-by-chainage engineering list that used to sit on /progress: the
+ * client flagged it as too technical for the general public. The precise
+ * chainage still lives in each image alt text for anyone who wants it.
+ */
+export interface ActivityHighlight {
+  readonly media: MediaKey;
+  readonly title: string;
+  readonly detail: string;
+}
+
+export const activityHighlights: readonly ActivityHighlight[] = [
+  {
+    media: "comm18Underpass",
+    title: "Underpass structure completed",
+    detail: "Community 18 Interchange",
+  },
+  {
+    media: "teshieLinkDiversionWalls",
+    title: "Traffic diversion walls built",
+    detail: "Teshie Link Interchange",
+  },
+  {
+    media: "progTBeam",
+    title: "Bridge beams cast and placed",
+    detail: "Along the Section 1 corridor",
+  },
+  {
+    media: "progFootbridgeKm8050A",
+    title: "Pedestrian footbridge going up",
+    detail: "Near Km 8+050",
+  },
+  {
+    media: "progRetainingKm12120A",
+    title: "Retaining walls under construction",
+    detail: "Near Km 12+120",
+  },
+  {
+    media: "progSubbaseKm7600",
+    title: "New road foundation being laid",
+    detail: "Between Km 7+600 and Km 8+340",
+  },
+];
+
 export interface MonthlyUpdate {
   /** Reporting month, e.g. "May 2026". */
   readonly month: string;
@@ -548,9 +738,40 @@ export interface MonthlyUpdate {
   readonly planned: readonly string[];
   /** Overall physical progress reported that month. */
   readonly overallPct: number;
+  /** Imagery evidencing the completed work. */
+  readonly completedImages?: readonly MediaKey[];
+  /** Imagery for the NEXT month's plan (work-plan sheets), never mixed with completed work. */
+  readonly plannedImages?: readonly MediaKey[];
 }
 
 export const monthlyUpdates: readonly MonthlyUpdate[] = [
+  {
+    month: "August 2026",
+    completed: [
+      "Physical progress reached 52%, up from 50% in July.",
+      "Traffic-diversion and footing walls constructed at Teshie Link Interchange (Km 6+363–6+380).",
+      "Footing walls and underpass construction at Community 18 Interchange (Km 12+010–12+910).",
+      "Bridge works advanced at Km 10+873, Km 13+745 and Km 16+556.",
+      "Subgrade and sub-base laid between Km 7+600 and Km 18+300.",
+    ],
+    // September 2026 plan, from Maripoma's work-plan sheets (28 Aug 2026).
+    planned: [
+      "Rock filling — 70,000 m³.",
+      "Natural gravel sub-base — 3,000 m³.",
+      "Graded crushed stone sub-base — 1,000 m³.",
+      "Trapezoidal concrete drain — 2,000 m, and U-drain slab — 1,000 m.",
+      "Continued works at Lashibi Interchange, the footbridges and the box culverts.",
+    ],
+    overallPct: 52,
+    completedImages: [
+      "teshieLinkDiversionWalls",
+      "teshieLinkFootingWall",
+      "comm18FootingWall",
+      "comm18Underpass",
+      "progressChartAug2026",
+    ],
+    plannedImages: ["workPlanSep2026PageOne", "workPlanSep2026PageTwo"],
+  },
   {
     month: "May 2026",
     completed: [],
@@ -565,34 +786,39 @@ export const latestMonthlyUpdate: MonthlyUpdate | undefined = monthlyUpdates[0];
 // Contact
 // ---------------------------------------------------------------------------
 
-export interface ContactSocial {
-  readonly twitter: string | Placeholder<string>;
-  readonly facebook: string | Placeholder<string>;
-  readonly instagram: string | Placeholder<string>;
-  readonly linkedin: string | Placeholder<string>;
+/**
+ * One social profile. An ORDERED ARRAY, not a fixed-key object: display order
+ * is part of the content (LinkedIn leads), and a fixed-key shape can't express
+ * order or accommodate a new platform without a type change.
+ */
+export interface SocialLink {
+  readonly platform: string;
+  readonly url: string;
 }
 
 export interface Contact {
   readonly email: string | Placeholder<string>;
   readonly phone: string | Placeholder<string>;
   readonly address: string | Placeholder<string>;
-  readonly social: ContactSocial;
+  readonly social: readonly SocialLink[];
 }
 
-// Real, client-confirmed contact details (August 2026). The address is
+// Real, client-confirmed contact details. The road name spelling "Yantrabi"
+// was confirmed by the client (2026-08-29) and independently matches the
+// client’s own Website Text Corrections document. The address is
 // textual contact information only: the /contact map continues to show the
 // project corridor, not an office pin. Social handles remain placeholders
 // until supplied.
 export const contact: Contact = {
   email: "info@atexpressway.com",
   phone: "0332092401",
-  address: "157 Yantabri Road, Labone, Accra, Ghana",
-  social: {
-    twitter: placeholder<string>("X / Twitter handle", ""),
-    facebook: placeholder<string>("Facebook handle", ""),
-    instagram: placeholder<string>("Instagram handle", ""),
-    linkedin: placeholder<string>("LinkedIn handle", ""),
-  },
+  address: "157 Yantrabi Road, Labone, Accra, Ghana",
+  social: [
+    { platform: "LinkedIn", url: "https://www.linkedin.com/company/atexpresswayltd/" },
+    { platform: "X (Twitter)", url: "https://x.com/AtExpressway" },
+    { platform: "Instagram", url: "https://www.instagram.com/atexpressway/" },
+    { platform: "Facebook", url: "https://www.facebook.com/profile.php?id=61573949670230" },
+  ],
 };
 
 // ---------------------------------------------------------------------------
@@ -627,13 +853,32 @@ export const team: readonly TeamMember[] = [
       alt: "Portrait of Ing. Kwadwo Bempong, Chief Resident Engineer",
     },
     initials: "KB",
-    bio: "Ing. Kwadwo Bempong is a civil and road engineer with more than 30 years of design and construction-supervision experience. He holds an MSc with honours in Road and Pavement Engineering and is Chief Executive Officer of Associated Consultants Limited. His major assignments include the Pokuase Interchange, the Ofankor–Nsawam Road, the Ashaiman–Akosombo dual carriageway and the Accra–Tema Motorway expansion project, where he serves as Chief Resident Engineer.",
+    bio: "Ing. Kwadwo Bempong is a civil and road engineer with more than 30 years of design and construction-supervision experience. He holds an MSc with honours in Road and Pavement Engineering and is Chief Executive Officer of Associated Consultants Limited. His major assignments include the Pokuase Interchange, the Ofankor–Nsawam Road, the Ashaiman–Akosombo dual carriageway and the Accra–Tema Motorway and Extensions Project, where he serves as Chief Resident Engineer.",
     credentials: [
       "MSc, Road and Pavement Engineering",
       "Chief Executive Officer, Associated Consultants Limited",
       "Immediate Past President, Ghana Institution of Engineering",
       "President, Ghana Consulting Engineers Association",
       "More than 30 years of engineering experience",
+    ],
+  },
+  {
+    name: "Ing. Emmanuel Tetteh",
+    title: "Resident Engineer, Roads",
+    photo: {
+      src: "/images/tetteh.jpg",
+      alt: "Portrait of Ing. Emmanuel Tetteh, Resident Engineer (Roads)",
+    },
+    initials: "ET",
+    bio: "Ing. Emmanuel Tetteh is a civil engineer with more than thirty years of construction experience across Ghana's trunk road network. He holds an MSc in Industrial Mathematics and a BSc in Civil Engineering, both from Kwame Nkrumah University of Science and Technology. As Resident Engineer for roads on the Accra–Tema Motorway and Extensions Project with Associated Consultants Limited, he liaises with the client, contractor and stakeholders, monitors progress against the work programme and ensures site compliance with the relevant specifications.",
+    credentials: [
+      "MSc, Industrial Mathematics — KNUST",
+      "BSc, Civil Engineering — KNUST",
+      "Tamale–Paga Road Rehabilitation",
+      "Kwame Nkrumah Circle–Achimota Road",
+      "Reconstruction of Teshie Link Road",
+      "Reconstruction of Tema Steel Works Road",
+      "Valco Roundabout–Kpone Road",
     ],
   },
   {
@@ -669,151 +914,179 @@ export const team: readonly TeamMember[] = [
  * card shows an explicit "to be confirmed" profile. Adding a bio or photo
  * later is a one-line change.
  */
+/**
+ * The minimal shape every person card renders: name, role, portrait (or null
+ * for an initials avatar) and initials. BoardMember satisfies it, and team
+ * members are adapted to it at the render site — so a person's name, title and
+ * photo live in exactly ONE place in this file, never copied.
+ */
+export interface OrgPerson {
+  readonly name: string;
+  readonly role: string;
+  readonly photo: ImageAsset | null;
+  readonly initials: string;
+}
+
 export interface BoardMember {
-  readonly name: string | Placeholder<string>;
+  /** Plain string: every seat is now confirmed, so no placeholder state remains. */
+  readonly name: string;
   /** Contractual role — "Board Member", or "Chairman, Board of Directors". */
   readonly role: string;
   /** Supplied portrait, or null to fall back to an initials avatar. */
   readonly photo: ImageAsset | null;
   readonly initials: string;
-  /** Biography as paragraphs. */
-  readonly bio: readonly string[] | Placeholder<readonly string[]>;
-  /** Chair gets a subtle badge and leads the list. */
+  /**
+   * Which delivery-chain organisation this director is affiliated with, per
+   * their own supplied profile. The board roster is nested under that
+   * organisation on /stakeholders. NOTE: every person here is a director of
+   * ATEL; the affiliation is their substantive employer/appointing body, NOT a
+   * claim that they sit on that organisation's own board. The UI labels this
+   * as representation for exactly that reason.
+   */
+  readonly affiliation: StakeholderKey;
+  /** Chair leads the roster. */
   readonly isChairman?: boolean;
+  /**
+   * Executive leadership (e.g. the CEO) rather than a non-executive director.
+   * Rendered in its own group above the board list, so governance and
+   * management are visually distinct.
+   */
+  readonly isExecutive?: boolean;
 }
+
+export type StakeholderKey = "employer" | "fundingAgency" | "employersRepresentative" | "financeMinistry";
 
 export const boardMembers: readonly BoardMember[] = [
   {
     name: "Mr. Samuel Kwasi Akuoku",
-    role: "Chairman, Board of Directors",
+    // Title confirmed by the client (30 Aug 2026). Spelling kept as already on
+    // record — do NOT change to "Akwasi Akuoko".
+    role: "Board Chairman",
     isChairman: true,
+    affiliation: "employer",
     photo: {
       src: "/images/board-member1.jpeg",
-      alt: "Portrait of Mr. Samuel Kwasi Akuoku, Chairman of the Board of A.T. Expressway Ltd",
+      alt: "Portrait of Mr. Samuel Kwasi Akuoku, Chairman, Board of Directors of A.T. Expressway Ltd.",
     },
     initials: "SA",
-    bio: [
-      "Mr. Samuel Kwasi Akuoku (Board Chairman) is an accomplished infrastructure and governance professional with extensive experience in the development, management and oversight of strategic public infrastructure projects in Ghana. As Chairman of the Board of A.T. Expressway Ltd, he provides strategic leadership and governance oversight for the implementation of the Accra–Tema Motorway and Extensions Project, one of Ghana's most significant transport infrastructure initiatives.",
-      "With a distinguished career spanning the public infrastructure sector, Mr. Akuoku has contributed significantly to the planning, execution and supervision of major road infrastructure programmes. His leadership is driven by a strong commitment to transparency, operational excellence, prudent corporate governance and sustainable infrastructure financing.",
-      "As Board Chairman, he works closely with Management and key stakeholders to ensure that A.T. Expressway Ltd delivers a modern, efficient and safe motorway network that supports national economic growth, regional connectivity and improved mobility.",
-    ],
-  },
-  {
-    name: "Mr. Louis Harrison",
-    role: "Board Member",
-    photo: {
-      src: "/images/board-member5.jpeg",
-      alt: "Portrait of Mr. Louis Harrison, Board Member of A.T. Expressway Ltd",
-    },
-    initials: "LH",
-    bio: [
-      "Louis is an infrastructure finance and investment professional with over 15 years' experience in project finance, business planning and strategy, and capital raising. To date, Louis has managed deal flow in Ghana in excess of US$2 billion in energy, downstream oil & gas, and transport infrastructure as well as waste, water & sanitation, and healthcare. Louis currently works with the Ghana Infrastructure Investment Fund as its Chief Investment Officer.",
-      "Prior to that, he was the Head of Corporate Finance & Advisory at Jospong Group of Companies (Ghana's largest holding company) with responsibilities for developing a pipeline of good quality investment opportunities, evaluating, structuring, negotiating, and closing new transactions, portfolio restructurings, equity sales, etc.",
-      "He previously worked for Merson Capital Limited as the Transaction Advisory Manager where he executed corporate strategy in respect of deal flow and capital raising. At Merson, he was a transaction advisor to TAG Thermal Plant, Bulk Oil Storage & Transport Company Limited (BOST), and Tema Oil Refinery (TOR) in their capital investment programs.",
-      "Other positions held include Head of Corporate Finance of KBL Venture Capital (a PE Fund), and Analyst at Main Investments Limited.",
-      "He holds an MPhil and Bachelor of Arts in Economics with specializations in Corporate Finance, Banking, and Taxation from the University of Ghana, and is a certified investment professional by the Securities & Exchange Commission of Ghana.",
-    ],
-  },
-  {
-    name: "Hon. Theresa Lardi Awuni",
-    role: "Board Member",
-    photo: {
-      src: "/images/board-member4.jpeg",
-      alt: "Portrait of Hon. Theresa Lardi Awuni, Board Member of A.T. Expressway Ltd",
-    },
-    initials: "TA",
-    bio: [
-      "Hon. Theresa Lardi Awuni is a Member of Parliament for Okaikwe North and an experienced public administrator with a passion for inclusive development, governance and public service. She serves on the Board of the Ghana Infrastructure Investment Fund (GIIF), contributing to national efforts to mobilise investment for transformative infrastructure projects.",
-      "She holds a first degree in Project Management from the Ghana Institute of Management and Public Administration (GIMPA) and a Masters in International Relations from Liverpool John Moores University.",
-      "As a Board Member of A.T. Expressway Ltd, Hon. Awuni brings valuable perspectives on public policy, stakeholder engagement and sustainable development.",
-      "Her commitment to accountability and inclusive decision-making supports the Board's objective of delivering world-class road infrastructure that benefits communities and strengthens Ghana's economy.",
-    ],
   },
   {
     name: "Ms. Victoria Addotey",
     role: "Board Member",
+    affiliation: "employer",
     photo: {
       src: "/images/board-member3.jpeg",
-      alt: "Portrait of Ms. Victoria Addotey, Board Member of A.T. Expressway Ltd",
+      alt: "Portrait of Ms. Victoria Addotey, Board Member of A.T. Expressway Ltd.",
     },
     initials: "VA",
-    bio: [
-      "Victoria Adotey is a seasoned lawyer and cybersecurity legislation expert with a distinguished career in law and public service. She holds a Bachelor of Business Administration and a Law Degree from the Ghana Institute of Management and Public Administration (GIMPA), an LL.B from the Ghana School of Law, and an LL.M in International Arbitration from the University of Law, UK.",
-      "Currently serving as a prosecutor at the Office of the Attorney General in Ghana, Victoria has a decade of experience and a strong track record of winning high-profile cases for the government. She has also worked on complex international arbitration cases.",
-      "Victoria also founded an NGO to advocate for stronger laws against cybercrime, especially Child Sexual Abuse Material (CSAM), in addition to her work in criminal prosecution.",
-      "She played a key role in developing the Legislative Instrument for the Cybersecurity Act of Ghana 2020 (Act 1038) while on secondment at the Cybersecurity Authority of Ghana. She has been instrumental in shaping Ghana's cybersecurity landscape and has represented Ghana at various international cybersecurity conferences.",
-      "With her extensive academic credentials, professional experience, and commitment to public service, Victoria Adotey is a respected figure in Ghana's legal and cybersecurity communities.",
-    ],
   },
   {
-    name: "Mr. Patrick Nomo",
-    role: "Board Member",
+    name: "Gifty Duah-Boakye",
+    role: "Board Secretary",
+    affiliation: "employer",
     photo: {
-      src: "/images/patrick.jpg",
-      alt: "Portrait of Mr. Patrick Nomo, Board Member of A.T. Expressway Ltd",
+      src: "/images/board-member2.JPEG",
+      alt: "Portrait of Gifty Duah-Boakye, Board Secretary of A.T. Expressway Ltd.",
     },
-    initials: "PN",
-    bio: [
-      "Mr. Patrick Nomo is a seasoned public finance and public sector management expert with extensive experience in economic policy, public financial management, institutional development and governance. He currently serves as the Chief Director of Ghana's Ministry of Finance, where he provides strategic administrative leadership and supports the formulation and implementation of national fiscal policies.",
-      "As a member of the Board of A.T. Expressway Ltd, Mr. Nomo contributes valuable expertise in financial governance, public investment management and institutional accountability. His experience in managing complex government programmes strengthens the Board's oversight of infrastructure financing, risk management and long-term sustainability.",
-      "His contributions continue to support sound decision-making aimed at delivering strategic infrastructure investments that enhance Ghana's socio-economic development.",
-    ],
+    initials: "GB",
+  },
+  {
+    name: "Mr. Louis Harrison",
+    // CEO per the client's 30 Aug 2026 list. Existing name spelling retained on
+    // client instruction (their list wrote "Louise"); flagged for confirmation.
+    role: "Chief Executive Officer",
+    isExecutive: true,
+    affiliation: "employer",
+    photo: {
+      src: "/images/board-member5.jpeg",
+      alt: "Portrait of Mr. Louis Harrison, Board Member of A.T. Expressway Ltd.",
+    },
+    initials: "LH",
+  },
+  {
+    name: "Hon. Theresa Lardi Awuni",
+    role: "Board Member",
+    affiliation: "employer",
+    photo: {
+      src: "/images/board-member4.jpeg",
+      alt: "Portrait of Hon. Theresa Lardi Awuni, Board Member of A.T. Expressway Ltd.",
+    },
+    initials: "TA",
   },
   {
     name: "Hon. Dr. Eric Afful",
     role: "Board Member",
+    affiliation: "employer",
     photo: {
       src: "/images/afful.jpg",
-      alt: "Portrait of Hon. Dr. Eric Afful, Board Member of A.T. Expressway Ltd",
+      alt: "Portrait of Hon. Dr. Eric Afful, Board Member of A.T. Expressway Ltd.",
     },
     initials: "EA",
-    bio: [
-      "Hon. Dr. Eric Afful is a Member of Parliament for Amenfi West and an experienced public servant with a strong interest in national development, governance and infrastructure. He also serves on the Board of the Ghana Infrastructure Investment Fund (GIIF), reflecting his involvement in promoting strategic national infrastructure investment.",
-      "He holds a first degree in Social Science from the University of Cape Coast (UCC) and a Masters in Human Resource Development from the same university. He also has a Masters in Economic Planning Development from the Kwame Nkrumah University of Science and Technology.",
-      "Hon. Afful is also a certified Chartered Economist and has a Ph.D in Human Letters from the Elohim Theological Seminary College, United States of America.",
-      "As a Board Member of A.T. Expressway Ltd, Dr. Afful provides strategic guidance on policy alignment, stakeholder engagement and public sector governance. His understanding of legislative processes and national development priorities contributes to the effective oversight of the Accra–Tema Motorway and Extensions Project.",
-      "He is committed to supporting infrastructure initiatives that improve transportation, stimulate economic growth and create lasting value for Ghana.",
-    ],
   },
   {
     name: "Surv. Mallam Issah Ishak",
     role: "Board Member",
+    affiliation: "employer",
     photo: {
       src: "/images/ishak.jpg",
-      alt: "Portrait of Surv. Mallam Issah Ishak, Board Member of A.T. Expressway Ltd",
+      alt: "Portrait of Surv. Mallam Issah Ishak, Board Member of A.T. Expressway Ltd.",
     },
     initials: "MI",
-    bio: [
-      "Surv. Mallam Issah Ishak is an accomplished surveying and highway engineering professional with decades of experience in Ghana's road infrastructure sector. Until his appointment, he served as the Director of Quantity Surveying at the Authority, and is a highly experienced and skilled Quantity Surveyor with a proven track record in Project Management, Cost Engineering, Cost Control, Infrastructural Development and Procurement.",
-      "As a value Engineer, he brings a wealth of experience and expertise in maximizing value by balancing cost and function. We are confident that under his guidance, the Authority will continue to advance the development and maintenance of our nation's trunk road network, ensuring safety and efficiency for all road users.",
-      "He currently serves as the Acting Chief Executive of the Ghana Highway Authority (GHA), where he provides strategic leadership for the planning, development, maintenance and management of the country's trunk road network.",
-      "His extensive technical expertise in highway development, engineering management and infrastructure planning positions him as a valuable member of the Board of A.T. Expressway Ltd. He contributes strategic guidance on engineering standards, project delivery, road asset management and operational excellence.",
-      "His commitment to quality infrastructure development continues to support the delivery of safe, resilient and sustainable road networks across Ghana.",
-    ],
   },
   {
-    name: "Ing. Emmanuel Tetteh",
-    role: "Resident Engineer, Roads",
+    name: "Mr. Patrick Nomo",
+    role: "Board Member",
+    affiliation: "employer",
     photo: {
-      src: "/images/tetteh.jpg",
-      alt: "Portrait of Ing. Emmanuel Tetteh, Resident Engineer (Roads)",
+      src: "/images/patrick.jpg",
+      alt: "Portrait of Mr. Patrick Nomo, Board Member of A.T. Expressway Ltd.",
     },
-    initials: "ET",
-    bio: placeholder<readonly string[]>("Emmanuel Tetteh — profile", [
-      "A full profile for Ing. Emmanuel Tetteh will be added following stakeholder approval.",
-    ]),
+    initials: "PN",
+  },
+];
+
+/**
+ * People nested under the EPC contractor. Not directors — Maripoma's own
+ * personnel. No position was supplied for Ing. Benjamin Sackey, so the card
+ * states that plainly rather than inventing a title.
+ */
+export const epcPersonnel: readonly OrgPerson[] = [
+  {
+    name: "Ing. Benjamin Sackey",
+    role: "Position to be confirmed",
+    photo: null,
+    initials: "BS",
+  },
+];
+
+/**
+ * Government bodies with a defined role in the concession, per the client's own
+ * FAQ pack. They are NOT delivery-chain contractors, so they render as a
+ * lighter-weight oversight band rather than as chain cards.
+ */
+export interface OversightBody {
+  /** Matches BoardMember.affiliation so directors nest under the right body. */
+  readonly key: StakeholderKey | "roadsMinistry";
+  readonly name: string;
+  readonly role: string;
+  readonly gloss: string;
+  readonly website: string;
+}
+
+export const oversightBodies: readonly OversightBody[] = [
+  {
+    key: "roadsMinistry",
+    name: "Ministry of Roads and Highways",
+    role: "Contracting Authority",
+    gloss: "Acting through the Ghana Highway Authority, the Ministry awarded the 30-year concession for the corridor.",
+    website: "https://mrh.gov.gh/",
   },
   {
-    name: "Gifty Dua Boakye",
-    role: "Board Secretary",
-    photo: {
-      src: "/images/board-member2.JPEG",
-      alt: "Portrait of Gifty Dua Boakye, Board Secretary of A.T. Expressway Ltd",
-    },
-    initials: "GB",
-    bio: placeholder<readonly string[]>("Gifty Dua Boakye — profile", [
-      "A full profile for Gifty Dua Boakye will be added following stakeholder approval.",
-    ]),
+    key: "financeMinistry",
+    name: "Ministry of Finance and Economic Planning",
+    role: "Viability Gap Funding",
+    gloss: "Provides the construction grant that keeps tolls affordable, and funds applicable taxes on the Section 1 works.",
+    website: "https://www.mofep.gov.gh/",
   },
 ];
 
