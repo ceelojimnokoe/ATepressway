@@ -50,7 +50,7 @@ export function AnimatedProgressBar({
             type="button"
             data-lightbox-index={lightboxIndex}
             aria-label={triggerAriaLabel}
-            className="group inline-flex cursor-zoom-in items-baseline gap-2 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="group -my-2 inline-flex cursor-zoom-in items-baseline gap-2 py-2 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             <span className="text-body text-fg transition-colors group-hover:text-accent">{label}</span>
             {cue && (

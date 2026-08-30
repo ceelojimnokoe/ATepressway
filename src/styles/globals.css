@@ -201,6 +201,18 @@
  * multi-layer text-shadow does the rest, keeping text readable over bright
  * and dark photos alike. Mobile switches to a bottom-anchored fade that
  * covers a little more, since the text spans the full width there.
+ *
+ * THREE INTENSITY TIERS, not one global value (each hero photo is tuned on
+ * its own merits — see PageHero's `scrimIntensity` prop and the home hero
+ * slider's per-slide mapping). Chosen from measured bottom-zone luminance of
+ * each photo, not by eye:
+ *   - hero-scrim (medium, the default/unprefixed class) — the original,
+ *     unchanged values; correct for most photos already.
+ *   - hero-scrim-light — a lighter touch for photos already fairly dark in
+ *     the text zone, so the scrim doesn't reduce them to "a vague dark
+ *     shape" on top of their own natural darkness.
+ *   - hero-scrim-strong — heavier, for photos with a bright sky or pale
+ *     concrete right where the text sits, which the medium tier under-served.
  */
 .hero-scrim {
   background: linear-gradient(
@@ -212,6 +224,26 @@
   );
 }
 
+.hero-scrim-light {
+  background: linear-gradient(
+    to top right,
+    color-mix(in srgb, var(--color-void) 52%, transparent) 0%,
+    color-mix(in srgb, var(--color-void) 26%, transparent) 26%,
+    color-mix(in srgb, var(--color-void) 8%, transparent) 46%,
+    transparent 60%
+  );
+}
+
+.hero-scrim-strong {
+  background: linear-gradient(
+    to top right,
+    color-mix(in srgb, var(--color-void) 88%, transparent) 0%,
+    color-mix(in srgb, var(--color-void) 58%, transparent) 32%,
+    color-mix(in srgb, var(--color-void) 24%, transparent) 54%,
+    transparent 72%
+  );
+}
+
 @media (max-width: 640px) {
   .hero-scrim {
     background: linear-gradient(
@@ -220,6 +252,26 @@
       color-mix(in srgb, var(--color-void) 46%, transparent) 34%,
       color-mix(in srgb, var(--color-void) 11%, transparent) 62%,
       transparent 82%
+    );
+  }
+
+  .hero-scrim-light {
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-void) 56%, transparent) 0%,
+      color-mix(in srgb, var(--color-void) 34%, transparent) 40%,
+      color-mix(in srgb, var(--color-void) 8%, transparent) 68%,
+      transparent 86%
+    );
+  }
+
+  .hero-scrim-strong {
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-void) 90%, transparent) 0%,
+      color-mix(in srgb, var(--color-void) 64%, transparent) 30%,
+      color-mix(in srgb, var(--color-void) 26%, transparent) 56%,
+      transparent 78%
     );
   }
 }

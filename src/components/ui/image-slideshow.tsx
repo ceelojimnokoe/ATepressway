@@ -128,19 +128,27 @@ export function ImageSlideshow({
       {/* Controls */}
       {count > 1 && (
         <div className="absolute inset-x-0 bottom-0 z-10 flex items-center justify-between gap-3 p-3">
-          <ul className="flex items-center gap-2" data-theme="dark">
+          <ul className="flex items-center" data-theme="dark">
             {slides.map((slide, i) => (
               <li key={slide.src}>
+                {/* Visible dot stays 8px; the button is a real tap target —
+                    same h-11 w-8 hit-area convention as the corridor markers
+                    and the home hero slider dots. */}
                 <button
                   type="button"
                   onClick={() => goTo(i)}
                   aria-label={`Show image ${i + 1} of ${count}`}
                   aria-current={i === index ? "true" : undefined}
-                  className={cn(
-                    "block h-2 w-2 rounded-full border border-hairline transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
-                    i === index ? "border-accent bg-lime" : "bg-surface/60 hover:bg-surface/80",
-                  )}
-                />
+                  className="group flex h-11 w-8 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                >
+                  <span
+                    aria-hidden="true"
+                    className={cn(
+                      "block h-2 w-2 rounded-full border border-hairline transition-colors",
+                      i === index ? "border-accent bg-lime" : "bg-surface/60 group-hover:bg-surface/80",
+                    )}
+                  />
+                </button>
               </li>
             ))}
           </ul>
@@ -149,7 +157,7 @@ export function ImageSlideshow({
               type="button"
               onClick={goPrev}
               aria-label="Previous image"
-              className="border border-hairline bg-surface/60 px-2.5 py-1.5 text-caption text-fg backdrop-blur-sm transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+              className="flex min-h-11 min-w-11 items-center justify-center border border-hairline bg-surface/60 text-caption text-fg backdrop-blur-sm transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
             >
               ‹
             </button>
@@ -157,7 +165,7 @@ export function ImageSlideshow({
               type="button"
               onClick={goNext}
               aria-label="Next image"
-              className="border border-hairline bg-surface/60 px-2.5 py-1.5 text-caption text-fg backdrop-blur-sm transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+              className="flex min-h-11 min-w-11 items-center justify-center border border-hairline bg-surface/60 text-caption text-fg backdrop-blur-sm transition-colors hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
             >
               ›
             </button>

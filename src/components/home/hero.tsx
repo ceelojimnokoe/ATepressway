@@ -10,12 +10,20 @@ import { MagneticButton } from "@/components/motion/magnetic-button";
 import { CtaLink } from "@/components/ui/cta-link";
 import { AnimatedFigure } from "@/components/ui/animated-figure";
 
-// Approved slide order for the hero backdrop.
-const slides: readonly Slide[] = (
-  ["progAshaiman", "progUnderpassKm16105A", "flowerPotRemodel", "progTBeam"] as const
-).map((key) => {
+// Approved slide order for the hero backdrop, each paired with a scrim
+// strength tuned from its own measured brightness (see the three
+// .hero-scrim-* tiers in globals.css) — the four photos vary enough in
+// brightness that one shared value would over- or under-darken some of them.
+const SLIDE_KEYS = [
+  { key: "progAshaiman", scrimIntensity: "medium" },
+  { key: "progUnderpassKm16105A", scrimIntensity: "strong" },
+  { key: "flowerPotRemodel", scrimIntensity: "light" },
+  { key: "progTBeam", scrimIntensity: "light" },
+] as const;
+
+const slides: readonly Slide[] = SLIDE_KEYS.map(({ key, scrimIntensity }) => {
   const asset = mediaRegistry[key];
-  return { src: asset.src, alt: asset.alt, width: asset.width, height: asset.height };
+  return { src: asset.src, alt: asset.alt, width: asset.width, height: asset.height, scrimIntensity };
 });
 
 const overallPct = isPlaceholder(progress.overallPercentComplete) ? 46 : progress.overallPercentComplete;
@@ -118,12 +126,13 @@ function HeroContent() {
 
 /**
  * Cinematic hero over the approved 4-image slider. The old full-image dark
- * wash is gone: the photo shows at its natural brightness, and legibility
- * comes from the shared localised corner scrim (`.hero-scrim`) behind the
- * bottom-left text plus a soft text-shadow — the same treatment every hero
- * uses. The text column is capped at ~672px so most of the image stays
- * uncovered. Slider behaviour, priority/lazy slide loading, reduced-motion
- * and the completion-figure count-up are unchanged.
+ * wash is gone: each photo shows at its natural brightness, and legibility
+ * comes from a localised corner scrim behind the bottom-left text plus a
+ * soft text-shadow — strength tuned per slide (see SLIDE_KEYS above) since
+ * the four photos aren't equally bright. The text column is capped at
+ * ~672px so most of the image stays uncovered. Slider behaviour,
+ * priority/lazy slide loading, reduced-motion and the completion-figure
+ * count-up are unchanged.
  */
 export function Hero() {
   return (

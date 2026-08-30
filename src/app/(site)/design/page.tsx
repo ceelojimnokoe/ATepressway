@@ -46,6 +46,7 @@ export default function DesignPage() {
     <>
       <PageHero
         media="progBridgeKm16556B"
+        scrimIntensity="strong"
         title="Design & Infrastructure"
         subtitle={
           <>

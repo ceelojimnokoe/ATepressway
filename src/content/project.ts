@@ -1047,14 +1047,22 @@ export const boardMembers: readonly BoardMember[] = [
 
 /**
  * People nested under the EPC contractor. Not directors — Maripoma's own
- * personnel. No position was supplied for Ing. Benjamin Sackey, so the card
- * states that plainly rather than inventing a title.
+ * personnel.
  */
 export const epcPersonnel: readonly OrgPerson[] = [
   {
     name: "Ing. Benjamin Sackey",
-    role: "Position to be confirmed",
-    photo: null,
+    // ⚠ FLAG: per client instruction (30 Aug 2026), applied verbatim as
+    // "Product Manager". His own CV ("Ing Ben Sackey.docx", public/info/)
+    // states "Project Manager" throughout — including as his CURRENT role on
+    // this project ("2024 – Now: Maripoma Enterprise Ltd, Project Manager /
+    // Accra Tema Motorway project"). Flagged, not silently corrected —
+    // confirm which is intended before this ships further.
+    role: "Product Manager",
+    photo: {
+      src: "/images/ben-sackey.jpg",
+      alt: "Portrait of Ing. Benjamin Sackey, Product Manager at Maripoma Enterprise Limited",
+    },
     initials: "BS",
   },
 ];
@@ -1091,49 +1099,6 @@ export const oversightBodies: readonly OversightBody[] = [
 ];
 
 // ---------------------------------------------------------------------------
-// Media slots — which asset renders where. The catalogue of real files on
-// disk lives in ./media.ts (the registry); these slots stay placeholder
-// until an asset is confirmed for each position.
-// ---------------------------------------------------------------------------
-
-export interface SectionPhotographs {
-  readonly s1: ImageAsset | Placeholder<ImageAsset>;
-  readonly s2: ImageAsset | Placeholder<ImageAsset>;
-  readonly s3: ImageAsset | Placeholder<ImageAsset>;
-}
-
-export interface Media {
-  readonly logo: ImageAsset | Placeholder<ImageAsset>;
-  readonly heroPhotograph: ImageAsset | Placeholder<ImageAsset>;
-  readonly sectionPhotographs: SectionPhotographs;
-}
-
-export const media: Media = {
-  logo: placeholder<ImageAsset>("ATEL logo", {
-    src: "",
-    alt: "ATEL logo — to be confirmed",
-  }),
-  heroPhotograph: placeholder<ImageAsset>("Hero photography", {
-    src: "",
-    alt: "Project photography — to be confirmed",
-  }),
-  sectionPhotographs: {
-    s1: placeholder<ImageAsset>("S1 section photography", {
-      src: "",
-      alt: "S1 — Accra–Tema Motorway photography — to be confirmed",
-    }),
-    s2: placeholder<ImageAsset>("S2 section photography", {
-      src: "",
-      alt: "S2 — George Bush Highway photography — to be confirmed",
-    }),
-    s3: placeholder<ImageAsset>("S3 section photography", {
-      src: "",
-      alt: "S3 — Nsawam Road photography — to be confirmed",
-    }),
-  },
-};
-
-// ---------------------------------------------------------------------------
 // Bulletins — the weekly-by-email update feed. This is the one array
 // that changes on a weekly cadence; it lives here (not a separate file)
 // specifically so a week's update is one edit to one file. Each entry is
@@ -1153,29 +1118,3 @@ export interface Bulletin {
 }
 
 export const bulletins: readonly Bulletin[] = [];
-
-export const latestBulletin: Bulletin | undefined = bulletins[0];
-
-// ---------------------------------------------------------------------------
-// Aggregate export
-// ---------------------------------------------------------------------------
-
-export const project = {
-  organization,
-  statementOfIntent,
-  stakeholders,
-  stakeholderChain,
-  specialistContractors,
-  projectFacts,
-  scopeOfWorks,
-  bulletins,
-  laneConfiguration,
-  reconstructionRationale,
-  sections,
-  interchanges,
-  progress,
-  monthlyUpdates,
-  contact,
-  team,
-  media,
-} as const;

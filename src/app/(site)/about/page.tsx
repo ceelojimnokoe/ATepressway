@@ -28,6 +28,7 @@ export default function AboutPage() {
     <>
       <PageHero
         media="atelJunctionRoundabout"
+        scrimIntensity="light"
         title="About Us"
         subtitle="A.T. Expressway Ltd. (ATEL) is the concessionaire delivering the Accra–Tema Motorway & Extensions PPP Project — Ghana’s first road public–private partnership."
       />

@@ -35,10 +35,10 @@ export function SiteFooter() {
           </div>
 
           <nav aria-label="Footer">
-            <ul className="flex flex-col gap-2 sm:items-end">
+            <ul className="flex flex-col sm:items-end">
               {primaryNav.map((item) => (
                 <li key={item.href}>
-                  <NavLink href={item.href} className="text-small">
+                  <NavLink href={item.href} className="inline-block py-1.5 text-small">
                     {item.label}
                   </NavLink>
                 </li>
@@ -50,14 +50,14 @@ export function SiteFooter() {
         <NewsletterSignup />
 
         {contact.social.length > 0 && (
-          <ul className="flex flex-wrap gap-x-5 gap-y-2 border-t border-hairline pt-6">
+          <ul className="flex flex-wrap gap-x-5 border-t border-hairline pt-4">
             {contact.social.map((entry) => (
               <li key={entry.platform}>
                 <a
                   href={entry.url}
                   target="_blank"
                   rel="noreferrer noopener"
-                  className="text-small text-fg-muted underline decoration-transparent underline-offset-4 transition-colors hover:text-accent hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  className="inline-block py-1.5 text-small text-fg-muted underline decoration-transparent underline-offset-4 transition-colors hover:text-accent hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
                   {entry.platform}
                   <span className="sr-only"> (opens in a new tab)</span>

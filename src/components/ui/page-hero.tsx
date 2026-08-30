@@ -13,7 +13,20 @@ interface PageHeroProps {
    * cropped out on a given photo (e.g. "center 30%"). Defaults to centre.
    */
   readonly objectPosition?: string;
+  /**
+   * Scrim strength, tuned per photo from its actual brightness where the
+   * text sits — not one global value for every hero. Defaults to "medium"
+   * (the original values). See the three .hero-scrim-* tiers in
+   * globals.css for how each was picked.
+   */
+  readonly scrimIntensity?: "light" | "medium" | "strong";
 }
+
+const SCRIM_CLASS = {
+  light: "hero-scrim-light",
+  medium: "hero-scrim",
+  strong: "hero-scrim-strong",
+} as const;
 
 /**
  * Shared full-bleed page hero (Project, Design, Progress, Gallery, Contact,
@@ -24,7 +37,14 @@ interface PageHeroProps {
  * ~672px. Responsive min-heights reserve the aspect (no layout shift) and
  * give inner-page heroes more room than before.
  */
-export function PageHero({ media, title, subtitle, priority = true, objectPosition }: PageHeroProps) {
+export function PageHero({
+  media,
+  title,
+  subtitle,
+  priority = true,
+  objectPosition,
+  scrimIntensity = "medium",
+}: PageHeroProps) {
   const asset = mediaRegistry[media];
   return (
     <section
@@ -42,7 +62,7 @@ export function PageHero({ media, title, subtitle, priority = true, objectPositi
         style={objectPosition ? { objectPosition } : undefined}
       />
       {/* Localised scrim behind the text only — no full-image overlay. */}
-      <div aria-hidden="true" className="hero-scrim absolute inset-0 -z-10" />
+      <div aria-hidden="true" className={cn(SCRIM_CLASS[scrimIntensity], "absolute inset-0 -z-10")} />
       <div className="relative mx-auto flex w-full max-w-5xl flex-col gap-3 px-4 pt-20 pb-12 sm:px-8">
         <div className="flex max-w-[42rem] flex-col gap-3">
           <h1 className="hero-text-shadow text-heading-2 text-fg sm:text-heading-1">{title}</h1>

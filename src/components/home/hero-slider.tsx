@@ -9,7 +9,21 @@ export interface Slide {
   readonly alt: string;
   readonly width: number;
   readonly height: number;
+  /**
+   * Scrim strength for THIS slide specifically, tuned from its own measured
+   * brightness where the text sits — the slider rotates several different
+   * photos behind one fixed text block, so the scrim now swaps with the
+   * slide rather than using one setting for all of them. Defaults to
+   * "medium" (the original shared value) if a slide doesn't specify one.
+   */
+  readonly scrimIntensity?: "light" | "medium" | "strong";
 }
+
+const SCRIM_CLASS = {
+  light: "hero-scrim-light",
+  medium: "hero-scrim",
+  strong: "hero-scrim-strong",
+} as const;
 
 interface HeroSliderProps {
   readonly slides: readonly Slide[];
@@ -17,8 +31,10 @@ interface HeroSliderProps {
   /**
    * Photo treatment behind the content:
    * - "none": no wash at all — the photo is fully visible.
-   * - "scrim": the shared localised corner scrim (`.hero-scrim`) behind the
-   *   bottom-left text, fading to fully transparent before the subject side.
+   * - "scrim": a localised corner scrim behind the bottom-left text, fading
+   *   to fully transparent before the subject side. Strength follows each
+   *   slide's own `scrimIntensity` (see the Slide interface above), since
+   *   the rotating photos aren't equally bright.
    * The former full-image dark wash is gone in both cases.
    */
   readonly overlay?: "none" | "scrim";
@@ -134,8 +150,16 @@ export function HeroSlider({ slides, className, overlay = "none", children }: He
 
       {/* Localised corner scrim behind the bottom-left text only — no
           full-image wash. Fades to fully transparent before the subject side
-          (see .hero-scrim in globals.css). */}
-      {overlay === "scrim" && <div aria-hidden="true" className="hero-scrim absolute inset-0 -z-10" />}
+          (see the three .hero-scrim-* tiers in globals.css). Strength
+          follows the CURRENT slide, since the four rotating photos vary in
+          brightness and one shared value would over- or under-darken some
+          of them. */}
+      {overlay === "scrim" && (
+        <div
+          aria-hidden="true"
+          className={cn(SCRIM_CLASS[slides[index]?.scrimIntensity ?? "medium"], "absolute inset-0 -z-10")}
+        />
+      )}
 
       {children}
 
@@ -152,7 +176,7 @@ export function HeroSlider({ slides, className, overlay = "none", children }: He
             type="button"
             onClick={goPrev}
             aria-label="Previous slide"
-            className="border border-hairline bg-surface/50 px-3 py-2 text-caption text-fg backdrop-blur-sm hover:text-accent/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+            className="flex min-h-11 min-w-11 items-center justify-center border border-hairline bg-surface/50 text-caption text-fg backdrop-blur-sm hover:text-accent/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
           >
             ‹
           </button>
@@ -160,24 +184,33 @@ export function HeroSlider({ slides, className, overlay = "none", children }: He
             type="button"
             onClick={goNext}
             aria-label="Next slide"
-            className="border border-hairline bg-surface/50 px-3 py-2 text-caption text-fg backdrop-blur-sm hover:text-accent/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+            className="flex min-h-11 min-w-11 items-center justify-center border border-hairline bg-surface/50 text-caption text-fg backdrop-blur-sm hover:text-accent/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
           >
             ›
           </button>
         </div>
-        <ul className="flex items-center gap-2">
+        <ul className="flex items-center">
           {slides.map((slide, i) => (
             <li key={slide.src}>
+              {/* The visible dot stays 8px (the established minimal look); the
+                  button around it is a real tap target — the same h-11 w-8
+                  hit-area convention already used for the corridor markers,
+                  not a one-off size. */}
               <button
                 type="button"
                 onClick={() => goTo(i)}
                 aria-label={`Go to slide ${i + 1} of ${count}`}
                 aria-current={i === index ? "true" : undefined}
-                className={cn(
-                  "block h-2 w-2 rounded-full border border-hairline focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent",
-                  i === index ? "bg-lime" : "bg-surface/60",
-                )}
-              />
+                className="flex h-11 w-8 items-center justify-center focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent"
+              >
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "block h-2 w-2 rounded-full border border-hairline",
+                    i === index ? "bg-lime" : "bg-surface/60",
+                  )}
+                />
+              </button>
             </li>
           ))}
         </ul>

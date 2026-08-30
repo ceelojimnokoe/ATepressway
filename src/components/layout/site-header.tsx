@@ -93,7 +93,7 @@ export function SiteHeader() {
           aria-expanded={menuOpen}
           aria-controls="mobile-menu"
           aria-label={menuOpen ? "Close menu" : "Open menu"}
-          className="text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent lg:hidden"
+          className="-mr-2.5 p-2.5 text-fg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent lg:hidden"
         >
           <span aria-hidden="true" className="relative block h-4 w-6">
             <span

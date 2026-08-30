@@ -49,6 +49,7 @@ export default function ProjectPage() {
       <JsonLd data={corridorPlaceJsonLd()} />
       <PageHero
         media="flowerPotRemodel"
+        scrimIntensity="light"
         title="The Project"
         subtitle={
           <>
