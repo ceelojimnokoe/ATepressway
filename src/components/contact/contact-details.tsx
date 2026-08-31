@@ -31,20 +31,19 @@ export function ContactDetails() {
 
         <div className="flex flex-col gap-3">
           <span className="text-caption text-fg-faint tracking-wide uppercase">Social</span>
+          {/* Platform name is the link text — once the raw URL isn't shown,
+              a separate label column would just repeat it. Matches the
+              footer's social row for the same reason. */}
           <ul className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
             {contact.social.map((entry) => (
-              <li
-                key={entry.platform}
-                className="flex flex-col gap-2 py-4 sm:flex-row sm:items-baseline sm:justify-between"
-              >
-                <span className="text-small text-fg-muted">{entry.platform}</span>
+              <li key={entry.platform} className="py-4">
                 <a
                   href={entry.url}
                   target="_blank"
                   rel="noreferrer noopener"
                   className="-my-1 inline-block py-1 text-body text-fg underline decoration-hairline underline-offset-4 transition-colors hover:text-accent hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                 >
-                  {entry.url.replace("https://", "").replace("www.", "")}
+                  {entry.platform}
                   <span className="sr-only"> (opens in a new tab)</span>
                 </a>
               </li>
