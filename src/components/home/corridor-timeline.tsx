@@ -44,12 +44,17 @@ const milestones: readonly {
   {
     date: formatLongDate(projectFacts.contractAwardDate),
     title: "Contract awarded",
-    detail: "The reconstruction contract is awarded to begin the delivery programme.",
+    // Verbatim replacement (client instruction, 3 Sept 2026).
+    detail: "The 30-year concession agreement was awarded to begin the delivery of the project",
     state: "done",
   },
   {
     date: formatLongDate(projectFacts.commencementDate),
-    title: "Construction commenced",
+    // "EPC Commences" (client instruction, 3 Sept 2026) — was "Construction
+    // commenced"; same change applied to the Progress page's own milestone
+    // timeline (src/components/progress/milestone-timeline.tsx) for
+    // consistency, since both describe the same event.
+    title: "EPC Commences",
     detail: `The ${projectFacts.constructionWindowMonths}-month construction window begins on Section 1.`,
     state: "done",
   },
@@ -88,7 +93,8 @@ export function CorridorTimeline() {
             <span className="figure text-caption text-accent tracking-[0.2em] uppercase">03 — The journey</span>
             <TextReveal
               as="h2"
-              text="From award to completion, on a fixed programme"
+              // "project" (not "programme") — client instruction, 4 Sept 2026.
+              text="From award to completion, on a fixed project"
               className="max-w-3xl text-heading-3 text-fg sm:text-heading-2"
             />
           </div>

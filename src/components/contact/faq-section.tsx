@@ -375,7 +375,7 @@ const faqs: readonly Faq[] = [
       <p>
         {overallPct !== null ? (
           <>
-            Overall physical progress stands at {overallPct}%
+            Overall physical progress for Section 1 stands at {overallPct}%
             {asOf ? ` as of ${asOf}` : ""}. Progress is reported structure by structure on the
             progress page{source ? `, sourced from the ${source}` : ""}.
           </>
@@ -391,7 +391,7 @@ const faqs: readonly Faq[] = [
     answer: (
       <p>
         Yes — the works are being built along the existing corridor while it stays in use, which is
-        why traffic-diversion works form part of the current programme. Day-to-day lane and closure
+        why traffic-diversion works form part of the current project. Day-to-day lane and closure
         information is not published on this site; it is issued by the works teams on the ground.
       </p>
     ),

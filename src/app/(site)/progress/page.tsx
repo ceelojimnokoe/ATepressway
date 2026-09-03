@@ -71,7 +71,11 @@ export default function ProgressPage() {
       <section className="border-b border-hairline bg-surface">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
           <div className="flex flex-col gap-3">
-            <span className="text-caption text-fg-faint tracking-wide uppercase">Overall physical progress</span>
+            {/* "for Section 1" added 3 Sept 2026 (client instruction) — only
+                Section 1 is under active construction. */}
+            <span className="text-caption text-fg-faint tracking-wide uppercase">
+              Overall physical progress for Section 1
+            </span>
             <AnimatedFigure value={overallPct} suffix="%" signal className="text-figure" />
             <span className="text-small text-fg-muted">Source: {isPlaceholder(progress.signOffSource) ? `${progress.reportSeries}, ${isPlaceholder(progress.asOf) ? "May 2026" : progress.asOf}` : progress.signOffSource}</span>
           </div>
@@ -160,7 +164,11 @@ export default function ProgressPage() {
               <p className="text-small text-fg-muted">{drainage.summary}</p>
               <ul className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
                 <li className="flex items-baseline justify-between py-3 text-small">
-                  <span className="text-fg-muted">Box culverts in the programme</span>
+                  {/* "project" (not "programme") — client instruction, 4 Sept
+                      2026. drainage.boxCulverts.programme is a field name
+                      (report.ts), left as-is per the instruction's own
+                      identifier exclusion. */}
+                  <span className="text-fg-muted">Box culverts in the project</span>
                   <span className="figure text-fg">{drainage.boxCulverts.programme}</span>
                 </li>
                 <li className="flex items-baseline justify-between py-3 text-small">

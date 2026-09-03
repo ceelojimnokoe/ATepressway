@@ -1,20 +1,15 @@
-import { stakeholders } from "@/content/project";
 import { TextReveal } from "@/components/motion/text-reveal";
-import { StaggerContainer, StaggerItem } from "@/components/motion/stagger";
 import { Reveal } from "@/components/motion/reveal";
 import { CtaLink } from "@/components/ui/cta-link";
-import { StakeholderCard } from "@/components/stakeholders/stakeholder-card";
+import { GovernmentOfGhanaBlock } from "@/components/stakeholders/government-of-ghana-block";
 
 /**
- * Delivery teaser: the two parties a visitor most needs to place — the
- * Employer (ATEL, who commissions and oversees) and the EPC Contractor
- * (Maripoma, who actually builds). It reuses the /stakeholders card so the
- * styling stays identical, and links through to the full delivery chain.
- * Keeping ATEL and Maripoma side by side makes the Employer/Contractor
- * distinction — load-bearing for the site's credibility — unmissable.
+ * Delivery teaser — replaced 3 Sept 2026 (client instruction). Previously
+ * showed ATEL + Maripoma side by side; now shows the Government of Ghana
+ * only, via the shared block also used on /stakeholders (one source of
+ * truth — see src/content/project.ts `governmentOfGhana` and
+ * GovernmentOfGhanaBlock).
  */
-const featured = [stakeholders.employer, stakeholders.epcContractor];
-
 export function Partners() {
   return (
     <section className="border-b border-hairline bg-surface-sunk">
@@ -35,13 +30,7 @@ export function Partners() {
           </Reveal>
         </div>
 
-        <StaggerContainer className="grid grid-cols-1 gap-6 sm:grid-cols-2" stagger={0.08}>
-          {featured.map((party) => (
-            <StaggerItem key={party.name} className="h-full">
-              <StakeholderCard stakeholder={party} />
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+        <GovernmentOfGhanaBlock />
       </div>
     </section>
   );

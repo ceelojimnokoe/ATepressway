@@ -34,7 +34,9 @@ function buildMilestones(): readonly Milestone[] {
     },
     {
       date: formatLongDate(projectFacts.commencementDate),
-      label: "Construction commenced",
+      // "EPC Commences" (client instruction, 3 Sept 2026) — was "Construction
+      // commenced"; same change applied to the Home page's corridor timeline.
+      label: "EPC Commences",
       detail: `${projectFacts.constructionWindowMonths}-month window begins`,
       state: "completed",
     },

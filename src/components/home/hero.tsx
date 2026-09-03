@@ -29,18 +29,19 @@ const slides: readonly Slide[] = SLIDE_KEYS.map(({ key, scrimIntensity }) => {
 const overallPct = isPlaceholder(progress.overallPercentComplete) ? 46 : progress.overallPercentComplete;
 
 /**
- * Physical progress leads — it's the figure the page exists to report, and
- * the only one carrying the lime signal treatment. The other two stay in
- * standard ink so the signal keeps its meaning.
+ * Order reversed 3 Sept 2026 (client instruction): corridor length, then
+ * Section 1 length, then physical progress last — this deliberately
+ * reverses an earlier decision to lead with Physical Progress for a
+ * stakeholder-first audience. Progress keeps the lime signal treatment
+ * regardless of position; the other two stay in standard ink.
  */
 const heroMetadata = [
-  { value: overallPct, decimals: 0, suffix: "%", unit: null, label: "Physical progress", signal: true },
   {
     value: projectFacts.corridorLengthKm,
     decimals: 1,
     suffix: "",
     unit: "km",
-    label: "Design corridor",
+    label: "Corridor length",
     signal: false,
   },
   {
@@ -51,6 +52,9 @@ const heroMetadata = [
     label: "Section 1 under construction",
     signal: false,
   },
+  // "for Section 1" added 3 Sept 2026 (client instruction) — only Section 1
+  // is under active construction, so the qualifier matters for accuracy.
+  { value: overallPct, decimals: 0, suffix: "%", unit: null, label: "Physical progress for Section 1", signal: true },
 ] as const;
 
 /**
@@ -75,18 +79,31 @@ function HeroContent() {
         </span>
       </Reveal>
 
+      {/* Sized to guarantee one line at every breakpoint (client instruction,
+          3 Sept 2026) — the shared text-heading-1/2 tokens scale with the
+          full viewport (vw-based), but this column is capped at
+          max-w-[42rem] (see the wrapper below), so past ~736px wide the
+          available width stops growing while the token's font-size kept
+          climbing, and the name wrapped to two lines at both 360px AND at
+          1024px+. Empirically tested smallest sizes that fit at each tier:
+          30px (<640px — the 360px case), 48px (640–1023px), 60px
+          (1024px+, where the 672px column cap is already in effect at
+          1024px, same as 1440px). All still comfortably legible display
+          type; no tier needed to go smaller than this. */}
       <TextReveal
         as="h1"
         text={organization.name}
         delay={0.15}
-        className="max-w-4xl text-heading-2 text-fg sm:text-heading-1"
+        className="max-w-4xl text-[1.875rem] text-fg leading-[1.1] sm:text-[3rem] lg:text-[3.75rem]"
       />
 
+      {/* Text updated 3 Sept 2026 (client instruction) — numbers stay wired
+          to projectFacts rather than hardcoded, per site convention. */}
       <Reveal direction="up" distance={16} delay={0.5} className="max-w-2xl">
         <p className="text-lead text-fg">
-          Your guide to the design, construction progress and key developments shaping the{" "}
-          {projectFacts.corridorLengthKm} km corridor, including the {projectFacts.section1LengthKm}{" "}
-          km Section 1 currently under construction.
+          Your guide for the design, finance, and operation of the {projectFacts.corridorLengthKm}{" "}
+          km corridor length, including the {projectFacts.section1LengthKm} km Section 1 currently
+          under construction.
         </p>
       </Reveal>
 

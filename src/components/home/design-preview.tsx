@@ -14,6 +14,10 @@ const totalLanes = laneConfiguration.freeway.lanes + laneConfiguration.urban.lan
  * through to the full Design page. Renders are labelled as proposed
  * designs — never presented as as-built photographs.
  */
+// Toll plaza slot removed (client instruction, 4 Sept 2026) — design/render
+// content only; the underlying tollPlazaRender media entry and its use
+// elsewhere for the scope-fact count are untouched. Grid drops to 2 columns
+// below so the remaining two images don't leave a dead third column.
 const slots = [
   {
     key: "designScheme",
@@ -23,11 +27,6 @@ const slots = [
   {
     key: "tettehQuarshieProposed",
     caption: "Tetteh Quarshie Interchange — proposed design",
-    kind: "Design",
-  },
-  {
-    key: "tollPlazaRender",
-    caption: "Toll plaza — proposed design",
     kind: "Design",
   },
 ] as const;
@@ -49,7 +48,7 @@ export function DesignPreview() {
                 The rebuilt corridor carries {totalLanes} lanes in total:{" "}
                 {laneConfiguration.freeway.lanes} lanes of {laneConfiguration.freeway.surface} alongside{" "}
                 {laneConfiguration.urban.lanes} lanes of {laneConfiguration.urban.surface}. The
-                cross-section, interchanges and toll plazas are set out in full on the design page.
+                cross-section and interchanges are set out in full on the design page.
               </p>
             </Reveal>
           </div>
@@ -60,7 +59,7 @@ export function DesignPreview() {
           </Reveal>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
           {slots.map((slot, i) => {
             const asset = mediaRegistry[slot.key];
             return (

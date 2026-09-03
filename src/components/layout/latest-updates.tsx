@@ -208,7 +208,7 @@ export function LatestUpdates() {
                 <span className="figure text-heading-2 text-accent tabular-nums">
                   {update.overallPct}%
                 </span>
-                <span className="text-small text-fg-muted">overall physical progress</span>
+                <span className="text-small text-fg-muted">overall physical progress for Section 1</span>
               </div>
 
               {update.completed.length > 0 && (

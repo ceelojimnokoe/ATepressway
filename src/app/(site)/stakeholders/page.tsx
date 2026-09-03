@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { StakeholderOrg } from "@/components/stakeholders/stakeholder-org";
 import { BoardMemberCard } from "@/components/stakeholders/board-member-card";
+import { GovernmentOfGhanaBlock } from "@/components/stakeholders/government-of-ghana-block";
 import { PageHero } from "@/components/ui/page-hero";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import {
@@ -32,12 +33,12 @@ const CHAIN: readonly { readonly key: StakeholderKey | "employersRepAgent" | "ep
 ];
 
 /**
- * ATEL's directors, split into executive leadership and the board proper.
- * Everyone sits under ATEL (client, 30 Aug 2026) — the delivery-chain and
- * oversight bodies keep their entries but no longer carry nested people.
+ * ATEL's directors — one merged Board of Directors list (client
+ * instruction, 3 Sept 2026; previously split into a separate "Executive
+ * leadership" group, now removed). `boardMembers` is already in the exact
+ * order the client specified, so this is a direct pass-through.
  */
-const executives = boardMembers.filter((member) => member.isExecutive);
-const directors = boardMembers.filter((member) => !member.isExecutive);
+const directors = boardMembers;
 
 /**
  * Associated Consultants' engineers, ADAPTED from the single `team` source
@@ -89,6 +90,10 @@ export default function StakeholdersPage() {
             </p>
           </div>
           <div className="flex flex-col gap-6">
+            {/* First in the chain, above the Concessionaire (client
+                instruction, 3 Sept 2026) — same shared block as Home's
+                "08 — Delivery" section. */}
+            <GovernmentOfGhanaBlock />
             {CHAIN.map(({ key, value }) => {
               const group = PEOPLE_BY_ORG[key];
               return (
@@ -97,7 +102,6 @@ export default function StakeholdersPage() {
                   stakeholder={value}
                   members={group?.people ?? []}
                   membersLabel={group?.label}
-                  executives={key === "employer" ? executives : []}
                 />
               );
             })}

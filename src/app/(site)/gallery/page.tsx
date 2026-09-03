@@ -20,7 +20,10 @@ export const metadata: Metadata = buildMetadata(routes.gallery);
  */
 export default function GalleryPage() {
   // Validate + resolve so a bad entry skips gracefully instead of crashing.
-  const resolved = resolveGalleryItems(galleryItems);
+  // Toll plaza design hidden from display (client instruction, 4 Sept
+  // 2026) — galleryItems in content/gallery.ts keeps the "d-toll" entry
+  // intact; filtered out here at the render level only.
+  const resolved = resolveGalleryItems(galleryItems).filter(({ item }) => item.id !== "d-toll");
 
   const lightboxImages: LightboxImage[] = resolved.map(({ item, asset }) => ({
     src: asset.src,

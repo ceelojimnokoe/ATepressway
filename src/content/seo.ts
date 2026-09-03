@@ -33,8 +33,9 @@ export const routes = {
   about: {
     path: "/about",
     title: `About Us — ${BRAND}`,
+    // "toll road" added 4 Sept 2026 (client instruction).
     description:
-      "A.T. Expressway Ltd. (ATEL) is the concessionaire delivering the Accra–Tema Motorway & Extensions PPP Project — Ghana’s first road public–private partnership.",
+      "A.T. Expressway Ltd. (ATEL) is the concessionaire delivering the Accra–Tema Motorway & Extensions PPP Project — Ghana’s first toll road public–private partnership.",
   },
   project: {
     path: "/project",
@@ -45,8 +46,10 @@ export const routes = {
   design: {
     path: "/design",
     title: `Design & Infrastructure — ${BRAND}`,
+    // "toll plazas" removed 4 Sept 2026 (client instruction) — matches the
+    // toll plaza design section being hidden from the Design page itself.
     description:
-      "Design highlights for the Accra–Tema Motorway and Extensions Project: interchanges, footbridges, toll plazas and drainage. Proposed design visualisations; final construction details may be refined.",
+      "Design highlights for the Accra–Tema Motorway and Extensions Project: interchanges, footbridges and drainage. Proposed design visualisations; final construction details may be refined.",
   },
   progress: {
     path: "/progress",

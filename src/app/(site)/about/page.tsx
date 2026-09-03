@@ -31,7 +31,10 @@ export default function AboutPage() {
         media="atelJunctionRoundabout"
         scrimIntensity="light"
         title="About Us"
-        subtitle="A.T. Expressway Ltd. (ATEL) is the concessionaire delivering the Accra–Tema Motorway & Extensions PPP Project — Ghana’s first road public–private partnership."
+        // "toll road" added 4 Sept 2026 (client instruction) — completes the
+        // broader "Ghana's first road public–private partnership" replace
+        // begun 3 Sept 2026.
+        subtitle="A.T. Expressway Ltd. (ATEL) is the concessionaire delivering the Accra–Tema Motorway & Extensions PPP Project — Ghana’s first toll road public–private partnership."
       />
 
       {/* Identity: the mark at scale, alongside who ATEL is. */}

@@ -11,7 +11,10 @@ import { placeholder, type Placeholder } from "./placeholder";
 
 export const aboutIntro = {
   eyebrow: "Accra–Tema Motorway & Extensions PPP Project",
-  headline: "Ghana’s first road public–private partnership",
+  // "toll road" added 3 Sept 2026 (client instruction) — this is one of
+  // several "Ghana's first road public–private partnership" occurrences
+  // site-wide; the others are pending confirmation (see report).
+  headline: "Ghana’s first toll road public–private partnership",
   paragraphs: [
     "The Accra–Tema Motorway dual carriageway links Accra and the industrial city of Tema, where Ghana’s main port is located. It was opened as a freeway in 1964 under Ghana’s first president, Kwame Nkrumah. The design life of the motorway was intended for 20 years, and the pavement has outlived its terminal level of serviceability with visible fatigue-cracking, joint failures and pumping under wheel load — and requires reconstruction.",
     "The project scope covers 27.7 km and involves an upgrade of the national road network in the Greater Accra Region, together with the operation and maintenance of the road, including a toll road system on certain sections. The Project will be delivered in two phases, ensuring timely delivery and efficiency, providing solutions to address the challenges with the freeway.",

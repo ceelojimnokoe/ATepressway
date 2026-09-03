@@ -87,9 +87,9 @@ export default function ProjectPage() {
           <div className="flex flex-col gap-3">
             <h2 className="text-heading-4 text-fg">A 27.7 km design, one section under construction</h2>
             <p className="max-w-3xl text-body text-fg-muted">
-              The full design programme spans three sections. Section 1 — the 19.5 km Accra–Tema
+              The full design project spans three sections. Section 1 — the 19.5 km Accra–Tema
               Motorway corridor — is the section currently being built, and Sections 2 and 3 form
-              part of the wider design programme.
+              part of the wider design project.
             </p>
           </div>
 
@@ -129,9 +129,11 @@ export default function ProjectPage() {
             </div>
             <div className="flex flex-col gap-4">
               <h2 className="text-heading-4 text-fg">Why the motorway is being reconstructed</h2>
+              {/* "toll road" added 4 Sept 2026 (client instruction) — the
+                  original source of the broader site-wide replace. */}
               <p className="text-body text-fg-muted">
-                The Accra-Tema Motorway &amp; Extensions PPP Project is Ghana&rsquo;s first road
-                public private partnership (PPP) project.
+                The Accra-Tema Motorway &amp; Extensions PPP Project is Ghana&rsquo;s first toll
+                road public private partnership (PPP) project.
               </p>
               <p className="text-body text-fg-muted">
                 The Accra - Tema Motorway dual carriageway links Accra and the industrial city of

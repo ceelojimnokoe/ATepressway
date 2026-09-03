@@ -15,9 +15,14 @@ export function Intro() {
         </Reveal>
 
         <div className="flex flex-col gap-6">
+          {/* Text updated 3 Sept 2026 (client instruction). ⚠ "Three sections
+              under construction" reads in tension with the rest of the site
+              (Section 2/3 are DESIGNED but "construction is not yet under
+              way" per project.ts) — applied as given, flagged for the
+              client rather than silently reworded. See report. */}
           <TextReveal
             as="h2"
-            text="A 27.7 km design programme. One section under construction."
+            text="A 27.7km development. Three sections under construction"
             className="max-w-3xl text-heading-3 text-fg sm:text-heading-2"
           />
           <Reveal direction="up" distance={16} delay={0.1} className="max-w-2xl">

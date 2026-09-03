@@ -26,6 +26,14 @@ interface Entry {
   readonly asOf?: string;
 }
 
+// Toll plazas hidden from display (client instruction, 4 Sept 2026) — the
+// design/render section only, not the scope-fact toll plaza COUNT used
+// elsewhere (e.g. the FAQ's "{tollPlazaCount} toll plazas" sentence, left
+// untouched). structureSections in content/design.ts keeps the toll-plazas
+// entry fully intact; it's filtered out here at the render level only, so
+// restoring it later is a one-line change.
+const visibleStructureSections = structureSections.filter((section) => section.id !== "toll-plazas");
+
 const entries: readonly Entry[] = [
   { section: corridorOverview },
   ...interchangeSections.map((section): Entry => {
@@ -38,7 +46,7 @@ const entries: readonly Entry[] = [
       asOf: pkg?.asOf,
     };
   }),
-  ...structureSections.map((section): Entry => ({ section })),
+  ...visibleStructureSections.map((section): Entry => ({ section })),
 ];
 
 export default function DesignPage() {

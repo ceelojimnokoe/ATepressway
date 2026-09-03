@@ -29,7 +29,7 @@ export function FullScope() {
             The complete {projectFacts.corridorLengthKm} km scope
           </h2>
           <p className="max-w-3xl text-body text-fg-muted">
-            The programme covers three connected sections between Tema Port, Accra and its
+            The project covers three connected sections between Tema Port, Accra and its
             surrounding areas. Section 1 is being built now; Sections 2 and 3 have been designed
             under the same contract and form the second phase, together with the long-term operation
             and maintenance of the whole corridor.

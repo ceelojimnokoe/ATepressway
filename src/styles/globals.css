@@ -168,6 +168,24 @@
     font-family: var(--font-display);
     font-weight: 600;
   }
+
+  /*
+   * Body text justified site-wide (client instruction, 3 Sept 2026).
+   * Scoped to the .text-body/.text-lead type-scale utilities — the site's
+   * actual paragraph copy — rather than every <p>, so short captions/labels
+   * that happen to sit in a <p> aren't affected. hyphens: auto is paired
+   * with it from the start: justify without hyphenation is what usually
+   * produces uneven word-spacing ("rivers") on narrow columns, since
+   * browsers don't hyphenate by default — html lang="en" is already set
+   * (see layout.tsx), so the browser's hyphenation dictionary applies.
+   * Checked at 360px on About Us and Project — see the audit report for
+   * the readability call.
+   */
+  .text-body,
+  .text-lead {
+    text-align: justify;
+    hyphens: auto;
+  }
 }
 
 /* Hero-slider Ken Burns: a slow, subtle push. Applied only to the active

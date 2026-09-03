@@ -69,7 +69,9 @@ const employer = {
   // "the concessionaire responsible for...". Per the client's own FAQ pack,
   // MRH acting through GHA awarded ATEL a 30-year concession.
   role: "Concessionaire",
-  gloss: "A.T. Expressway Ltd. is the Concessionaire responsible for the design, financing, construction, operation and maintenance of the Accra–Tema Motorway and Extensions Project under a 30-year concession.",
+  // Verbatim replacement (client instruction, 3 Sept 2026) — distinct from
+  // the Home hero paragraph, which got its own separate wording change.
+  gloss: "Your guide to the design, financing, construction, operation, and maintenance, of the Accra-Tema Motorway and Extensions Project under a 30-year concession",
   logo: "logoAtel",
 } as const satisfies Stakeholder;
 
@@ -142,6 +144,34 @@ export const specialistContractors: readonly Stakeholder[] = [
   electricalRelocation,
   waterRelocation,
 ];
+
+/**
+ * Government of Ghana entry — added 3 Sept 2026 (client instruction),
+ * replacing the old ATEL + Maripoma "08 — Delivery" preview on Home with
+ * this single entry, and shown as the first delivery-chain card on
+ * /stakeholders (above the Concessionaire). One source of truth rendered
+ * by GovernmentOfGhanaBlock (src/components/stakeholders/) on both pages.
+ *
+ * ⚠ `paragraph` is verbatim client copy, applied without correction even
+ * though it reads grammatically unusual ("Government of Ghana constructing
+ * the Ghana Highway Authority through the Ministry of Roads & Highways") —
+ * flagged back to the client rather than silently reworded. See report.
+ *
+ * ⚠ `logos` currently lists only the Ghana Highway Authority mark
+ * (`logoGha`, already used elsewhere on /stakeholders). The Government of
+ * Ghana's own coat of arms and a Ministry of Roads & Highways logo were
+ * both requested but neither asset exists yet at any path checked
+ * (`public/images/coatofarms*`, `public/image/coatofarms*`, or
+ * `public/images/ministryofroadshighways/`) — see report before assuming
+ * this is a complete set.
+ */
+export const governmentOfGhana = {
+  title: "Government of Ghana",
+  subtitle: "Contracting Authority",
+  paragraph:
+    "Government of Ghana constructing the Ghana Highway Authority through the Ministry of Roads & Highways.",
+  logos: ["logoGha"] as readonly MediaKey[],
+};
 
 /**
  * Website / brand identity. As of the 28 Aug 2026 client meeting the site uses
@@ -292,7 +322,8 @@ export const sectionStatGroups: readonly SectionStatGroup[] = [
       // Client (Aug 2026): the toll-plaza count is withdrawn pending official
       // communication. Days elapsed replaces it, giving the 1,095-day contract
       // duration the "755 days covered so far" context the client asked for.
-      { value: 755, separator: true, unit: "days", label: "Programme days elapsed" },
+      // "Project" (not "Programme") — client instruction, 4 Sept 2026.
+      { value: 755, separator: true, unit: "days", label: "Project days elapsed" },
       { value: 284, label: "Equipment recorded on site" },
     ],
   },
@@ -386,7 +417,13 @@ export const sections: readonly ProjectSection[] = [
     id: "s2",
     label: "S2",
     name: "George Bush Highway",
-    road: "N1",
+    // Corrected 3 Sept 2026 (client instruction): N4, not N1. This is the
+    // single source of truth for Section 2's route — every render (Project
+    // page, Design page, Home stats, the corridor visualisation) reads
+    // `sections`/`sectionStatGroups` from here, so the fix propagates
+    // without a separate edit. Confirmed via grep: no other file hardcodes
+    // "N1" for Section 2/George Bush Highway.
+    road: "N4",
     lengthKm: 5.7,
     from: "Tetteh Quarshie",
     to: "Apenkwa",
@@ -870,7 +907,7 @@ export const team: readonly TeamMember[] = [
       alt: "Portrait of Ing. Emmanuel Tetteh, Resident Engineer (Roads)",
     },
     initials: "ET",
-    bio: "Ing. Emmanuel Tetteh is a civil engineer with more than thirty years of construction experience across Ghana's trunk road network. He holds an MSc in Industrial Mathematics and a BSc in Civil Engineering, both from Kwame Nkrumah University of Science and Technology. As Resident Engineer for roads on the Accra–Tema Motorway and Extensions Project with Associated Consultants Limited, he liaises with the client, contractor and stakeholders, monitors progress against the work programme and ensures site compliance with the relevant specifications.",
+    bio: "Ing. Emmanuel Tetteh is a civil engineer with more than thirty years of construction experience across Ghana's trunk road network. He holds an MSc in Industrial Mathematics and a BSc in Civil Engineering, both from Kwame Nkrumah University of Science and Technology. As Resident Engineer for roads on the Accra–Tema Motorway and Extensions Project with Associated Consultants Limited, he liaises with the client, contractor and stakeholders, monitors progress against the work project and ensures site compliance with the relevant specifications.",
     credentials: [
       "MSc, Industrial Mathematics — KNUST",
       "BSc, Civil Engineering — KNUST",
@@ -882,7 +919,10 @@ export const team: readonly TeamMember[] = [
     ],
   },
   {
-    name: "Koffi Togbenou",
+    // "Ing." prefix added (client instruction, 3 Sept 2026) to match the
+    // pattern used for Bempong and Tetteh — applied consistently below in
+    // the alt text and bio opening too, not just this field.
+    name: "Ing. Koffi Togbenou",
     title: "Bridge & Tunnel Engineer",
     // Enhanced from the (low-res 137×199) source via denoise + unsharp + a
     // lanczos upscale to 420px — a modest, honest improvement in delivered
@@ -890,10 +930,10 @@ export const team: readonly TeamMember[] = [
     // still the real fix.
     photo: {
       src: "/images/koffitogbenou-enhanced.png",
-      alt: "Portrait of Koffi Togbenou, Bridge & Tunnel Engineer",
+      alt: "Portrait of Ing. Koffi Togbenou, Bridge & Tunnel Engineer",
     },
     initials: "KT",
-    bio: "Koffi Togbenou is a structural engineer with approximately eight years of experience in bridge design, analysis and construction supervision. As Resident Engineer for bridges on the Accra–Tema Motorway and Extensions Project, he oversees bridge, interchange and associated structural works, with a strong focus on technical compliance, quality control and site execution.",
+    bio: "Ing. Koffi Togbenou is a structural engineer with approximately eight years of experience in bridge design, analysis and construction supervision. As Resident Engineer for bridges on the Accra–Tema Motorway and Extensions Project, he oversees bridge, interchange and associated structural works, with a strong focus on technical compliance, quality control and site execution.",
     credentials: [
       "La Beach Road and Nungua Interchange",
       "Namdini Gold Project",
@@ -965,42 +1005,56 @@ export interface BoardMember {
 
 export type StakeholderKey = "employer" | "fundingAgency" | "employersRepresentative" | "financeMinistry";
 
+/**
+ * Reordered into a single list 3 Sept 2026 (client instruction): the old
+ * "Executive leadership" / "Board of Directors" split (via isExecutive) is
+ * gone — everyone renders in one Board of Directors list now, in the exact
+ * order below. isExecutive/isChairman fields are no longer read by any
+ * renderer (kept as inert historical data rather than stripped, in case a
+ * future distinct treatment wants them back).
+ *
+ * ⚠ Chairman's surname spelling: "Akuoku" (originally confirmed correct) →
+ * "Akuoko" (used once since) → "Akuako" (this instruction, applied below as
+ * the most recent explicit direction). Three different spellings across
+ * three updates — get this confirmed once, in writing, before it changes a
+ * fourth time. See report.
+ */
 export const boardMembers: readonly BoardMember[] = [
   {
-    name: "Mr. Samuel Kwasi Akuoku",
-    // Title confirmed by the client (30 Aug 2026). Spelling kept as already on
-    // record — do NOT change to "Akwasi Akuoko".
+    // Spelling per client instruction, 3 Sept 2026 — see the flag above.
+    name: "Mr. Samuel Kwasi Akuako",
     role: "Board Chairman",
     isChairman: true,
     affiliation: "employer",
+    // New photo per client instruction, 3 Sept 2026 (file verified to exist).
     photo: {
-      src: "/images/board-member1.jpeg",
-      alt: "Portrait of Mr. Samuel Kwasi Akuoku, Chairman, Board of Directors of A.T. Expressway Ltd.",
+      src: "/images/Akuako.jpg",
+      alt: "Portrait of Mr. Samuel Kwasi Akuako, Chairman, Board of Directors of A.T. Expressway Ltd.",
     },
     initials: "SA",
   },
   {
-    name: "Ms. Victoria Addotey",
-    role: "Board Member",
-    affiliation: "employer",
-    photo: {
-      src: "/images/board-member3.jpeg",
-      alt: "Portrait of Ms. Victoria Addotey, Board Member of A.T. Expressway Ltd.",
-    },
-    initials: "VA",
-  },
-  {
     name: "Mr. Louis Harrison",
-    // CEO per the client's 30 Aug 2026 list. Existing name spelling retained on
-    // client instruction (their list wrote "Louise"); flagged for confirmation.
+    // CEO per the client's 30 Aug 2026 list. Name spelling CONFIRMED as
+    // "Louis" (client instruction, 2 Sept AND 3 Sept 2026) — resolves the
+    // earlier flag (an intervening client list had written "Louise").
     role: "Chief Executive Officer",
-    isExecutive: true,
     affiliation: "employer",
     photo: {
       src: "/images/board-member5.jpeg",
       alt: "Portrait of Mr. Louis Harrison, Board Member of A.T. Expressway Ltd.",
     },
     initials: "LH",
+  },
+  {
+    name: "Mr. Patrick Nomo",
+    role: "Board Member",
+    affiliation: "employer",
+    photo: {
+      src: "/images/patrick.jpg",
+      alt: "Portrait of Mr. Patrick Nomo, Board Member of A.T. Expressway Ltd.",
+    },
+    initials: "PN",
   },
   {
     name: "Hon. Theresa Lardi Awuni",
@@ -1013,16 +1067,25 @@ export const boardMembers: readonly BoardMember[] = [
     initials: "TA",
   },
   {
-    name: "Hon. Dr. Eric Afful",
+    // "Dr." removed per client instruction, 3 Sept 2026 — was "Hon. Dr. Eric
+    // Afful".
+    name: "Hon. Eric Afful",
     role: "Board Member",
     affiliation: "employer",
     photo: {
       src: "/images/afful.jpg",
-      alt: "Portrait of Hon. Dr. Eric Afful, Board Member of A.T. Expressway Ltd.",
+      alt: "Portrait of Hon. Eric Afful, Board Member of A.T. Expressway Ltd.",
     },
     initials: "EA",
   },
   {
+    // ⚠ Named "Mallam (Issac Ishak)" in the 3 Sept 2026 instruction — the
+    // existing on-record spelling is "Issah", not "Issac". Read as
+    // identifying shorthand rather than a deliberate respelling (unlike
+    // Akuako/Louis, this one wasn't flagged with the same explicit
+    // "apply this spelling" language), so left unchanged here — but this is
+    // the same category of discrepancy. Flagged in the report; not silently
+    // decided either way.
     name: "Surv. Mallam Issah Ishak",
     role: "Board Member",
     affiliation: "employer",
@@ -1033,17 +1096,16 @@ export const boardMembers: readonly BoardMember[] = [
     initials: "MI",
   },
   {
-    name: "Mr. Patrick Nomo",
+    name: "Ms. Victoria Addotey",
     role: "Board Member",
     affiliation: "employer",
     photo: {
-      src: "/images/patrick.jpg",
-      alt: "Portrait of Mr. Patrick Nomo, Board Member of A.T. Expressway Ltd.",
+      src: "/images/board-member3.jpeg",
+      alt: "Portrait of Ms. Victoria Addotey, Board Member of A.T. Expressway Ltd.",
     },
-    initials: "PN",
+    initials: "VA",
   },
-  // Moved to last (client instruction, 2 Sept 2026) — display order only,
-  // no other fields touched.
+  // Last (client instruction, 2 Sept 2026, reconfirmed 3 Sept 2026).
   {
     name: "Gifty Duah-Boakye",
     role: "Board Secretary",
@@ -1077,7 +1139,10 @@ export const epcPersonnel: readonly OrgPerson[] = [
     // Full profile added 2 Sept 2026, extracted from his CV (same source
     // file above) so his entry matches the level of detail the Project Team
     // members (Bempong/Tetteh/Togbenou) get, per client instruction.
-    bio: "Ing. Benjamin Sackey is a civil engineer and project management professional with more than 25 years of experience delivering infrastructure projects in Ghana and internationally. He holds an MSc in Transportation Systems from Kwame Nkrumah University of Science and Technology and an Executive MBA in Project Management from the University of Ghana Business School. As Project Manager for Maripoma Enterprise Limited on the Accra–Tema Motorway and Extensions Project, he leads the design and construction of the Section 1 corridor, overseeing contract management, quality control and the on-site workforce.",
+    // Bio revised 3 Sept 2026 from an updated version of the same CV (which
+    // added a "Key Skills"/"Key Positions Held" section) — tightened into a
+    // summary rather than pasted verbatim, per client instruction.
+    bio: "Ing. Benjamin Sackey is a civil engineer and project management professional with more than 25 years of experience across highway design, contract management and construction supervision in Ghana and internationally. He holds an MSc in Transportation Systems from Kwame Nkrumah University of Science and Technology and an Executive MBA in Project Management from the University of Ghana Business School. As Project Manager for Maripoma Enterprise Limited on the Accra–Tema Motorway and Extensions Project, he leads the design and construction of the Section 1 corridor, overseeing contract management, quality control and the on-site workforce.",
     credentials: [
       "MSc, Transportation Systems (Infrastructure & Engineering) — KNUST, 2023",
       "Executive MBA, Project Management — University of Ghana Business School",
@@ -1086,6 +1151,36 @@ export const epcPersonnel: readonly OrgPerson[] = [
       "Liberia Swedish Feeder Roads Project Phase III (700km), Liberia",
       "Accra and Tema Asphalt Roads Resurfacing Project (150km)",
       "Asphaltic Overlay of Selected Streets in Accra Phase II (120km)",
+    ],
+  },
+  {
+    // Added 3 Sept 2026, extracted from his CV ("Ing Kwaku Anim Boateng.docx",
+    // public/info/). His CV lists Maripoma Enterprise Limited among his past
+    // clients generically (no dated "current role" line the way Sackey's CV
+    // has) — the project tie in the bio below reflects his placement on this
+    // roster per client instruction, matching the framing every other entry
+    // here uses, not an explicit dated claim from the CV itself.
+    //
+    // Photo resolved 3 Sept 2026: client supplied a dedicated new photo
+    // (kwaku1.png — file verified to exist; instruction said "kwaku1.jpg",
+    // flagged as a minor extension mismatch in the report), replacing the
+    // earlier by-elimination guess from his CV (which turned out to be a
+    // leftover copy of Sackey's own photo — see git history for that note).
+    name: "Ing. Kwaku Anim Boateng",
+    role: "ESHS Expert",
+    photo: {
+      src: "/images/kwaku1.png",
+      alt: "Portrait of Ing. Kwaku Anim Boateng, ESHS Expert at Maripoma Enterprise Limited",
+    },
+    initials: "KB",
+    bio: "Ing. Kwaku Anim Boateng is a chemical and environmental engineer and social development expert based in Accra, with more than 40 years of experience in chemical engineering design and environmental and social planning, assessment and implementation for major capital projects in Ghana and internationally. He holds an MSc in Chemical Engineering from Howard University and a BSc (Hons) in Chemical Engineering from Kwame Nkrumah University of Science and Technology. As ESHS Expert for Maripoma Enterprise Limited on the Accra–Tema Motorway and Extensions Project, he leads environmental, social and health & safety planning and compliance for the corridor.",
+    credentials: [
+      "MSc, Chemical Engineering — Howard University, Washington D.C.",
+      "BSc (Hons), Chemical Engineering — KNUST",
+      "More than 40 years of environmental, social and chemical engineering experience",
+      "Environmental & Social Impact Assessment (ESIA) and Management Plans (ESMP)",
+      "Projects to World Bank, IFC, European Union and African Development Bank standards",
+      "Ghana Highway Authority, AngloGold Ashanti, Newmont Ghana Akyem Mines",
     ],
   },
 ];
