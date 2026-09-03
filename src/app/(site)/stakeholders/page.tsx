@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { TeamMemberCard } from "@/components/stakeholders/team-member-card";
 import { StakeholderOrg } from "@/components/stakeholders/stakeholder-org";
 import { BoardMemberCard } from "@/components/stakeholders/board-member-card";
 import { PageHero } from "@/components/ui/page-hero";
@@ -42,19 +41,28 @@ const directors = boardMembers.filter((member) => !member.isExecutive);
 
 /**
  * Associated Consultants' engineers, ADAPTED from the single `team` source
- * rather than copied. The same records drive the Project Team section below and
- * the Home page slider, so a name, title or portrait is only ever edited once.
+ * rather than copied — so a name, title, portrait or bio is only ever
+ * edited once. Bio and credentials are carried through (client instruction,
+ * 3 Sept 2026: Bempong/Tetteh/Koffi are the same people in the same role
+ * whether described here or under "Project Team", so there's no reason to
+ * show a thinner version of them here — the old standalone Project Team
+ * section that used to show the full version has been removed instead).
  */
 const consultantPeople: readonly OrgPerson[] = team.map((member) => ({
   name: member.name,
   role: member.title,
   photo: member.photo,
   initials: member.initials,
+  bio: member.bio,
+  credentials: member.credentials,
 }));
 
 const PEOPLE_BY_ORG: Record<string, { people: readonly OrgPerson[]; label: string }> = {
   employer: { people: directors, label: "Board of Directors" },
-  employersRepAgent: { people: consultantPeople, label: "Project team" },
+  // "Project personnel" (not "Project team") — matches the EPC contractor's
+  // label below now that there's no separate Project Team section for this
+  // to imply a distinction from (client instruction, 3 Sept 2026).
+  employersRepAgent: { people: consultantPeople, label: "Project personnel" },
   epcContractor: { people: epcPersonnel, label: "Project personnel" },
 };
 
@@ -93,17 +101,6 @@ export default function StakeholdersPage() {
                 />
               );
             })}
-          </div>
-        </ViewportReveal>
-      </section>
-
-      <section className="border-b border-hairline bg-surface-raised">
-        <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-fg">Project Team</h2>
-          <div className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {team.map((member) => (
-              <TeamMemberCard key={member.name} member={member} variant="feature" />
-            ))}
           </div>
         </ViewportReveal>
       </section>
