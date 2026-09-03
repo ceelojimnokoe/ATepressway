@@ -430,6 +430,25 @@ export const mediaRegistry = {
     onDisk: true,
     verified: true,
   },
+  // Added 4 Sept 2026 (client instruction) for the Government of Ghana block.
+  coatOfArms: {
+    src: "/images/coatofarms.webp",
+    alt: "Coat of arms of the Republic of Ghana",
+    width: 1280,
+    height: 1067,
+    kind: "logo",
+    onDisk: true,
+    verified: true,
+  },
+  logoMinistryOfRoadsAndHighways: {
+    src: "/images/ministryofroadshighways.jpg",
+    alt: "Ministry of Roads and Highways, Republic of Ghana, logo",
+    width: 900,
+    height: 900,
+    kind: "logo",
+    onDisk: true,
+    verified: true,
+  },
   logoGiif: {
     src: "/images/GIIF-logo_sm.png",
     alt: "Ghana Infrastructure Investment Fund logo",

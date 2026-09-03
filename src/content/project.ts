@@ -157,20 +157,18 @@ export const specialistContractors: readonly Stakeholder[] = [
  * the Ghana Highway Authority through the Ministry of Roads & Highways") —
  * flagged back to the client rather than silently reworded. See report.
  *
- * ⚠ `logos` currently lists only the Ghana Highway Authority mark
- * (`logoGha`, already used elsewhere on /stakeholders). The Government of
- * Ghana's own coat of arms and a Ministry of Roads & Highways logo were
- * both requested but neither asset exists yet at any path checked
- * (`public/images/coatofarms*`, `public/image/coatofarms*`, or
- * `public/images/ministryofroadshighways/`) — see report before assuming
- * this is a complete set.
+ * `logos`: full set added 4 Sept 2026 once the client supplied the
+ * remaining two assets (`public/images/coatofarms.webp` and
+ * `public/images/ministryofroadshighways.jpg` — both verified to exist
+ * before wiring in). Ordered to match the paragraph: the Republic's own
+ * mark first, then the two bodies named in it, in the order named.
  */
 export const governmentOfGhana = {
   title: "Government of Ghana",
   subtitle: "Contracting Authority",
   paragraph:
     "Government of Ghana constructing the Ghana Highway Authority through the Ministry of Roads & Highways.",
-  logos: ["logoGha"] as readonly MediaKey[],
+  logos: ["coatOfArms", "logoGha", "logoMinistryOfRoadsAndHighways"] as readonly MediaKey[],
 };
 
 /**
