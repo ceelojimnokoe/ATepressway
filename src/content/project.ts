@@ -919,12 +919,21 @@ export const team: readonly TeamMember[] = [
  * for an initials avatar) and initials. BoardMember satisfies it, and team
  * members are adapted to it at the render site — so a person's name, title and
  * photo live in exactly ONE place in this file, never copied.
+ *
+ * `bio` and `credentials` are optional and deliberately absent for the board
+ * roster (see BoardMemberCard's own comment — the board reads as a clean
+ * roster, not a set of profiles). They exist for the rare case a person
+ * outside that roster (e.g. EPC contractor personnel) needs the same
+ * full-profile treatment as a `TeamMember`; StakeholderOrg renders anyone
+ * with a `bio` via TeamMemberCard instead of the thin BoardMemberCard.
  */
 export interface OrgPerson {
   readonly name: string;
   readonly role: string;
   readonly photo: ImageAsset | null;
   readonly initials: string;
+  readonly bio?: string;
+  readonly credentials?: readonly string[];
 }
 
 export interface BoardMember {
@@ -981,16 +990,6 @@ export const boardMembers: readonly BoardMember[] = [
     initials: "VA",
   },
   {
-    name: "Gifty Duah-Boakye",
-    role: "Board Secretary",
-    affiliation: "employer",
-    photo: {
-      src: "/images/board-member2.JPEG",
-      alt: "Portrait of Gifty Duah-Boakye, Board Secretary of A.T. Expressway Ltd.",
-    },
-    initials: "GB",
-  },
-  {
     name: "Mr. Louis Harrison",
     // CEO per the client's 30 Aug 2026 list. Existing name spelling retained on
     // client instruction (their list wrote "Louise"); flagged for confirmation.
@@ -1043,6 +1042,18 @@ export const boardMembers: readonly BoardMember[] = [
     },
     initials: "PN",
   },
+  // Moved to last (client instruction, 2 Sept 2026) — display order only,
+  // no other fields touched.
+  {
+    name: "Gifty Duah-Boakye",
+    role: "Board Secretary",
+    affiliation: "employer",
+    photo: {
+      src: "/images/board-member2.JPEG",
+      alt: "Portrait of Gifty Duah-Boakye, Board Secretary of A.T. Expressway Ltd.",
+    },
+    initials: "GB",
+  },
 ];
 
 /**
@@ -1052,18 +1063,30 @@ export const boardMembers: readonly BoardMember[] = [
 export const epcPersonnel: readonly OrgPerson[] = [
   {
     name: "Ing. Benjamin Sackey",
-    // ⚠ FLAG: per client instruction (30 Aug 2026), applied verbatim as
-    // "Product Manager". His own CV ("Ing Ben Sackey.docx", public/info/)
-    // states "Project Manager" throughout — including as his CURRENT role on
-    // this project ("2024 – Now: Maripoma Enterprise Ltd, Project Manager /
-    // Accra Tema Motorway project"). Flagged, not silently corrected —
-    // confirm which is intended before this ships further.
-    role: "Product Manager",
+    // RESOLVED (client instruction, 2 Sept 2026): "Project Manager" —
+    // corrects the earlier client list (30 Aug 2026), which read "Product
+    // Manager". Verified directly against his own CV ("Ing Ben Sackey.docx",
+    // public/info/), which states "Project Manager" throughout, including as
+    // his current role on this project.
+    role: "Project Manager",
     photo: {
       src: "/images/ben-sackey.jpg",
-      alt: "Portrait of Ing. Benjamin Sackey, Product Manager at Maripoma Enterprise Limited",
+      alt: "Portrait of Ing. Benjamin Sackey, Project Manager at Maripoma Enterprise Limited",
     },
     initials: "BS",
+    // Full profile added 2 Sept 2026, extracted from his CV (same source
+    // file above) so his entry matches the level of detail the Project Team
+    // members (Bempong/Tetteh/Togbenou) get, per client instruction.
+    bio: "Ing. Benjamin Sackey is a civil engineer and project management professional with more than 25 years of experience delivering infrastructure projects in Ghana and internationally. He holds an MSc in Transportation Systems from Kwame Nkrumah University of Science and Technology and an Executive MBA in Project Management from the University of Ghana Business School. As Project Manager for Maripoma Enterprise Limited on the Accra–Tema Motorway and Extensions Project, he leads the design and construction of the Section 1 corridor, overseeing contract management, quality control and the on-site workforce.",
+    credentials: [
+      "MSc, Transportation Systems (Infrastructure & Engineering) — KNUST, 2023",
+      "Executive MBA, Project Management — University of Ghana Business School",
+      "BSc (Hons), Civil Engineering — KNUST",
+      "More than 25 years of civil engineering and project management experience",
+      "Liberia Swedish Feeder Roads Project Phase III (700km), Liberia",
+      "Accra and Tema Asphalt Roads Resurfacing Project (150km)",
+      "Asphaltic Overlay of Selected Streets in Accra Phase II (120km)",
+    ],
   },
 ];
 

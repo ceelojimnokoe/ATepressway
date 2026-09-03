@@ -40,7 +40,12 @@ export function NewsletterSignup() {
             autoComplete="email"
             placeholder="you@example.com"
             aria-describedby="newsletter-note"
-            className="w-full border border-hairline bg-surface-raised px-4 py-3 text-small text-fg placeholder:text-fg-faint focus:border-fg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            // Fixed white background regardless of theme (client instruction,
+            // 2 Sept 2026 — the dark-theme-resolved bg-surface-raised made
+            // this unreadable in the dark footer). Text/placeholder use the
+            // paper-ink tokens, not the theme-relative fg tokens, for the
+            // same reason the footer's logo plate does (see bg-paper above).
+            className="w-full border border-hairline bg-paper px-4 py-3 text-small text-paper-ink-1 placeholder:text-paper-ink-3 focus:border-paper-ink-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           />
           <button
             type="submit"

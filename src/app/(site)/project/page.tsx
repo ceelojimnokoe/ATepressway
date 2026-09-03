@@ -11,6 +11,7 @@ import { mediaRegistry } from "@/content/media";
 import { corridorPlaceJsonLd } from "@/content/structured-data";
 import { buildMetadata } from "@/lib/page-metadata";
 import { routes } from "@/content/seo";
+import { cn } from "@/lib/cn";
 
 export const metadata: Metadata = buildMetadata(routes.project);
 
@@ -173,14 +174,26 @@ export default function ProjectPage() {
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
           <h2 className="text-heading-4 text-fg">Scope of work</h2>
           <ul className="grid grid-cols-1 gap-px border border-hairline bg-hairline sm:grid-cols-2">
-            {scopeOfWorks.map((item) => (
-              <li key={item.id} className="flex gap-3 bg-surface p-5 text-body text-fg">
-                <span aria-hidden="true" className="text-accent">
-                  —
-                </span>
-                <span>{item.description}</span>
-              </li>
-            ))}
+            {scopeOfWorks.map((item, index) => {
+              // An odd item count leaves the last row's second cell empty —
+              // the bg-hairline grid background shows through as a blank
+              // box (found sitting under the second-to-last item at the
+              // sm:grid-cols-2 breakpoint). Span the final item across both
+              // columns whenever the count is odd so no cell is ever empty;
+              // a no-op once the list has an even number of items.
+              const isDanglingLast = index === scopeOfWorks.length - 1 && scopeOfWorks.length % 2 === 1;
+              return (
+                <li
+                  key={item.id}
+                  className={cn("flex gap-3 bg-surface p-5 text-body text-fg", isDanglingLast && "sm:col-span-2")}
+                >
+                  <span aria-hidden="true" className="text-accent">
+                    —
+                  </span>
+                  <span>{item.description}</span>
+                </li>
+              );
+            })}
           </ul>
           <p className="text-caption text-fg-faint">
             The Section 1 scope includes {projectFacts.pedestrianFootbridges} pedestrian crossing

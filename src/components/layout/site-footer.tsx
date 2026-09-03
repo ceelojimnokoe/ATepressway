@@ -1,6 +1,5 @@
 import Image from "next/image";
-import { organization, contact, siteLastUpdated } from "@/content/project";
-import { formatLongDate } from "@/lib/format";
+import { organization, contact } from "@/content/project";
 import { NewsletterSignup } from "./newsletter-signup";
 import { primaryNav } from "@/content/navigation";
 import { mediaRegistry } from "@/content/media";
@@ -92,11 +91,11 @@ export function SiteFooter() {
 
         <NewsletterSignup />
 
-        <div className="flex flex-col gap-2 border-t border-hairline pt-6 text-caption text-fg-faint sm:flex-row sm:items-baseline sm:justify-between">
+        {/* "Site last updated" removed (client instruction, 2 Sept 2026). */}
+        <div className="border-t border-hairline pt-6 text-caption text-fg-faint">
           <span>
             © {year} {organization.name}
           </span>
-          <span>Site last updated: {formatLongDate(siteLastUpdated)}</span>
         </div>
       </div>
     </footer>

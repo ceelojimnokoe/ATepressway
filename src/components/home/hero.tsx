@@ -63,7 +63,14 @@ function HeroContent() {
   return (
     <>
       <Reveal direction="up" distance={12} delay={0.05}>
-        <span className="text-caption text-accent tracking-[0.2em] uppercase">
+        {/* Filled lime pill, not a link — deliberately shaped and sized
+            unlike CtaLink (which is rounded-none, larger px-6 py-3) so it
+            never reads as a clickable button. Dark text on a lime fill is
+            the legible "signal" pairing (unlike lime text on light, which
+            fails contrast) — same bg-lime/text-void/border-accent combo
+            already used for filled chips elsewhere (gallery filter,
+            statistics switcher, corridor tutorial step badge). */}
+        <span className="inline-block rounded-full border border-accent bg-lime px-3 py-1.5 text-caption tracking-[0.2em] text-void uppercase">
           Accra–Tema Motorway and Extensions Project
         </span>
       </Reveal>

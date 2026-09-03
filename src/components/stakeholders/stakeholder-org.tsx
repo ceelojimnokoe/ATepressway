@@ -2,6 +2,60 @@ import Image from "next/image";
 import { mediaRegistry } from "@/content/media";
 import type { OrgPerson, Stakeholder } from "@/content/project";
 import { BoardMemberCard } from "./board-member-card";
+import { TeamMemberCard } from "./team-member-card";
+
+/**
+ * One roster within an organisation card — a heading plus up to two grids
+ * underneath it: the deliberately thin BoardMemberCard grid for ordinary
+ * entries, and (for the rare OrgPerson that carries a `bio`) the SAME
+ * multi-column reflowing grid the Project Team section uses for its
+ * TeamMemberCards (grid-cols-1 sm:grid-cols-2 lg:grid-cols-3). Reusing that
+ * exact grid — not a wider span inside the thin grid — is what makes a
+ * profiled entry render at the same size as every other full-profile card,
+ * and what lets the section grow to 2, 3, 4+ profiled members later without
+ * any layout assumption baked in for "exactly one".
+ */
+function Roster({ label, people }: { readonly label: string; readonly people: readonly OrgPerson[] }) {
+  if (people.length === 0) return null;
+  const thin = people.filter((person) => !person.bio);
+  const profiled = people.filter((person) => person.bio);
+
+  return (
+    <div className="flex flex-col gap-4 border-t border-hairline pt-5">
+      <span className="text-caption text-fg-faint tracking-wide uppercase">{label}</span>
+
+      {thin.length > 0 && (
+        <ul className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+          {thin.map((person) => (
+            <li key={person.name}>
+              <BoardMemberCard member={person} />
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {profiled.length > 0 && (
+        <ul className="grid grid-cols-1 items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {profiled.map((person) => (
+            <li key={person.name}>
+              <TeamMemberCard
+                member={{
+                  name: person.name,
+                  title: person.role,
+                  photo: person.photo,
+                  initials: person.initials,
+                  bio: person.bio ?? "",
+                  credentials: person.credentials ?? [],
+                }}
+                variant="feature"
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
 
 /**
  * One organisation in the delivery chain, with its board representation nested
@@ -62,35 +116,8 @@ export function StakeholderOrg({
         )}
       </div>
 
-      {executives.length > 0 && (
-        <div className="flex flex-col gap-4 border-t border-hairline pt-5">
-          <span className="text-caption text-fg-faint tracking-wide uppercase">
-            Executive leadership
-          </span>
-          <ul className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
-            {executives.map((person) => (
-              <li key={person.name}>
-                <BoardMemberCard member={person} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {members.length > 0 && (
-        <div className="flex flex-col gap-4 border-t border-hairline pt-5">
-          <span className="text-caption text-fg-faint tracking-wide uppercase">
-            {membersLabel}
-          </span>
-          <ul className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
-            {members.map((member) => (
-              <li key={member.name}>
-                <BoardMemberCard member={member} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <Roster label="Executive leadership" people={executives} />
+      <Roster label={membersLabel} people={members} />
     </div>
   );
 }

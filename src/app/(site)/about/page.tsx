@@ -8,7 +8,8 @@ import { mediaRegistry } from "@/content/media";
 import { organization } from "@/content/project";
 import {
   aboutIntro,
-  visionMission,
+  // visionMission intentionally not imported — its section is hidden below,
+  // pending final client content. Data stays put in content/about.ts.
   approach,
   investmentHighlights,
   whyAtel,
@@ -61,19 +62,12 @@ export default function AboutPage() {
         </ViewportReveal>
       </section>
 
-      {/* Vision · Mission · Commitment */}
-      <section className="border-b border-hairline bg-surface-raised">
-        <ViewportReveal className="mx-auto w-full max-w-5xl px-4 py-16 sm:px-8">
-          <div className="grid grid-cols-1 gap-px border border-hairline bg-hairline md:grid-cols-3">
-            {visionMission.map((item) => (
-              <div key={item.id} className="flex flex-col gap-3 bg-surface-raised p-6">
-                <h2 className="text-heading-4 text-fg">{item.title}</h2>
-                <p className="text-small text-fg-muted">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </ViewportReveal>
-      </section>
+      {/* Vision · Mission · Commitment — intentionally hidden (client
+          instruction, 2 Sept 2026): this content hasn't been finalized and
+          will likely be replaced later. The data stays in
+          src/content/about.ts (`visionMission`) untouched; only the render
+          is removed. Restore this section (and the `visionMission` import
+          above) once the client supplies final copy. */}
 
       {/* Approach */}
       <section className="border-b border-hairline bg-surface">

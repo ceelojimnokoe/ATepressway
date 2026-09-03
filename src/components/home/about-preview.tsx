@@ -1,6 +1,9 @@
 import Image from "next/image";
 import { mediaRegistry } from "@/content/media";
-import { aboutIntro, visionMission } from "@/content/about";
+import { aboutIntro } from "@/content/about";
+// visionMission intentionally not imported — its preview grid below is
+// hidden (client instruction, 2 Sept 2026), pending final client content.
+// Data stays put in content/about.ts.
 import { TextReveal } from "@/components/motion/text-reveal";
 import { Reveal } from "@/components/motion/reveal";
 import { CtaLink } from "@/components/ui/cta-link";
@@ -46,14 +49,9 @@ export function AboutPreview() {
           </div>
           <div className="flex flex-col gap-5">
             <p className="text-body text-fg-muted">{aboutIntro.paragraphs[0]}</p>
-            <div className="grid grid-cols-1 gap-px border border-hairline bg-hairline sm:grid-cols-2">
-              {visionMission.slice(0, 2).map((item) => (
-                <div key={item.id} className="flex flex-col gap-2 bg-surface-raised p-5">
-                  <h3 className="text-body text-fg">{item.title}</h3>
-                  <p className="text-small text-fg-muted">{item.body}</p>
-                </div>
-              ))}
-            </div>
+            {/* Vision/mission preview intentionally hidden here too (client
+                instruction, 2 Sept 2026) — see the fuller note in
+                src/app/(site)/about/page.tsx. */}
           </div>
         </div>
       </ViewportReveal>

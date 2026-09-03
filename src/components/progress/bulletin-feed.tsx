@@ -14,12 +14,15 @@ export function BulletinFeed() {
     <section className="bg-surface-sunk">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
         <div className="flex flex-col gap-2">
-          <h2 className="text-heading-4 text-fg">Bulletins</h2>
+          {/* Label only — "Newsletters" per client instruction (2 Sept
+              2026). The underlying data (bulletins, Bulletin, BulletinFeed)
+              is unchanged; only the visible text differs. */}
+          <h2 className="text-heading-4 text-fg">Newsletters</h2>
           <p className="text-small text-fg-muted">Notices between monthly reports.</p>
         </div>
 
         {newestFirst.length === 0 ? (
-          <p className="text-small text-fg-muted">No bulletins published yet.</p>
+          <p className="text-small text-fg-muted">No newsletters published yet.</p>
         ) : (
           <ul className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
             {newestFirst.map((bulletin) => (
