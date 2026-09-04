@@ -268,7 +268,10 @@ export default function ProgressPage() {
           the PLANNED side — they describe September's programme, not work already
           done, and must never be presented as completed-work imagery. */}
       {latestMonthlyUpdate && (
-        <section className="border-b border-hairline bg-surface">
+        // id + scroll-mt-24 so the Updates popup's "This month and next" link
+        // lands below the sticky header, not underneath it (client
+        // instruction, 4 Sept 2026).
+        <section id="this-month-and-next" className="scroll-mt-24 border-b border-hairline bg-surface">
           <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
             <h2 className="text-heading-4 text-fg">This month and next</h2>
             <div className="grid gap-10 lg:grid-cols-2">

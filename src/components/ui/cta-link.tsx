@@ -7,6 +7,10 @@ interface CtaLinkProps {
   readonly children: ReactNode;
   readonly variant?: "primary" | "secondary";
   readonly className?: string;
+  /** Set false to omit the arrow — for contexts like a list of equal-weight
+      links where the nudge-right affordance isn't wanted. Default true. */
+  readonly showArrow?: boolean;
+  readonly onClick?: () => void;
 }
 
 /**
@@ -16,10 +20,18 @@ interface CtaLinkProps {
  * instant under the global reduced-motion rule), with a clear focus ring.
  * It is a link — use it for navigation, not actions.
  */
-export function CtaLink({ href, children, variant = "primary", className }: CtaLinkProps) {
+export function CtaLink({
+  href,
+  children,
+  variant = "primary",
+  className,
+  showArrow = true,
+  onClick,
+}: CtaLinkProps) {
   return (
     <PageTransitionLink
       href={href}
+      onClick={onClick}
       className={cn(
         "group inline-flex items-center gap-2 border px-6 py-3 text-small tracking-wide uppercase transition-colors duration-200 ease-out",
         "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent",
@@ -30,9 +42,11 @@ export function CtaLink({ href, children, variant = "primary", className }: CtaL
       )}
     >
       {children}
-      <span aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:translate-x-1">
-        →
-      </span>
+      {showArrow && (
+        <span aria-hidden="true" className="transition-transform duration-200 ease-out group-hover:translate-x-1">
+          →
+        </span>
+      )}
     </PageTransitionLink>
   );
 }

@@ -6,7 +6,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { latestMonthlyUpdate } from "@/content/project";
 import { mediaRegistry } from "@/content/media";
 import { duration, easing } from "@/lib/motion";
-import { PageTransitionLink } from "./page-transition-link";
+import { CtaLink } from "@/components/ui/cta-link";
 
 const FOCUSABLE = 'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])';
 
@@ -18,6 +18,15 @@ const LINKS = [
   { href: "/gallery", label: "Latest photography" },
   { href: "/project", label: "About the project" },
 ] as const;
+
+/**
+ * The featured 4th action (client instruction, 4 Sept 2026) — jumps straight
+ * to the Progress page's "This month and next" section (id + scroll-mt-24
+ * added there). Kept separate from LINKS rather than a 4th entry in that
+ * array because it renders with the primary (lime) CtaLink variant instead
+ * of secondary — see the render below for why.
+ */
+const FEATURED_LINK = { href: "/progress#this-month-and-next", label: "This month and next" } as const;
 
 // The panel's entrance/exit — the site's standard `reveal` motion (12px rise +
 // fade, duration.base, ease.out; see src/lib/motion.ts), not an invented one.
@@ -246,17 +255,37 @@ export function LatestUpdates() {
                 </ul>
               )}
 
-              <div className="flex flex-wrap gap-x-5 gap-y-2 border-t border-hairline pt-4">
+              {/* Buttons (client instruction, 4 Sept 2026) — same shape as
+                  Home's "Explore progress" CtaLink, arrow omitted since four
+                  equal-weight-looking actions don't need the nudge. Full
+                  width and stacked below 640px so four buttons never crowd
+                  at 360px; row-wrapped from sm: up, where there's room. The
+                  featured link uses the primary (lime) variant so it's the
+                  one thing that stands out — matches "lime marks the single
+                  most important thing on a screen" (see globals.css) rather
+                  than making all four compete for the same signal colour. */}
+              <div className="flex flex-col gap-3 border-t border-hairline pt-5 sm:flex-row sm:flex-wrap">
                 {LINKS.map((link) => (
-                  <PageTransitionLink
+                  <CtaLink
                     key={link.href}
                     href={link.href}
                     onClick={close}
-                    className="text-small text-fg underline decoration-hairline underline-offset-4 transition-colors hover:text-accent hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                    variant="secondary"
+                    showArrow={false}
+                    className="w-full justify-center sm:w-auto"
                   >
-                    {link.label} →
-                  </PageTransitionLink>
+                    {link.label}
+                  </CtaLink>
                 ))}
+                <CtaLink
+                  href={FEATURED_LINK.href}
+                  onClick={close}
+                  variant="primary"
+                  showArrow={false}
+                  className="w-full justify-center sm:w-auto"
+                >
+                  {FEATURED_LINK.label}
+                </CtaLink>
               </div>
             </motion.div>
           </div>
