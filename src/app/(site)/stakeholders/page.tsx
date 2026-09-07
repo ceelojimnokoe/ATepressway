@@ -6,6 +6,7 @@ import { PageHero } from "@/components/ui/page-hero";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import {
   stakeholders,
+  legalAdvisor,
   team,
   boardMembers,
   epcPersonnel,
@@ -44,10 +45,12 @@ const directors = boardMembers;
  * Associated Consultants' engineers, ADAPTED from the single `team` source
  * rather than copied — so a name, title, portrait or bio is only ever
  * edited once. Bio and credentials are carried through (client instruction,
- * 3 Sept 2026: Bempong/Tetteh/Koffi are the same people in the same role
- * whether described here or under "Project Team", so there's no reason to
- * show a thinner version of them here — the old standalone Project Team
- * section that used to show the full version has been removed instead).
+ * 3 Sept 2026: each member is the same person in the same role whether
+ * described here or under "Project Team", so there's no reason to show a
+ * thinner version of them here — the old standalone Project Team section
+ * that used to show the full version has been removed instead). Membership
+ * of `team` itself has changed since (Togbenou replaced by Gyampo, 7 Sept
+ * 2026) — this mapping is unaffected either way.
  */
 const consultantPeople: readonly OrgPerson[] = team.map((member) => ({
   name: member.name,
@@ -105,6 +108,11 @@ export default function StakeholdersPage() {
                 />
               );
             })}
+            {/* Outside the MPR's contractual chain above (client instruction,
+                7 Sept 2026) — same StakeholderOrg card, own "Legal Advisors"
+                role caption so it never reads as a claim of contractual
+                rank alongside the Concessionaire-to-EPC-Contractor chain. */}
+            <StakeholderOrg stakeholder={legalAdvisor} members={[]} />
           </div>
         </ViewportReveal>
       </section>

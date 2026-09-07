@@ -2,8 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { PageHero } from "@/components/ui/page-hero";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
-import { PlaceholderNotice } from "@/components/ui/placeholder-notice";
-import { CtaLink } from "@/components/ui/cta-link";
 import { mediaRegistry } from "@/content/media";
 import { organization } from "@/content/project";
 import {
@@ -11,10 +9,8 @@ import {
   // visionMission intentionally not imported — its section is hidden below,
   // pending final client content. Data stays put in content/about.ts.
   approach,
-  investmentHighlights,
-  whyAtel,
+  whyAtmp,
   internalStrengths,
-  beyondTheCorridor,
 } from "@/content/about";
 import { buildMetadata } from "@/lib/page-metadata";
 import { routes } from "@/content/seo";
@@ -108,64 +104,30 @@ export default function AboutPage() {
         </ViewportReveal>
       </section>
 
-      {/* Why ATEL */}
-      <section className="border-b border-hairline bg-surface-raised">
+      {/* Why ATMP — merged 7 Sept 2026 (client instruction) from the former
+          separate "Why ATEL" and "Investment highlights" sections into one
+          flat 10-item grid under one renamed heading; see whyAtmp in
+          content/about.ts for the merge order. This is now the page's last
+          section — "Beyond the Accra–Tema corridor" (and its two closing
+          CTAs) was removed outright in the same instruction, not hidden. */}
+      <section className="bg-surface-raised">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-fg">Why ATEL</h2>
-          <div className="grid grid-cols-1 gap-px border border-hairline bg-hairline sm:grid-cols-2">
-            {whyAtel.map((item) => (
-              <div key={item.title} className="flex flex-col gap-2 bg-surface-raised p-6">
+          <h2 className="text-heading-4 text-fg">Why ATMP (Accra Tema-Motorway &amp; Extensions Project)</h2>
+          {/* Independently bordered cards + a real gap (matching the Progress
+              page's activity-highlights grid), not the earlier shared
+              container-background "mortar line" technique — that technique
+              only looks right when every row is full, and 10 items over 3
+              columns leaves the last row's unused tracks exposed, which
+              rendered as a grey block (client instruction, 7 Sept 2026, to
+              remove it). A per-card border never leaks a background into a
+              cell that has no card. */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {whyAtmp.map((item) => (
+              <div key={item.title} className="flex flex-col gap-2 border border-hairline bg-surface-raised p-6">
                 <h3 className="text-body text-fg">{item.title}</h3>
                 <p className="text-small text-fg-muted">{item.body}</p>
               </div>
             ))}
-          </div>
-        </ViewportReveal>
-      </section>
-
-      {/* Investment highlights */}
-      <section className="border-b border-hairline bg-surface">
-        <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-fg">Investment highlights</h2>
-          <div className="grid grid-cols-1 gap-px border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-3">
-            {investmentHighlights.map((item) => (
-              <div key={item.title} className="flex flex-col gap-2 bg-surface p-6">
-                <h3 className="text-body text-fg">{item.title}</h3>
-                <p className="text-small text-fg-muted">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </ViewportReveal>
-      </section>
-
-      {/* Beyond the corridor — confirmed intent, explicit TBC for the pipeline. */}
-      <section className="border-b border-hairline bg-surface-raised">
-        <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-5 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-fg">Beyond the Accra–Tema corridor</h2>
-          <p className="max-w-3xl text-body text-fg-muted">{beyondTheCorridor.intent}</p>
-          <div className="flex flex-col gap-2 border border-dashed border-hairline bg-surface px-5 py-4">
-            <span className="text-caption text-fg-faint tracking-wide uppercase">
-              Further projects
-            </span>
-            <PlaceholderNotice value={beyondTheCorridor.otherProjects}>
-              {(value) => (
-                <ul className="flex flex-col gap-1">
-                  {value.map((entry) => (
-                    <li key={entry} className="text-small text-fg">
-                      {entry}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </PlaceholderNotice>
-          </div>
-          <div className="flex flex-wrap gap-3 pt-2">
-            <CtaLink href="/project" variant="primary">
-              Explore the project
-            </CtaLink>
-            <CtaLink href="/stakeholders" variant="secondary">
-              Meet the stakeholders
-            </CtaLink>
           </div>
         </ViewportReveal>
       </section>

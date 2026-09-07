@@ -476,6 +476,19 @@ export const mediaRegistry = {
     onDisk: true,
     verified: true,
   },
+  // Added 7 Sept 2026 (client instruction) for the new AB & David (Legal
+  // Advisors) stakeholder entry. Fetched once from https://abdavid.com/'s
+  // own site and saved locally — never hotlinked — matching how every other
+  // logo on the site is a local asset registered here.
+  logoAbDavid: {
+    src: "/images/ab-david-logo.png",
+    alt: "AB & David Africa logo",
+    width: 500,
+    height: 200,
+    kind: "logo",
+    onDisk: true,
+    verified: true,
+  },
 
   // --- Progress photography, 28 August 2026 (client-supplied, captioned by chainage) ---
   progAshaiman: {

@@ -108,6 +108,23 @@ const epcContractor = {
   logo: "logoMaripoma",
 } as const satisfies Stakeholder;
 
+/**
+ * Legal Advisors — added 7 Sept 2026 (client instruction). Not part of the
+ * MPR's contractual delivery chain (Concessionaire → Funding Agency →
+ * Employer's Representative → Agent → EPC Contractor, see CLAUDE.md), so
+ * this is kept out of `stakeholderChain`/`stakeholders` and rendered as its
+ * own card directly after that chain on /stakeholders — same StakeholderOrg
+ * name+logo+link treatment as every chain entry, but its own "Legal
+ * Advisors" role caption so it never reads as a claim of contractual rank.
+ */
+export const legalAdvisor = {
+  name: "AB & David",
+  role: "Legal Advisors",
+  gloss: "AB & David provides legal advisory services to A.T. Expressway Ltd. for the Accra–Tema Motorway and Extensions Project.",
+  logo: "logoAbDavid",
+  website: "https://abdavid.com/",
+} as const satisfies Stakeholder;
+
 const electricalRelocation = {
   name: "Limmark Energy Solutions Ltd",
   role: "Specialist Contractor — Electrical Relocation",
@@ -866,6 +883,17 @@ export const contact: Contact = {
 export interface ImageAsset {
   readonly src: string;
   readonly alt: string;
+  /**
+   * Optional tighter-crop override for a specific photo. Needed only when a
+   * source image's aspect ratio already matches its display frame (a square
+   * photo in a square card) — object-cover then shows the whole frame with
+   * zero natural overflow, so object-position alone has nothing to pan
+   * into. `scale` enlarges the image (clipped by the frame's
+   * overflow-hidden) and `origin` is the CSS transform-origin that stays
+   * fixed while it enlarges — an origin above centre biases the zoom toward
+   * the top of the photo, cropping proportionally more off the bottom.
+   */
+  readonly crop?: { readonly scale: number; readonly origin: string };
 }
 
 export interface TeamMember {
@@ -884,14 +912,21 @@ export interface TeamMember {
 /** The two confirmed project professionals, both with supplied portraits. */
 export const team: readonly TeamMember[] = [
   {
-    name: "Ing. Kwadwo Bempong",
+    // Name RESOLVED (client instruction, 7 Sept 2026): "Kwabena" — the name
+    // had already been corrected once from "Kwabena" to "Kwadwo" (client
+    // instruction, 3 Sept 2026), and this reverses that back to "Kwabena"
+    // per the client's own explicit confirmation ("Ing. Kwabena Bempong, not
+    // Kwadwo"). Flagged in the delivery report as a two-way flip on the same
+    // field within a week — final written confirmation requested before this
+    // is touched again.
+    name: "Ing. Kwabena Bempong",
     title: "Chief Resident Engineer",
     photo: {
       src: "/images/bempong.png",
-      alt: "Portrait of Ing. Kwadwo Bempong, Chief Resident Engineer",
+      alt: "Portrait of Ing. Kwabena Bempong, Chief Resident Engineer",
     },
     initials: "KB",
-    bio: "Ing. Kwadwo Bempong is a civil and road engineer with more than 30 years of design and construction-supervision experience. He holds an MSc with honours in Road and Pavement Engineering and is Chief Executive Officer of Associated Consultants Limited. His major assignments include the Pokuase Interchange, the Ofankor–Nsawam Road, the Ashaiman–Akosombo dual carriageway and the Accra–Tema Motorway and Extensions Project, where he serves as Chief Resident Engineer.",
+    bio: "Ing. Kwabena Bempong is a civil and road engineer with more than 30 years of design and construction-supervision experience. He holds an MSc with honours in Road and Pavement Engineering and is Chief Executive Officer of Associated Consultants Limited. His major assignments include the Pokuase Interchange, the Ofankor–Nsawam Road, the Ashaiman–Akosombo dual carriageway and the Accra–Tema Motorway and Extensions Project, where he serves as Chief Resident Engineer.",
     credentials: [
       "MSc, Road and Pavement Engineering",
       "Chief Executive Officer, Associated Consultants Limited",
@@ -920,28 +955,29 @@ export const team: readonly TeamMember[] = [
     ],
   },
   {
-    // "Ing." prefix added (client instruction, 3 Sept 2026) to match the
-    // pattern used for Bempong and Tetteh — applied consistently below in
-    // the alt text and bio opening too, not just this field.
-    name: "Ing. Koffi Togbenou",
-    title: "Bridge & Tunnel Engineer",
-    // Enhanced from the (low-res 137×199) source via denoise + unsharp + a
-    // lanczos upscale to 420px — a modest, honest improvement in delivered
-    // resolution, not a recovery of detail. A proper replacement photo is
-    // still the real fix.
+    // Ing. Koffi Togbenou's entry was REPLACED outright (client instruction,
+    // 7 Sept 2026) by Ing. Evelyn Gyampo — a different person, not a rename;
+    // Togbenou's photo and profile are removed from the site entirely.
+    // Extracted from "ATEL Profile.docx" (public/info/): text via the
+    // document.xml zipfile technique, photo from word/media/image1.jpeg
+    // (the only non-template image in the file) — visually verified as a
+    // genuine, distinct portrait, not a repeat of any other team photo.
+    name: "Ing. Evelyn Gyampo",
+    title: "Environmental, Social, Health & Safety Expert",
     photo: {
-      src: "/images/koffitogbenou-enhanced.png",
-      alt: "Portrait of Ing. Koffi Togbenou, Bridge & Tunnel Engineer",
+      src: "/images/evelyn-gyampo.jpg",
+      alt: "Portrait of Ing. Evelyn Gyampo, Environmental, Social, Health & Safety Expert",
     },
-    initials: "KT",
-    bio: "Ing. Koffi Togbenou is a structural engineer with approximately eight years of experience in bridge design, analysis and construction supervision. As Resident Engineer for bridges on the Accra–Tema Motorway and Extensions Project, he oversees bridge, interchange and associated structural works, with a strong focus on technical compliance, quality control and site execution.",
+    initials: "EG",
+    bio: "Ing. Evelyn Gyampo is a chemical engineer and environmental management professional with more than 20 years of experience in environmental and social sustainability, ESHS compliance and stakeholder engagement across major infrastructure projects. She holds an MPhil in Environmental Science from the University of Ghana and a BSc (Hons) in Chemical Engineering from Kwame Nkrumah University of Science and Technology. As Lead Consultant (Environmental, Social, Health & Safety) for Associated Consultants Limited on the Accra–Tema Motorway and Extensions Project, she leads ESHS oversight, compliance monitoring and stakeholder engagement for the corridor.",
     credentials: [
-      "La Beach Road and Nungua Interchange",
-      "Namdini Gold Project",
-      "Tatale–Yendi–Tamale Road",
-      "Buipe, Yapei, Daboya and Nawuni Bridges",
-      "Padma Multipurpose Bridge",
-      "Guene–Ouenou Road",
+      "MPhil, Environmental Science — University of Ghana, Legon",
+      "BSc (Hons), Chemical Engineering — KNUST",
+      "Certificate, Climate Change, Sustainable Development & CDM Project Formulation — University of Twente, Netherlands",
+      "More than 20 years of environmental and social sustainability experience",
+      "Environmental & Social Assessment Specialist — Millennium Challenge Account Infrastructure Projects",
+      "Certified Trainer for Inclusive EIA — UNDP/AfDB (Ethiopia, South Africa, Eswatini)",
+      "Member, Ghana Institution of Engineers",
     ],
   },
 ] as const;
@@ -1069,12 +1105,16 @@ export const boardMembers: readonly BoardMember[] = [
   },
   {
     // "Dr." removed per client instruction, 3 Sept 2026 — was "Hon. Dr. Eric
-    // Afful".
+    // Afful". Photo replaced 7 Sept 2026 with a new client-supplied studio
+    // headshot (hon-dr-eric-afful-400x500.jpg, public/images/) — the "dr" in
+    // that filename is the client's own naming, not an instruction to
+    // reintroduce "Dr." into the displayed title, which stays "Hon. Eric
+    // Afful" per the 3 Sept 2026 correction above.
     name: "Hon. Eric Afful",
     role: "Board Member",
     affiliation: "employer",
     photo: {
-      src: "/images/afful.jpg",
+      src: "/images/hon-dr-eric-afful-400x500.jpg",
       alt: "Portrait of Hon. Eric Afful, Board Member of A.T. Expressway Ltd.",
     },
     initials: "EA",
@@ -1114,6 +1154,14 @@ export const boardMembers: readonly BoardMember[] = [
     photo: {
       src: "/images/board-member2.JPEG",
       alt: "Portrait of Gifty Duah-Boakye, Board Secretary of A.T. Expressway Ltd.",
+      // Tighter, shoulders-up crop (client instruction, 7 Sept 2026). The
+      // source (1968×1968) is exactly square, same as the card's display
+      // frame, so object-cover already shows it uncropped — object-position
+      // alone can't "zoom in" without a transform. Scale + an above-centre
+      // origin biases the crop toward the head/shoulders instead of the
+      // torso. Resolution comfortably supports this; no new source file
+      // needed.
+      crop: { scale: 1.55, origin: "50% 22%" },
     },
     initials: "GB",
   },
@@ -1132,8 +1180,16 @@ export const epcPersonnel: readonly OrgPerson[] = [
     // public/info/), which states "Project Manager" throughout, including as
     // his current role on this project.
     role: "Project Manager",
+    // Photo replaced 7 Sept 2026 — image extraction only, from "Ing Ben
+    // Sackey (Profile).docx" (public/info/); his bio below is untouched
+    // (last revised 3 Sept 2026, see note below) per client instruction.
+    // Extracted via the docx zipfile technique: word/media/image7.png was
+    // the only genuine photo among the file's embedded media (the rest were
+    // template icons, e.g. an envelope glyph) — visually confirmed as the
+    // same person as the previous photo, same office setting, just an
+    // uncropped/higher-resolution version of it.
     photo: {
-      src: "/images/ben-sackey.jpg",
+      src: "/images/ben-sackey-updated.jpg",
       alt: "Portrait of Ing. Benjamin Sackey, Project Manager at Maripoma Enterprise Limited",
     },
     initials: "BS",
@@ -1182,6 +1238,34 @@ export const epcPersonnel: readonly OrgPerson[] = [
       "Environmental & Social Impact Assessment (ESIA) and Management Plans (ESMP)",
       "Projects to World Bank, IFC, European Union and African Development Bank standards",
       "Ghana Highway Authority, AngloGold Ashanti, Newmont Ghana Akyem Mines",
+    ],
+  },
+  {
+    // Added 7 Sept 2026, extracted from "Jihad_El_Zohbi_Profile .pdf"
+    // (public/info/ — note the trailing space before the extension in the
+    // actual filename). This source is a PDF rather than a docx like the
+    // other profile sources here; text was read via native PDF text
+    // extraction, and the photo via PyMuPDF (pixel data + its separate soft
+    // mask combined into one RGBA image, then flattened onto a white
+    // background to match a normal headshot rather than leaving it a
+    // transparent cutout) since the embedded image itself is not exposed as
+    // a plain extractable file in a PDF the way it is in a docx's zip.
+    name: "Jihad El Zohbi",
+    role: "Project Engineer",
+    photo: {
+      src: "/images/jihad-el-zohbi.jpg",
+      alt: "Portrait of Jihad El Zohbi, Project Engineer at Maripoma Enterprise Limited",
+    },
+    initials: "JZ",
+    bio: "Jihad El Zohbi is a project and highway design engineer with more than 20 years of experience across highway, urban road, infrastructure and building projects in the Middle East and Ghana. He holds a Master's in Topographic Engineering from the Lebanese Canadian University and has held design and site engineering roles with contractors including Mouawad–Eddeh, BATCO and Asphalt Hamat in Lebanon. As Project Engineer for Maripoma Enterprise Limited on the Accra–Tema Motorway and Extensions Project, he coordinates road, bridge and interchange design drawings, resolves design interfaces on site and oversees quantity take-off and construction verification for the corridor.",
+    credentials: [
+      "MSc, Topographic Engineering — Lebanese Canadian University, 2020",
+      "More than 20 years of highway design and site engineering experience",
+      "Reconstruction and Rehabilitation of Ofankor–Nsawam Road Dual Carriageway (33.4km), Ghana",
+      "Rehabilitation of Tanourine el Tahta–Tanourine el Fawka Road, Lebanon",
+      "Ground Water Dam in Balaa, Lebanon",
+      "Jord Akkar Water Supply System, North Lebanon",
+      "Upgrading of Tripoli's Infrastructure, Phase I, Lebanon",
     ],
   },
 ];

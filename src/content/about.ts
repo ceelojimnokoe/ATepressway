@@ -2,12 +2,7 @@
  * "About Us" content, taken from the client's own document
  * ("ATEL Website Text Corrections - Updated -12-05-25.docx"). Wording is the
  * client's; only punctuation and capitalisation have been normalised.
- *
- * As with every other fact on this site, anything the client has NOT supplied
- * stays a placeholder rather than being invented — see `otherProjects` below.
  */
-
-import { placeholder, type Placeholder } from "./placeholder";
 
 export const aboutIntro = {
   eyebrow: "Accra–Tema Motorway & Extensions PPP Project",
@@ -53,9 +48,39 @@ export interface Highlight {
   readonly body: string;
 }
 
-export const investmentHighlights: readonly Highlight[] = [
+/**
+ * "Why ATMP" — merged 7 Sept 2026 (client instruction) from the two
+ * previously separate sections "Why ATEL" (4 items) and "Investment
+ * highlights" (6 items), which now render as one flat 10-item grid under one
+ * heading. Order preserved: the former "Why ATEL" items first, then the
+ * former "Investment highlights" items — no other wording changed.
+ */
+export const whyAtmp: readonly Highlight[] = [
   {
-    title: "Government-backed funding support",
+    title: "Local expertise and ownership",
+    body: "Ensuring maximum Ghanaian participation in construction and operations.",
+  },
+  {
+    title: "Long-term economic benefits",
+    body: "Revenue generation and capacity building for future projects.",
+  },
+  {
+    title: "Sustainable and modern infrastructure",
+    body: "Designed for durability, efficiency, and international standards.",
+  },
+  {
+    title: "Reduced congestion and improved safety",
+    body: "Minimising travel times and enhancing road user experience.",
+  },
+  {
+    // Title changed from "Government-backed funding support" (client
+    // instruction, 7 Sept 2026, verbatim except correcting "Signifcant" to
+    // "Significant"). FLAGGED in the delivery report: "Seed" reads as an
+    // incomplete phrase on its own — it normally takes a following noun
+    // ("seed funding", "seed capital", "seed investment") — applied exactly
+    // as instructed rather than silently completing it; the body text below
+    // is unchanged and still describes the underlying funding structure.
+    title: "Significant Government Seed",
     body: "Structured as a public–private partnership with initial funding support from Government.",
   },
   {
@@ -80,25 +105,6 @@ export const investmentHighlights: readonly Highlight[] = [
   },
 ];
 
-export const whyAtel: readonly Highlight[] = [
-  {
-    title: "Local expertise and ownership",
-    body: "Ensuring maximum Ghanaian participation in construction and operations.",
-  },
-  {
-    title: "Long-term economic benefits",
-    body: "Revenue generation and capacity building for future projects.",
-  },
-  {
-    title: "Sustainable and modern infrastructure",
-    body: "Designed for durability, efficiency, and international standards.",
-  },
-  {
-    title: "Reduced congestion and improved safety",
-    body: "Minimising travel times and enhancing road user experience.",
-  },
-];
-
 export const internalStrengths: readonly string[] = [
   "Ghanaian expertise and capacity building",
   "Public–private partnership for sustainable development",
@@ -107,22 +113,8 @@ export const internalStrengths: readonly string[] = [
   "Future-ready infrastructure",
 ];
 
-/**
- * ATEL's work beyond the Accra–Tema corridor.
- *
- * The client's source document states the INTENT — "building capacity within
- * Ghana to execute similar projects independently in the future" and
- * "establishing the foundation for a pipeline of future infrastructure projects
- * across the region" — but names no specific other project. Naming one here
- * would be inventing a fact, so this stays a placeholder until ATEL supplies
- * the detail. The page renders the confirmed intent and an explicit
- * "to be confirmed" state for the pipeline itself.
- */
-export const beyondTheCorridor = {
-  intent:
-    "ATEL is more than a single road. The company is a vehicle for building Ghanaian institutional capability — keeping capital, expertise and long-term value within Ghana’s economy, and establishing the foundation for a pipeline of future infrastructure projects across the region.",
-  otherProjects: placeholder<readonly string[]>(
-    "Other ATEL projects beyond the Accra–Tema corridor (names, scope, status)",
-    [],
-  ) as Placeholder<readonly string[]>,
-} as const;
+// The "Beyond the Accra–Tema corridor" section (and this content backing it)
+// was removed outright 7 Sept 2026 (client instruction) — not hidden like
+// visionMission above, fully deleted. If this content is wanted again later,
+// see git history for the last version (intent paragraph + a placeholder()
+// for the unconfirmed other-projects pipeline).

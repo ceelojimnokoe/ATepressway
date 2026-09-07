@@ -277,7 +277,12 @@ const clientFaqs: readonly Faq[] = [
     answer: (
       <>
         <p>
-          This ambitious project is Ghana&rsquo;s first road PPP and provides a structure that gives
+          {/* "toll" added 7 Sept 2026 — the "PPP" abbreviation variant of the
+              "Ghana's first road public-private partnership" phrase, missed
+              by the previous two sweeps (which matched "PPP Project" and
+              "public–private partnership" but not bare "PPP" following
+              "road"). */}
+          This ambitious project is Ghana&rsquo;s first toll road PPP and provides a structure that gives
           the Ghanaian people a significant stake in the Project. The PPP structure will provide
           accountability and private sector participation in this significant road infrastructure.
           The Project presents a secure investment opportunity for institutions and investors seeking
