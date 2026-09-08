@@ -1183,13 +1183,13 @@ export const epcPersonnel: readonly OrgPerson[] = [
     // Photo replaced 7 Sept 2026 — image extraction only, from "Ing Ben
     // Sackey (Profile).docx" (public/info/); his bio below is untouched
     // (last revised 3 Sept 2026, see note below) per client instruction.
-    // Extracted via the docx zipfile technique: word/media/image7.png was
-    // the only genuine photo among the file's embedded media (the rest were
-    // template icons, e.g. an envelope glyph) — visually confirmed as the
-    // same person as the previous photo, same office setting, just an
-    // uncropped/higher-resolution version of it.
+    // Swapped again 8 Sept 2026 (client instruction) to bsackey.png — the
+    // same document's smaller passport-style headshot (191×233, positioned
+    // later in the doc near what appears to be an embedded-object thumbnail)
+    // rather than the larger informal office photo (image7.png) used the
+    // day before; client's own choice of the more traditional portrait.
     photo: {
-      src: "/images/ben-sackey-updated.jpg",
+      src: "/images/bsackey.png",
       alt: "Portrait of Ing. Benjamin Sackey, Project Manager at Maripoma Enterprise Limited",
     },
     initials: "BS",
