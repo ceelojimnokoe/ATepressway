@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { PageHero } from "@/components/ui/page-hero";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
+import { BoardMemberCard } from "@/components/stakeholders/board-member-card";
 import { mediaRegistry } from "@/content/media";
-import { organization } from "@/content/project";
+import { organization, boardMembers } from "@/content/project";
 import {
   aboutIntro,
   // visionMission intentionally not imported — its section is hidden below,
@@ -67,6 +68,34 @@ export default function AboutPage() {
           src/content/about.ts (`visionMission`) untouched; only the render
           is removed. Restore this section (and the `visionMission` import
           above) once the client supplies final copy. */}
+
+      {/* Board of Directors — MOVED from /stakeholders, not duplicated
+          (client instruction, 9 Sept 2026): reads `boardMembers` straight
+          from content/project.ts, the exact same array and BoardMemberCard
+          treatment (name, title, photo — no bio) /stakeholders used to
+          render inline for ATEL's entry. That entry now links here instead
+          — see the "View Board of Directors" CtaLink on StakeholderOrg. A
+          future name or photo correction is still a one-line edit to that
+          one array, read by both pages. `id` + `scroll-mt-24` match the
+          Progress page's anchor-target pattern (see "this-month-and-next")
+          so the jump from Stakeholders lands clear of the sticky header. */}
+      <section id="board-of-directors" className="scroll-mt-24 border-b border-hairline bg-surface-raised">
+        <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-heading-4 text-fg">Board of Directors</h2>
+            <p className="max-w-3xl text-small text-fg-faint">
+              The Board of Directors of A.T. Expressway Ltd.
+            </p>
+          </div>
+          <ul className="grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+            {boardMembers.map((member) => (
+              <li key={member.name}>
+                <BoardMemberCard member={member} />
+              </li>
+            ))}
+          </ul>
+        </ViewportReveal>
+      </section>
 
       {/* Approach */}
       <section className="border-b border-hairline bg-surface">

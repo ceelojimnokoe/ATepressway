@@ -3,6 +3,7 @@ import { mediaRegistry } from "@/content/media";
 import type { OrgPerson, Stakeholder } from "@/content/project";
 import { BoardMemberCard } from "./board-member-card";
 import { TeamMemberCard } from "./team-member-card";
+import { CtaLink } from "@/components/ui/cta-link";
 
 /**
  * One roster within an organisation card — a heading plus up to two grids
@@ -72,6 +73,7 @@ export function StakeholderOrg({
   members,
   executives = [],
   membersLabel = "Represented on the ATEL Board by",
+  linkOut,
 }: {
   readonly stakeholder: Stakeholder;
   readonly members: readonly OrgPerson[];
@@ -79,6 +81,16 @@ export function StakeholderOrg({
   readonly executives?: readonly OrgPerson[];
   /** Heading for the main roster — differs per organisation. */
   readonly membersLabel?: string;
+  /**
+   * Points elsewhere instead of rendering a roster inline — used by ATEL's
+   * entry once its Board of Directors moved to /about (client instruction,
+   * 9 Sept 2026): the data still lives in one place (`boardMembers` in
+   * content/project.ts), this card just no longer renders it, and links to
+   * where it now does. Renders in the same border-t slot the roster used to
+   * occupy, so passing both `linkOut` and a non-empty `members` would show
+   * both — every current caller passes one or the other, not both.
+   */
+  readonly linkOut?: { readonly href: string; readonly label: string };
 }) {
   const logo = stakeholder.logo ? mediaRegistry[stakeholder.logo] : null;
   const nameInner = stakeholder.website ? (
@@ -118,6 +130,13 @@ export function StakeholderOrg({
 
       <Roster label="Executive leadership" people={executives} />
       <Roster label={membersLabel} people={members} />
+      {linkOut && (
+        <div className="border-t border-hairline pt-5">
+          <CtaLink href={linkOut.href} variant="secondary">
+            {linkOut.label}
+          </CtaLink>
+        </div>
+      )}
     </div>
   );
 }

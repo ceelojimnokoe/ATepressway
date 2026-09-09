@@ -5,6 +5,7 @@ import { GalleryCard } from "@/components/gallery/gallery-tile";
 import { GalleryLightbox, type LightboxImage } from "@/components/gallery/gallery-lightbox";
 import { SafeBoundary } from "@/components/gallery/safe-boundary";
 import { PageHero } from "@/components/ui/page-hero";
+import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import { buildMetadata } from "@/lib/page-metadata";
 import { routes } from "@/content/seo";
 
@@ -41,35 +42,45 @@ export default function GalleryPage() {
         subtitle="Construction photography and proposed designs from along the Accra–Tema motorway corridor by category."
       />
 
+      {/* Scroll-reveal added 9 Sept 2026 — this page was the one section on
+          the site still missing the standard ViewportReveal treatment every
+          other page already has. Wrapping the existing server-rendered
+          block (not rebuilding it) keeps every property called out below
+          intact: ViewportReveal is itself a leaf Client Component wrapper
+          (see its own doc comment) that never hides content if JS doesn't
+          run, so the filter/grid/lightbox stay exactly as isolated and
+          SSR-safe as before — this only adds the fade+rise entrance. */}
       <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-16 sm:px-8">
-        {/* Filter scope. Carries data-gallery-filter="all" by default, so with
-            JS off — or if the filter fails to hydrate — every tile is shown.
-            The client filter toggles this attribute and CSS hides the tiles
-            that don't match; the grid itself never depends on client code. */}
-        <div data-gallery-filter="all" className="flex flex-col gap-8">
-          {/* Interactive leaf — isolated so a hydration failure here can't
-              blank the grid below (a pure server-rendered sibling). */}
-          <SafeBoundary label="filter">
-            <GalleryFilter />
-          </SafeBoundary>
+        <ViewportReveal className="flex flex-col gap-8">
+          {/* Filter scope. Carries data-gallery-filter="all" by default, so with
+              JS off — or if the filter fails to hydrate — every tile is shown.
+              The client filter toggles this attribute and CSS hides the tiles
+              that don't match; the grid itself never depends on client code. */}
+          <div data-gallery-filter="all" className="flex flex-col gap-8">
+            {/* Interactive leaf — isolated so a hydration failure here can't
+                blank the grid below (a pure server-rendered sibling). */}
+            <SafeBoundary label="filter">
+              <GalleryFilter />
+            </SafeBoundary>
 
-          {/* Plain server-rendered list. Every tile carries its category for
-              the CSS filter and a data-lightbox-index the standalone lightbox
-              listens for. It does NOT depend on any client component. */}
-          <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {resolved.map(({ item }, index) => (
-              <li key={item.id} data-gallery-cat={item.category}>
-                <GalleryCard item={item} lightboxIndex={index} />
-              </li>
-            ))}
-          </ul>
+            {/* Plain server-rendered list. Every tile carries its category for
+                the CSS filter and a data-lightbox-index the standalone lightbox
+                listens for. It does NOT depend on any client component. */}
+            <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {resolved.map(({ item }, index) => (
+                <li key={item.id} data-gallery-cat={item.category}>
+                  <GalleryCard item={item} lightboxIndex={index} />
+                </li>
+              ))}
+            </ul>
 
-          {/* Standalone, isolated. If it fails to hydrate the grid is
-              untouched; it renders nothing until a tile is opened. */}
-          <SafeBoundary label="lightbox">
-            <GalleryLightbox images={lightboxImages} />
-          </SafeBoundary>
-        </div>
+            {/* Standalone, isolated. If it fails to hydrate the grid is
+                untouched; it renders nothing until a tile is opened. */}
+            <SafeBoundary label="lightbox">
+              <GalleryLightbox images={lightboxImages} />
+            </SafeBoundary>
+          </div>
+        </ViewportReveal>
       </section>
     </>
   );

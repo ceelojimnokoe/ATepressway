@@ -22,8 +22,10 @@ export const metadata: Metadata = buildMetadata(routes.stakeholders);
 
 /**
  * Delivery chain, top to bottom, paired with the key each board member's
- * `affiliation` points at. The standalone Board of Directors section has been
- * dissolved: each director now sits under the organisation they come from.
+ * `affiliation` points at (still used below by `membersFor`, for the
+ * government-oversight cross-references). ATEL's own Board of Directors no
+ * longer renders inline here at all — see the `linkOut` passed to its
+ * StakeholderOrg card below, and PEOPLE_BY_ORG's comment.
  */
 const CHAIN: readonly { readonly key: StakeholderKey | "employersRepAgent" | "epcContractor"; readonly value: (typeof stakeholders)[keyof typeof stakeholders] }[] = [
   { key: "employer", value: stakeholders.employer },
@@ -32,14 +34,6 @@ const CHAIN: readonly { readonly key: StakeholderKey | "employersRepAgent" | "ep
   { key: "employersRepAgent", value: stakeholders.employersRepAgent },
   { key: "epcContractor", value: stakeholders.epcContractor },
 ];
-
-/**
- * ATEL's directors — one merged Board of Directors list (client
- * instruction, 3 Sept 2026; previously split into a separate "Executive
- * leadership" group, now removed). `boardMembers` is already in the exact
- * order the client specified, so this is a direct pass-through.
- */
-const directors = boardMembers;
 
 /**
  * Associated Consultants' engineers, ADAPTED from the single `team` source
@@ -61,8 +55,14 @@ const consultantPeople: readonly OrgPerson[] = team.map((member) => ({
   credentials: member.credentials,
 }));
 
+/**
+ * ATEL's own Board of Directors is deliberately absent from this map: it
+ * moved to /about#board-of-directors (client instruction, 9 Sept 2026) —
+ * see CHAIN.map below, which gives the "employer" entry a `linkOut` instead
+ * of a `members` list. `boardMembers` itself is untouched and still the one
+ * shared source both pages read from (About renders it directly).
+ */
 const PEOPLE_BY_ORG: Record<string, { people: readonly OrgPerson[]; label: string }> = {
-  employer: { people: directors, label: "Board of Directors" },
   // "Project personnel" (not "Project team") — matches the EPC contractor's
   // label below now that there's no separate Project Team section for this
   // to imply a distinction from (client instruction, 3 Sept 2026).
@@ -105,6 +105,11 @@ export default function StakeholdersPage() {
                   stakeholder={value}
                   members={group?.people ?? []}
                   membersLabel={group?.label}
+                  linkOut={
+                    key === "employer"
+                      ? { href: "/about#board-of-directors", label: "View Board of Directors" }
+                      : undefined
+                  }
                 />
               );
             })}
