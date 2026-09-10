@@ -1100,6 +1100,14 @@ export const boardMembers: readonly BoardMember[] = [
     photo: {
       src: "/images/board-member4.jpeg",
       alt: "Portrait of Hon. Theresa Lardi Awuni, Board Member of A.T. Expressway Ltd.",
+      // Source carries a visible ~5.7% white border on every edge (a
+      // CapCut Ai template frame, watermark included — client instruction,
+      // 10 Sept 2026 flagged it as "some sort of frame"). Measured via a
+      // pixel scan for where the near-white margin ends; scale/origin
+      // sized to crop it out from a centred zoom, same mechanism as
+      // Gifty's crop above — border is symmetric so no directional bias
+      // needed, unlike hers.
+      crop: { scale: 1.18, origin: "50% 50%" },
     },
     initials: "TA",
   },
@@ -1133,6 +1141,15 @@ export const boardMembers: readonly BoardMember[] = [
     photo: {
       src: "/images/ishak.jpg",
       alt: "Portrait of Surv. Mallam Issah Ishak, Board Member of A.T. Expressway Ltd.",
+      // Source (600×363, wide) has a lot of plain white margin around a
+      // smaller subject rather than a decorative frame — object-cover
+      // already shows the whole person with nothing cropped, just small
+      // within the square (client instruction, 10 Sept 2026, flagged
+      // alongside Theresa/Victoria as looking "framed"). Scale/origin
+      // sized from his measured bounding box in the source (roughly
+      // 24–77% wide, 13–92% tall) so he fills the frame the way the
+      // others do.
+      crop: { scale: 1.28, origin: "50% 52%" },
     },
     initials: "MI",
   },
@@ -1143,6 +1160,9 @@ export const boardMembers: readonly BoardMember[] = [
     photo: {
       src: "/images/board-member3.jpeg",
       alt: "Portrait of Ms. Victoria Addotey, Board Member of A.T. Expressway Ltd.",
+      // Same CapCut Ai template frame as Theresa's, above — here a
+      // narrower ~4% margin on every edge (measured the same way).
+      crop: { scale: 1.12, origin: "50% 50%" },
     },
     initials: "VA",
   },
