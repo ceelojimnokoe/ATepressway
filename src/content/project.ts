@@ -169,10 +169,11 @@ export const specialistContractors: readonly Stakeholder[] = [
  * /stakeholders (above the Concessionaire). One source of truth rendered
  * by GovernmentOfGhanaBlock (src/components/stakeholders/) on both pages.
  *
- * ⚠ `paragraph` is verbatim client copy, applied without correction even
- * though it reads grammatically unusual ("Government of Ghana constructing
- * the Ghana Highway Authority through the Ministry of Roads & Highways") —
- * flagged back to the client rather than silently reworded. See report.
+ * `paragraph` was originally verbatim client copy that read grammatically
+ * unusual ("Government of Ghana constructing the Ghana Highway Authority
+ * through the Ministry of Roads & Highways") — flagged back to the client
+ * rather than silently reworded (see report, 7 Sept 2026). Resolved by
+ * client instruction, 10 Sept 2026: "constructing" → "contracting".
  *
  * `logo`/`website`/`supportingLogos`: reworked 4 Sept 2026 (client
  * instruction) to match the same name+logo layout every other
@@ -186,7 +187,7 @@ export const governmentOfGhana = {
   website: "https://www.ghana.gov.gh/",
   subtitle: "Contracting Authority",
   paragraph:
-    "Government of Ghana constructing the Ghana Highway Authority through the Ministry of Roads & Highways.",
+    "Government of Ghana contracting the Ghana Highway Authority through the Ministry of Roads & Highways.",
   logo: "coatOfArms" as MediaKey,
   supportingLogos: ["logoGha", "logoMinistryOfRoadsAndHighways"] as readonly MediaKey[],
 };
