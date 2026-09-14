@@ -1082,15 +1082,17 @@ export type StakeholderKey = "employer" | "fundingAgency" | "employersRepresenta
  */
 export const boardMembers: readonly BoardMember[] = [
   {
-    // Spelling per client instruction, 14 Sept 2026 — see the flag above.
-    name: "Mr. Samuel Kwasi Akuaku",
+    // Surname spelling per client instruction, 14 Sept 2026 — see the flag
+    // above. Title corrected "Mr." → "Ing." in a later same-day instruction
+    // — the surname itself is unchanged, so this isn't a fifth spelling.
+    name: "Ing. Samuel Kwasi Akuaku",
     role: "Board Chairman",
     isChairman: true,
     affiliation: "employer",
     // New photo per client instruction, 14 Sept 2026 (file verified to exist).
     photo: {
       src: "/images/akuaku-new.jpg",
-      alt: "Portrait of Mr. Samuel Kwasi Akuaku, Chairman, Board of Directors of A.T. Expressway Ltd.",
+      alt: "Portrait of Ing. Samuel Kwasi Akuaku, Chairman, Board of Directors of A.T. Expressway Ltd.",
     },
     initials: "SA",
   },
