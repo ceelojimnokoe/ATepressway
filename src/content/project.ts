@@ -31,6 +31,18 @@ const MPR_MAY_2026 = "MPR May 2026";
  */
 const WORK_PLAN_AUG_2026 = "Maripoma work plan, 28 August 2026";
 
+/**
+ * A correction to three of the Aug 2026 work-plan figures below (client
+ * instruction, 14 Sept 2026), NOT a new reporting period — `asOf` on those
+ * entries deliberately stays "August 2026" rather than moving to September,
+ * since this isn't a new survey. No specific underlying source document was
+ * given for the correction itself, only the date the instruction arrived;
+ * flagged in the report pending that detail. Lowercase (unlike
+ * WORK_PLAN_AUG_2026's proper noun) so it reads correctly in the Progress
+ * page's "sourced from the {source}" sentence template.
+ */
+const CLIENT_CORRECTION_SEPT_2026 = "client correction, 14 September 2026";
+
 // ---------------------------------------------------------------------------
 // Organization & stakeholders
 // ---------------------------------------------------------------------------
@@ -663,10 +675,17 @@ export const progress: Progress = {
     {
       id: "tetteh-quarshie",
       name: "Tetteh Quarshie Interchange",
-      // Reported complete (1 of 1) in the Aug 2026 work plan, up from 88% in May.
-      percentComplete: 100,
+      // ⚠ CORRECTED 14 Sept 2026 (client instruction): 100% → 70%. This was
+      // previously reported complete (1 of 1) in the Aug 2026 work plan, up
+      // from 88% in May — so this correction takes it from "fully complete"
+      // back down to 70%, a bigger reversal than a plain percentage
+      // comparison suggests. Flagged back to the client for confirmation
+      // this is intentional (a corrected baseline, revised scope, or the
+      // 100%/88% figures being wrong) rather than a transcription error —
+      // see report. NOT YET CONFIRMED AS INTENTIONAL.
+      percentComplete: 70,
       asOf: "August 2026",
-      source: WORK_PLAN_AUG_2026,
+      source: CLIENT_CORRECTION_SEPT_2026,
     },
     {
       id: "teshie-link",
@@ -678,16 +697,19 @@ export const progress: Progress = {
     {
       id: "community-18",
       name: "Community 18 Interchange",
-      percentComplete: 67.5,
+      // Corrected 14 Sept 2026 (client instruction): 67.5% → 70% — the one
+      // figure of the three that moved up, not down.
+      percentComplete: 70,
       asOf: "August 2026",
-      source: WORK_PLAN_AUG_2026,
+      source: CLIENT_CORRECTION_SEPT_2026,
     },
     {
       id: "lashibi",
       name: "Lashibi Interchange",
-      percentComplete: 37,
+      // Corrected 14 Sept 2026 (client instruction): 37% → 40%.
+      percentComplete: 40,
       asOf: "August 2026",
-      source: WORK_PLAN_AUG_2026,
+      source: CLIENT_CORRECTION_SEPT_2026,
     },
     {
       id: "footbridges",
@@ -1052,22 +1074,23 @@ export type StakeholderKey = "employer" | "fundingAgency" | "employersRepresenta
  * future distinct treatment wants them back).
  *
  * ⚠ Chairman's surname spelling: "Akuoku" (originally confirmed correct) →
- * "Akuoko" (used once since) → "Akuako" (this instruction, applied below as
- * the most recent explicit direction). Three different spellings across
- * three updates — get this confirmed once, in writing, before it changes a
- * fourth time. See report.
+ * "Akuoko" (used once since) → "Akuako" (3 Sept 2026) → "Akuaku" (client
+ * instruction, 14 Sept 2026 — applied below as the most recent explicit
+ * direction). FOUR different spellings across four updates now — the client
+ * has been told directly this should not change a fifth time without
+ * explicit, final written confirmation. See report.
  */
 export const boardMembers: readonly BoardMember[] = [
   {
-    // Spelling per client instruction, 3 Sept 2026 — see the flag above.
-    name: "Mr. Samuel Kwasi Akuako",
+    // Spelling per client instruction, 14 Sept 2026 — see the flag above.
+    name: "Mr. Samuel Kwasi Akuaku",
     role: "Board Chairman",
     isChairman: true,
     affiliation: "employer",
-    // New photo per client instruction, 3 Sept 2026 (file verified to exist).
+    // New photo per client instruction, 14 Sept 2026 (file verified to exist).
     photo: {
-      src: "/images/Akuako.jpg",
-      alt: "Portrait of Mr. Samuel Kwasi Akuako, Chairman, Board of Directors of A.T. Expressway Ltd.",
+      src: "/images/akuaku-new.jpg",
+      alt: "Portrait of Mr. Samuel Kwasi Akuaku, Chairman, Board of Directors of A.T. Expressway Ltd.",
     },
     initials: "SA",
   },
@@ -1129,28 +1152,27 @@ export const boardMembers: readonly BoardMember[] = [
     initials: "EA",
   },
   {
-    // ⚠ Named "Mallam (Issac Ishak)" in the 3 Sept 2026 instruction — the
-    // existing on-record spelling is "Issah", not "Issac". Read as
-    // identifying shorthand rather than a deliberate respelling (unlike
-    // Akuako/Louis, this one wasn't flagged with the same explicit
-    // "apply this spelling" language), so left unchanged here — but this is
-    // the same category of discrepancy. Flagged in the report; not silently
-    // decided either way.
+    // ⚠ Named "Mallam (Issac Ishak)" in the 3 Sept 2026 instruction, then
+    // "Issa/Issac Ishak" in the 14 Sept 2026 instruction (photo only) — the
+    // existing on-record spelling is "Issah", not "Issac" or "Issa". Read as
+    // identifying shorthand rather than a deliberate respelling both times
+    // (unlike Akuaku/Louis, this one has never been flagged with the same
+    // explicit "apply this spelling" language), so left unchanged here — but
+    // this is the same category of discrepancy, now sighted a third way.
+    // Flagged in the report; not silently decided either way. Photo updated
+    // 14 Sept 2026 (client instruction, file verified to exist) — bio/name
+    // untouched.
     name: "Surv. Mallam Issah Ishak",
     role: "Board Member",
     affiliation: "employer",
     photo: {
-      src: "/images/ishak.jpg",
+      // Replaced 14 Sept 2026 (client instruction) with a properly
+      // composed headshot — the subject now fills the source frame edge to
+      // edge (measured), so the earlier scale/origin crop tuned for the
+      // old 600×363 image (with its wide white margin) no longer applies
+      // and is removed rather than carried over onto a different photo.
+      src: "/images/ishak-new.jpg",
       alt: "Portrait of Surv. Mallam Issah Ishak, Board Member of A.T. Expressway Ltd.",
-      // Source (600×363, wide) has a lot of plain white margin around a
-      // smaller subject rather than a decorative frame — object-cover
-      // already shows the whole person with nothing cropped, just small
-      // within the square (client instruction, 10 Sept 2026, flagged
-      // alongside Theresa/Victoria as looking "framed"). Scale/origin
-      // sized from his measured bounding box in the source (roughly
-      // 24–77% wide, 13–92% tall) so he fills the frame the way the
-      // others do.
-      crop: { scale: 1.28, origin: "50% 52%" },
     },
     initials: "MI",
   },
@@ -1271,14 +1293,18 @@ export const epcPersonnel: readonly OrgPerson[] = [
     // background to match a normal headshot rather than leaving it a
     // transparent cutout) since the embedded image itself is not exposed as
     // a plain extractable file in a PDF the way it is in a docx's zip.
-    name: "Jihad El Zohbi",
+    // "Ing." prefix added 14 Sept 2026 (client instruction) to match the
+    // pattern used for every other engineer here (Bempong/Tetteh/Sackey/
+    // Boateng) — applied to name, alt text and the bio opening, not just
+    // this field.
+    name: "Ing. Jihad El Zohbi",
     role: "Project Engineer",
     photo: {
       src: "/images/jihad-el-zohbi.jpg",
-      alt: "Portrait of Jihad El Zohbi, Project Engineer at Maripoma Enterprise Limited",
+      alt: "Portrait of Ing. Jihad El Zohbi, Project Engineer at Maripoma Enterprise Limited",
     },
     initials: "JZ",
-    bio: "Jihad El Zohbi is a project and highway design engineer with more than 20 years of experience across highway, urban road, infrastructure and building projects in the Middle East and Ghana. He holds a Master's in Topographic Engineering from the Lebanese Canadian University and has held design and site engineering roles with contractors including Mouawad–Eddeh, BATCO and Asphalt Hamat in Lebanon. As Project Engineer for Maripoma Enterprise Limited on the Accra–Tema Motorway and Extensions Project, he coordinates road, bridge and interchange design drawings, resolves design interfaces on site and oversees quantity take-off and construction verification for the corridor.",
+    bio: "Ing. Jihad El Zohbi is a project and highway design engineer with more than 20 years of experience across highway, urban road, infrastructure and building projects in the Middle East and Ghana. He holds a Master's in Topographic Engineering from the Lebanese Canadian University and has held design and site engineering roles with contractors including Mouawad–Eddeh, BATCO and Asphalt Hamat in Lebanon. As Project Engineer for Maripoma Enterprise Limited on the Accra–Tema Motorway and Extensions Project, he coordinates road, bridge and interchange design drawings, resolves design interfaces on site and oversees quantity take-off and construction verification for the corridor.",
     credentials: [
       "MSc, Topographic Engineering — Lebanese Canadian University, 2020",
       "More than 20 years of highway design and site engineering experience",
