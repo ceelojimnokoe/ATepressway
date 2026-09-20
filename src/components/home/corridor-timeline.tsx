@@ -43,7 +43,11 @@ const milestones: readonly {
 }[] = [
   {
     date: formatLongDate(projectFacts.contractAwardDate),
-    title: "Contract awarded",
+    // "Contract awarded" → "Concession signed" (client instruction, 20 Sept
+    // 2026), also changed on /progress (milestone timeline + status facts).
+    // The `detail` below still says "was awarded" — verbatim from the 3 Sept
+    // instruction and not part of this one; flagged in the report.
+    title: "Concession signed",
     // Verbatim replacement (client instruction, 3 Sept 2026).
     detail: "The 30-year concession agreement was awarded to begin the delivery of the project",
     state: "done",

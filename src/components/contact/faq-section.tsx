@@ -5,7 +5,6 @@ import {
   sections,
   scopeOfWorks,
   stakeholders,
-  specialistContractors,
   reconstructionRationale,
   laneConfiguration,
 } from "@/content/project";
@@ -463,31 +462,41 @@ const faqs: readonly Faq[] = [
   {
     id: "disruption",
     question: "Who do I contact about property or utility disruption?",
+    // Replaced 20 Sept 2026 (client instruction): the answer now points to
+    // Associated Consultants (ACON) instead of listing the relocation
+    // specialists (Limmark/Dakal) and a "channel being finalised" note. The
+    // link text is the organisation's own name — never "click here". The URL
+    // is read from stakeholders.employersRepAgent.website (the same one the
+    // Stakeholders page links), which is the client's
+    // associatedconsultantsltd.com plus a trailing slash.
     answer: (
-      <>
-        <p>Utility relocation along the corridor is carried out by specialist contractors:</p>
-        <ul className="mt-2 flex flex-col gap-1">
-          {specialistContractors.map((c) => (
-            <li key={c.name}>
-              {c.name} — {c.role}.
-            </li>
-          ))}
-        </ul>
-        <p className="mt-2">
-          A public contact channel for the project is being finalised and will be published here
-          once confirmed. In the meantime, please use the enquiry form below.
-        </p>
-      </>
+      <p>
+        For property or utility disruption along the corridor, please contact{" "}
+        <a
+          href={stakeholders.employersRepAgent.website}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="text-fg underline decoration-hairline underline-offset-4 transition-colors hover:text-accent hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          Associated Consultants (ACON)
+          <span className="sr-only"> (opens in a new tab)</span>
+        </a>
+        , the Employer&rsquo;s Representative&rsquo;s Agent for the project.
+      </p>
     ),
   },
   {
     id: "tolls",
     question: "Will the corridor be tolled?",
+    // Replaced verbatim 20 Sept 2026 (client instruction). The old answer
+    // cited the toll-plaza count, which was withdrawn from display on 30 Aug
+    // 2026 (see CLAUDE.md) and said tolling was "not yet finalised". Note the
+    // "toll Sections 1 and 2 only" answer earlier in this file says something
+    // slightly different ("Sections 1 and 2 only" vs "portions of"); flagged.
     answer: (
       <p>
-        The works scope includes the construction of {projectFacts.tollPlazaCount} toll plazas.
-        Whether, when and how the corridor will be tolled has not yet been finalised, and no tariffs
-        or start dates have been set. This page will be updated once the arrangements are confirmed.
+        Portions of sections 1 &amp; 2 will be tolled but not the entire stretch. Section 3 will
+        not be tolled.
       </p>
     ),
   },
@@ -502,12 +511,12 @@ export function FaqSection() {
   return (
     <section className="border-b border-hairline bg-surface">
       <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
+        {/* Heading title-cased, and the "Answers drawn from the project
+            record…" line removed entirely (client instruction, 20 Sept 2026).
+            The FAQ page's hero subtitle carried the same claim and had its
+            tail removed too — see faq/page.tsx. */}
         <div className="flex flex-col gap-3">
-          <h2 className="text-heading-3 text-fg">Frequently asked questions</h2>
-          <p className="max-w-2xl text-body text-fg-muted">
-            Answers drawn from the project record. Where something has not been published, the
-            answer says so.
-          </p>
+          <h2 className="text-heading-3 text-fg">Frequently Asked Questions</h2>
         </div>
 
         <ul className="flex flex-col border-t border-hairline">

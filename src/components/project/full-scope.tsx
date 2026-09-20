@@ -15,7 +15,11 @@ import { ViewportReveal } from "@/components/motion/viewport-reveal";
 const LANES: Record<string, number> = { s1: 10, s2: 12, s3: 6 };
 const PHASE: Record<string, string> = { s1: "Phase 1 · under construction", s2: "Phase 2", s3: "Phase 2" };
 
+// `homeOnly` stats (the unconfirmed $700M) are left out: this grid renders
+// bare figures — no prefix/suffix — in a six-column row, and the figure is
+// only requested for Home's "By the numbers" (20 Sept 2026).
 const totals = sectionStatGroups.find((group) => group.id === "total");
+const totalStats = totals?.stats.filter((stat) => !stat.homeOnly) ?? [];
 
 export function FullScope() {
   return (
@@ -30,9 +34,9 @@ export function FullScope() {
           </h2>
           <p className="max-w-3xl text-body text-fg-muted">
             The project covers three connected sections between Tema Port, Accra and its
-            surrounding areas. Section 1 is being built now; Sections 2 and 3 have been designed
-            under the same contract and form the second phase, together with the long-term operation
-            and maintenance of the whole corridor.
+            surrounding areas. Section 1 (Phase 1) is being built now; Sections 2 (Phase 2 &amp; 3)
+            and 3 have been designed under the same contract and form the second phase, together
+            with the long-term operation and maintenance of the whole corridor.
           </p>
         </div>
 
@@ -69,7 +73,7 @@ export function FullScope() {
               Across the whole corridor
             </span>
             <dl className="grid grid-cols-2 gap-px border border-hairline bg-hairline sm:grid-cols-3 lg:grid-cols-6">
-              {totals.stats.map((stat) => (
+              {totalStats.map((stat) => (
                 <div key={stat.label} className="flex flex-col gap-1 bg-surface p-5">
                   <dd className="flex items-baseline gap-1">
                     <Figure

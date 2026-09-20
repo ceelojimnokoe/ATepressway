@@ -98,10 +98,12 @@ function HeroContent() {
       />
 
       {/* Text updated 3 Sept 2026 (client instruction) — numbers stay wired
-          to projectFacts rather than hardcoded, per site convention. */}
+          to projectFacts rather than hardcoded, per site convention.
+          "Your guide" → "Your special purpose vehicle" 20 Sept 2026 (client
+          instruction); same swap in stakeholders.employer.gloss. */}
       <Reveal direction="up" distance={16} delay={0.5} className="max-w-2xl">
         <p className="text-lead text-fg">
-          Your guide for the design, finance, and operation of the {projectFacts.corridorLengthKm}{" "}
+          Your special purpose vehicle for the design, finance, and operation of the {projectFacts.corridorLengthKm}{" "}
           km corridor length, including the {projectFacts.section1LengthKm} km Section 1 currently
           under construction.
         </p>

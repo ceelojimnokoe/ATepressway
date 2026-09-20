@@ -5,7 +5,11 @@ import { TextReveal } from "@/components/motion/text-reveal";
 import { Reveal } from "@/components/motion/reveal";
 
 const workPackages = isPlaceholder(progress.workPackages) ? [] : progress.workPackages;
-const source = isPlaceholder(progress.signOffSource) ? null : progress.signOffSource;
+// The interchange bars' own source (as /progress does), NOT the overall 52%'s
+// signOffSource: all four bars are now client corrections (14 and 20 Sept
+// 2026), so "reflect the Progress meeting, 28 August 2026" would misattribute
+// them. Changed 20 Sept 2026 alongside the Teshie Link correction.
+const source = workPackages[0]?.source ?? null;
 
 /**
  * Interchange progress from the May 2026 report: each bar fills from zero

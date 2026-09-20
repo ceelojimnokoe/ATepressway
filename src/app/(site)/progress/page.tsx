@@ -5,6 +5,7 @@ import { AnimatedFigure } from "@/components/ui/animated-figure";
 import { StructureProgress } from "@/components/progress/structure-progress";
 import { MilestoneTimeline } from "@/components/progress/milestone-timeline";
 import { BulletinFeed } from "@/components/progress/bulletin-feed";
+import { ProgressHistory } from "@/components/progress/progress-history";
 import Image from "next/image";
 import {
   projectFacts,
@@ -12,6 +13,7 @@ import {
   interchanges,
   activityHighlights,
   latestMonthlyUpdate,
+  progressHistory,
 } from "@/content/project";
 import { mediaRegistry } from "@/content/media";
 import { structureDesignImages } from "@/content/structure-media";
@@ -35,7 +37,10 @@ const overallPct = isPlaceholder(progress.overallPercentComplete) ? 46 : progres
 const workPackages = isPlaceholder(progress.workPackages) ? [] : progress.workPackages;
 
 const statusFacts = [
-  { label: "Awarded", value: formatLongDate(projectFacts.contractAwardDate) },
+  // Was "Awarded" — the same milestone and date as the timeline's "Contract
+  // awarded", so renamed with it (20 Sept 2026). A judgment call: the client
+  // named "Contract Awarded", not this label; flagged in the report.
+  { label: "Concession signed", value: formatLongDate(projectFacts.contractAwardDate) },
   { label: "Construction commenced", value: formatLongDate(projectFacts.commencementDate) },
   { label: "Scheduled completion", value: formatLongDate(projectFacts.scheduledCompletionDate) },
   { label: "Contract duration", value: `${formatThousands(projectFacts.contractDurationDays)} days` },
@@ -264,16 +269,23 @@ export default function ProgressPage() {
         </ViewportReveal>
       </section>
 
-      {/* This month / next month. The work-plan sheets are deliberately kept on
-          the PLANNED side — they describe September's programme, not work already
-          done, and must never be presented as completed-work imagery. */}
+      {/* This month / next month. (The work-plan sheets that used to sit on the
+          PLANNED side were removed from this section on 20 Sept 2026 — see the
+          note below. They must never be presented as completed-work imagery.) */}
       {latestMonthlyUpdate && (
         // id + scroll-mt-24 so the Updates popup's "This month and next" link
         // lands below the sticky header, not underneath it (client
         // instruction, 4 Sept 2026).
         <section id="this-month-and-next" className="scroll-mt-24 border-b border-hairline bg-surface">
           <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
-            <h2 className="text-heading-4 text-fg">This month and next</h2>
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <h2 className="text-heading-4 text-fg">This month and next</h2>
+              {/* "Previous progress" history (client instruction, 20 Sept
+                  2026): a button opening a dialog, fed by progressHistory —
+                  derived from the same monthlyUpdates array this section
+                  reads, so a new month updates both. */}
+              <ProgressHistory entries={progressHistory} />
+            </div>
             <div className="grid gap-10 lg:grid-cols-2">
               <div className="flex flex-col gap-4">
                 <h3 className="text-body text-fg">Completed in {latestMonthlyUpdate.month}</h3>
@@ -323,33 +335,14 @@ export default function ProgressPage() {
                     </li>
                   ))}
                 </ul>
-                {latestMonthlyUpdate.plannedImages && (
-                  <div className="mt-1 flex flex-col gap-2">
-                    <span className="text-caption text-fg-faint tracking-wide uppercase">
-                      Contractor work plan
-                    </span>
-                    <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-                      {latestMonthlyUpdate.plannedImages.map((key) => {
-                        const asset = mediaRegistry[key];
-                        return (
-                          <li
-                            key={key}
-                            className="relative aspect-[16/9] overflow-hidden border border-hairline bg-surface-sunk"
-                          >
-                            <Image
-                              src={asset.src}
-                              alt={asset.alt}
-                              fill
-                              sizes="(min-width: 640px) 22vw, 90vw"
-                              loading="lazy"
-                              className="object-cover"
-                            />
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                )}
+                {/* "Contractor work plan" subsection and its two work-plan
+                    sheet images REMOVED from the render (client instruction,
+                    20 Sept 2026). Deliberately NOT deleted from the data:
+                    `plannedImages` on the August entry in monthlyUpdates
+                    (content/project.ts) and the workPlanSep2026PageOne/Two
+                    entries in the media registry are untouched, pending the
+                    client's answer on whether they stay registered — see the
+                    report. Nothing renders `plannedImages` now. */}
               </div>
             </div>
           </ViewportReveal>

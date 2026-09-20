@@ -24,9 +24,14 @@ const identityImage = mediaRegistry.progUnderpassKm16105A;
 export default function AboutPage() {
   return (
     <>
+      {/* Hero image → about-us-img.jpg (client instruction, 20 Sept 2026; was
+          atelJunctionRoundabout). A generic meeting-room photo, not project
+          imagery. It is very bright where the text sits (measured bottom-left
+          luminance ~182, vs 72 for the old photo), so the scrim goes from
+          "light" to "strong". */}
       <PageHero
-        media="atelJunctionRoundabout"
-        scrimIntensity="light"
+        media="aboutUsHero"
+        scrimIntensity="strong"
         title="About Us"
         // "toll road" added 4 Sept 2026 (client instruction) — completes the
         // broader "Ghana's first road public–private partnership" replace
@@ -141,7 +146,9 @@ export default function AboutPage() {
           CTAs) was removed outright in the same instruction, not hidden. */}
       <section className="bg-surface-raised">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-fg">Why ATMP (Accra Tema-Motorway &amp; Extensions Project)</h2>
+          {/* Question mark added and "Accra-Tema Motorway" hyphenation
+              corrected (client instruction, 20 Sept 2026). */}
+          <h2 className="text-heading-4 text-fg">Why ATMP? (Accra-Tema Motorway &amp; Extensions Project)</h2>
           {/* Independently bordered cards + a real gap (matching the Progress
               page's activity-highlights grid), not the earlier shared
               container-background "mortar line" technique — that technique

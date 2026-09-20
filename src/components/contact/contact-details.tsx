@@ -37,15 +37,27 @@ export function ContactDetails() {
           <ul className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
             {contact.social.map((entry) => (
               <li key={entry.platform} className="py-4">
-                <a
-                  href={entry.url}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="-my-1 inline-block py-1 text-body text-fg underline decoration-hairline underline-offset-4 transition-colors hover:text-accent hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                >
-                  {entry.platform}
-                  <span className="sr-only"> (opens in a new tab)</span>
-                </a>
+                {entry.url ? (
+                  <a
+                    href={entry.url}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    className="-my-1 inline-block py-1 text-body text-fg underline decoration-hairline underline-offset-4 transition-colors hover:text-accent hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  >
+                    {entry.platform}
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  </a>
+                ) : (
+                  // No URL yet: non-interactive, with the same "Coming soon"
+                  // tag as the newsletter sign-up — not a dead link.
+                  <span
+                    aria-disabled="true"
+                    className="-my-1 inline-flex cursor-not-allowed items-center gap-3 py-1 text-body text-fg-faint"
+                  >
+                    {entry.platform}
+                    <span className="border border-hairline px-2 py-0.5 text-caption">Coming soon</span>
+                  </span>
+                )}
               </li>
             ))}
           </ul>

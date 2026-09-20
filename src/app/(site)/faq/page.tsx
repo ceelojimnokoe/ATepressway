@@ -15,10 +15,15 @@ export const metadata: Metadata = buildMetadata(routes.faq);
 export default function FaqPage() {
   return (
     <>
+      {/* Hero image → progress-image11.png (client instruction, 20 Sept 2026;
+          it was `retainingWall` before). Subtitle's tail — "drawn from the
+          project record. Where something has not been published, the answer
+          says so." — removed with the identical claim in FaqSection, per the
+          same instruction to remove that wording entirely. */}
       <PageHero
-        media="retainingWall"
+        media="progressImage11"
         title="FAQ"
-        subtitle="Answers about the corridor, the works, funding, tolling and who is responsible — drawn from the project record. Where something has not been published, the answer says so."
+        subtitle="Answers about the corridor, the works, funding, tolling and who is responsible."
       />
 
       <FaqSection />

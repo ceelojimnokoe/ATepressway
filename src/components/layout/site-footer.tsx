@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { organization, contact } from "@/content/project";
 import { NewsletterSignup } from "./newsletter-signup";
-import { primaryNav } from "@/content/navigation";
+import { allNavPages } from "@/content/navigation";
 import { mediaRegistry } from "@/content/media";
 import { PlaceholderNotice } from "@/components/ui/placeholder-notice";
 import { NavLink } from "./nav-link";
@@ -42,7 +42,8 @@ export function SiteFooter() {
           <nav aria-label="Footer">
             <h2 className={COLUMN_HEADING}>Navigate</h2>
             <ul className="mt-3 flex flex-col">
-              {primaryNav.map((item) => (
+              {/* All ten pages, flat — the footer has no dropdowns. */}
+              {allNavPages.map((item) => (
                 <li key={item.href}>
                   <NavLink href={item.href} className="inline-block py-1.5 text-small">
                     {item.label}
@@ -73,15 +74,28 @@ export function SiteFooter() {
               <ul className="mt-3 flex flex-col">
                 {contact.social.map((entry) => (
                   <li key={entry.platform}>
-                    <a
-                      href={entry.url}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="inline-block py-1.5 text-small text-fg-muted underline decoration-transparent underline-offset-4 transition-colors hover:text-accent hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                    >
-                      {entry.platform}
-                      <span className="sr-only"> (opens in a new tab)</span>
-                    </a>
+                    {entry.url ? (
+                      <a
+                        href={entry.url}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        className="inline-block py-1.5 text-small text-fg-muted underline decoration-transparent underline-offset-4 transition-colors hover:text-accent hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                      >
+                        {entry.platform}
+                        <span className="sr-only"> (opens in a new tab)</span>
+                      </a>
+                    ) : (
+                      // No URL yet: a genuinely non-interactive item (a span,
+                      // not a dead link) with the same "Coming soon" tag the
+                      // newsletter sign-up uses.
+                      <span
+                        aria-disabled="true"
+                        className="inline-flex cursor-not-allowed items-center gap-2 py-1.5 text-small text-fg-faint"
+                      >
+                        {entry.platform}
+                        <span className="border border-hairline px-2 py-0.5 text-caption">Coming soon</span>
+                      </span>
+                    )}
                   </li>
                 ))}
               </ul>

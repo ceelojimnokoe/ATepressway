@@ -9,6 +9,13 @@ export interface RouteMeta {
   readonly path: string;
   readonly title: string;
   readonly description: string;
+  /**
+   * The page's copy is a provisional draft awaiting client sign-off. A draft
+   * route is left OUT of the sitemap and gets `noindex`, so search engines
+   * don't cache unapproved wording. Remove the flag when the copy is approved
+   * (see `investmentContent.status` in content/investment.ts).
+   */
+  readonly draft?: boolean;
 }
 
 /**
@@ -36,6 +43,15 @@ export const routes = {
     // "toll road" added 4 Sept 2026 (client instruction).
     description:
       "A.T. Expressway Ltd. (ATEL) is the concessionaire delivering the Accra–Tema Motorway & Extensions PPP Project — Ghana’s first toll road public–private partnership.",
+  },
+  // Added 20 Sept 2026 (client instruction). Route is /investment (short,
+  // matches the "Investment Info" nav label, no trailing "-info" noise).
+  investment: {
+    path: "/investment",
+    title: `Investment Info — ${BRAND}`,
+    description:
+      "Background on the Accra–Tema Motorway & Extensions PPP Project for parties reviewing it as an investment opportunity, and a way to register interest in receiving project and investment information.",
+    draft: true,
   },
   project: {
     path: "/project",

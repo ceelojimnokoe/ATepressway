@@ -77,8 +77,12 @@ function membersFor(key: string) {
 export default function StakeholdersPage() {
   return (
     <>
+      {/* Hero image → stakeholders-img.jpg (client instruction, 20 Sept 2026;
+          was culvertEarthworks). Generic handshake photo, not project
+          imagery. Dark in the text zone (~75), so the "light" scrim. */}
       <PageHero
-        media="culvertEarthworks"
+        media="stakeholdersHero"
+        scrimIntensity="light"
         title="Project Stakeholders"
         subtitle="The delivery structure for the Accra–Tema Motorway and Extensions Project, in order of accountability from Concessionaire to EPC contractor."
       />
@@ -127,7 +131,9 @@ export default function StakeholdersPage() {
       <section className="border-b border-hairline bg-surface">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
           <div className="flex flex-col gap-2">
-            <h2 className="text-heading-4 text-fg">Government oversight</h2>
+            {/* "Government oversight" → "Government Role" (client instruction,
+                20 Sept 2026). */}
+            <h2 className="text-heading-4 text-fg">Government Role</h2>
             <p className="max-w-3xl text-small text-fg-faint">
               Ministries with a defined role in the concession, outside the delivery chain.
             </p>

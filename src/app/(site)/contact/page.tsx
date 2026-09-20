@@ -11,9 +11,12 @@ export const metadata: Metadata = buildMetadata(routes.contact);
 export default function ContactPage() {
   return (
     <>
+      {/* Hero image → contact-us-img.jpg (client instruction, 20 Sept 2026; was
+          atelOverpassDeck). Generic desk-phone photo, not project imagery.
+          Mid-brightness in the text zone (~111, vs 43 for the old photo), so
+          the "medium" scrim rather than "light". */}
       <PageHero
-        media="atelOverpassDeck"
-        scrimIntensity="light"
+        media="contactUsHero"
         title="Contact"
         subtitle="Questions about the corridor, your route, or the works — and how to reach the concession."
       />

@@ -252,6 +252,20 @@ export const mediaRegistry = {
     onDisk: true,
     verified: true,
   },
+  // Registered 20 Sept 2026 for the FAQ page hero (client instruction). The
+  // file has been on disk since 17 Jul but was never in this registry or
+  // referenced by any page (checked git history) — so the FAQ hero was NOT
+  // already set to it. Only 1213×606: noticeably softer than the ~4400px
+  // sources the other heroes use once stretched full-bleed at desktop widths.
+  progressImage11: {
+    src: "/images/progress-image11.png",
+    alt: "Workers in hi-vis vests beside a concrete wall as a small roller compacts a red-earth base in an excavated section of the corridor",
+    width: 1213,
+    height: 606,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
   retainingWall: {
     src: "/images/progress-image12.png",
     alt: "Night-time view of a long reinforcement cage for a retaining wall along an excavated section of the corridor",
@@ -486,6 +500,54 @@ export const mediaRegistry = {
     width: 500,
     height: 200,
     kind: "logo",
+    onDisk: true,
+    verified: true,
+  },
+
+  // --- Page-hero photography, 20 Sept 2026 (client-supplied) ---------------
+  // Generic office / business photography, NOT project imagery: none of it
+  // shows the corridor, the works or ATEL's people. It is registered only to
+  // serve as page-hero banners (client instruction) and must never be used as
+  // evidence of construction or in the Gallery — CLAUDE.md: stock assets are
+  // "never presented as project imagery". Alt text says what is actually in
+  // each photo rather than implying a project subject. Scrim tiers on the
+  // pages that use them were chosen from each photo's measured bottom-left
+  // luminance (about 182 → strong, 111 → medium, 106 → medium, 75 → light),
+  // against the existing heroes' calibration (≤ ~100 light, ~110–140 medium,
+  // ≥ ~170 strong).
+  aboutUsHero: {
+    src: "/images/about-us-img.jpg",
+    alt: "A bright, empty meeting room with a long white table, black mesh chairs, a pendant light and a wall-mounted screen",
+    width: 1920,
+    height: 1280,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  stakeholdersHero: {
+    src: "/images/stakeholders-img.jpg",
+    alt: "A close-up of two people shaking hands in an office, one in a blue shirt and one in a pale grey shirt",
+    width: 1920,
+    height: 1282,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  contactUsHero: {
+    src: "/images/contact-us-img.jpg",
+    alt: "A black desk telephone with a coiled cord on an office desk, with a computer monitor blurred behind it",
+    width: 1920,
+    height: 1280,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  investmentHero: {
+    src: "/images/investment.jpg",
+    alt: "A person in a navy pinstripe suit adjusting their tie, wearing a wristwatch with a brown leather strap",
+    width: 1920,
+    height: 1280,
+    kind: "photo",
     onDisk: true,
     verified: true,
   },

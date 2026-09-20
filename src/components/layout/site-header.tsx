@@ -5,9 +5,9 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { organization } from "@/content/project";
 import { mediaRegistry } from "@/content/media";
-import { primaryNav } from "@/content/navigation";
 import { PageTransitionLink } from "./page-transition-link";
-import { NavLink } from "./nav-link";
+import { DesktopNav } from "./desktop-nav";
+import { MobileNavList } from "./mobile-nav-list";
 import { LatestUpdates } from "./latest-updates";
 import { useScrollPast } from "@/hooks/use-scroll-past";
 import { cn } from "@/lib/cn";
@@ -16,11 +16,13 @@ const logoMark = mediaRegistry.atelLogoMark;
 
 /**
  * Conventional sticky top navigation (replaces the earlier right-docked
- * rail). Logo left, the full link list across the top on desktop — no
- * hamburger at that width. Opaque light surface at all times with a bottom
- * hairline; on scroll it gains a shadow for separation from content, since
- * it no longer sits over a dark hero. Below md it collapses to a plain
- * hamburger that toggles a simple slide-down list.
+ * rail). Logo left, the link list across the top on desktop (DesktopNav —
+ * seven items, three of them with dropdowns) — no hamburger at that width.
+ * Opaque light surface at all times with a bottom hairline; on scroll it
+ * gains a shadow for separation from content, since it no longer sits over a
+ * dark hero. Below lg it collapses to a plain hamburger that toggles a simple
+ * slide-down list (MobileNavList, whose dropdown parents expand inline).
+ * Sticky behaviour is unchanged by the 20 Sept 2026 nav restructure.
  */
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -69,21 +71,7 @@ export function SiteHeader() {
           </span>
         </PageTransitionLink>
 
-        <nav aria-label="Primary" className="hidden lg:block">
-          <ul className="flex items-center gap-5 xl:gap-6">
-            {primaryNav.map((item) => (
-              <li key={item.href}>
-                <NavLink
-                  href={item.href}
-                  className="text-small font-medium"
-                  inactiveClass="text-fg-muted hover:text-accent"
-                >
-                  {item.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </nav>
+        <DesktopNav />
 
         <div className="flex items-center gap-3">
           <LatestUpdates />
@@ -120,25 +108,15 @@ export function SiteHeader() {
       </div>
 
       {menuOpen && (
+        // max-h + overflow: the menu is longer now that groups can expand, and
+        // the header is sticky, so on a short viewport (a phone in landscape)
+        // it must scroll inside itself rather than run off the screen.
         <nav
           id="mobile-menu"
           aria-label="Primary"
-          className="border-t border-hairline bg-surface-raised lg:hidden"
+          className="max-h-[calc(100dvh-4.5rem)] overflow-y-auto overscroll-contain border-t border-hairline bg-surface-raised lg:hidden"
         >
-          <ul className="mx-auto flex w-full max-w-5xl flex-col px-4 py-2 sm:px-8">
-            {primaryNav.map((item) => (
-              <li key={item.href} className="border-b border-hairline last:border-b-0">
-                <NavLink
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="block py-3 text-body font-medium"
-                  inactiveClass="text-fg hover:text-accent"
-                >
-                  {item.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
+          <MobileNavList onNavigate={() => setMenuOpen(false)} />
         </nav>
       )}
     </header>

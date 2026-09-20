@@ -29,7 +29,9 @@ function buildMilestones(): readonly Milestone[] {
   return [
     {
       date: formatLongDate(projectFacts.contractAwardDate),
-      label: "Contract awarded",
+      // "Contract awarded" → "Concession signed" (client instruction, 20 Sept
+      // 2026); same change on Home's corridor timeline and the status facts.
+      label: "Concession signed",
       state: "completed",
     },
     {

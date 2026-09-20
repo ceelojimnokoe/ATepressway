@@ -17,6 +17,9 @@ export function buildMetadata(route: RouteMeta): Metadata {
     title: route.title,
     description: route.description,
     alternates: { canonical: route.path },
+    // Draft routes (provisional copy awaiting client sign-off) must not be
+    // indexed — see RouteMeta.draft. Links may still be followed.
+    ...(route.draft ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       title: route.title,
       description: route.description,

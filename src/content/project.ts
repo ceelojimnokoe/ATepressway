@@ -32,16 +32,19 @@ const MPR_MAY_2026 = "MPR May 2026";
 const WORK_PLAN_AUG_2026 = "Maripoma work plan, 28 August 2026";
 
 /**
- * A correction to three of the Aug 2026 work-plan figures below (client
- * instruction, 14 Sept 2026), NOT a new reporting period — `asOf` on those
- * entries deliberately stays "August 2026" rather than moving to September,
- * since this isn't a new survey. No specific underlying source document was
- * given for the correction itself, only the date the instruction arrived;
- * flagged in the report pending that detail. Lowercase (unlike
- * WORK_PLAN_AUG_2026's proper noun) so it reads correctly in the Progress
- * page's "sourced from the {source}" sentence template.
+ * Corrections to the Aug 2026 work-plan figures below — Tetteh Quarshie,
+ * Community 18 and Lashibi (client instruction, 14 Sept 2026) and Teshie Link
+ * (client instruction, 20 Sept 2026) — NOT a new reporting period: `asOf` on
+ * those entries deliberately stays "August 2026" rather than moving to
+ * September, since these aren't a new survey. No specific underlying source
+ * document was given for either correction, only the dates the instructions
+ * arrived; flagged in the report pending that detail. Lowercase and plural
+ * (unlike WORK_PLAN_AUG_2026's proper noun) so it reads correctly in the
+ * Progress page's "sourced from the {source}" sentence — which takes the
+ * first work package's source and, with all four interchange figures now
+ * corrections, describes them all.
  */
-const CLIENT_CORRECTION_SEPT_2026 = "client correction, 14 September 2026";
+const CLIENT_CORRECTION_SEPT_2026 = "client corrections, 14 and 20 September 2026";
 
 // ---------------------------------------------------------------------------
 // Organization & stakeholders
@@ -83,7 +86,13 @@ const employer = {
   role: "Concessionaire",
   // Verbatim replacement (client instruction, 3 Sept 2026) — distinct from
   // the Home hero paragraph, which got its own separate wording change.
-  gloss: "Your guide to the design, financing, construction, operation, and maintenance, of the Accra-Tema Motorway and Extensions Project under a 30-year concession",
+  // "Your guide" → "Your special purpose vehicle" (client instruction, 20 Sept
+  // 2026), applied to this and the Home hero (src/components/home/hero.tsx),
+  // the only two places the phrase appears. Only those two words were
+  // swapped; the "to the design…" that follows is untouched and now reads
+  // awkwardly ("vehicle to the design") — flagged in the report, with "for"
+  // (as the hero already has it) as the suggested fix.
+  gloss: "Your special purpose vehicle to the design, financing, construction, operation, and maintenance, of the Accra-Tema Motorway and Extensions Project under a 30-year concession",
   logo: "logoAtel",
 } as const satisfies Stakeholder;
 
@@ -196,7 +205,12 @@ export const specialistContractors: readonly Stakeholder[] = [
  */
 export const governmentOfGhana = {
   title: "Government of Ghana",
-  website: "https://www.ghana.gov.gh/",
+  // Now the Ministry of Roads & Highways' site, not ghana.gov.gh (client
+  // instruction, 20 Sept 2026). One field, read by GovernmentOfGhanaBlock on
+  // both Home and /stakeholders, so both change together. The link text is
+  // still "Government of Ghana" — a label/destination mismatch flagged in
+  // the report.
+  website: "https://mrh.gov.gh",
   subtitle: "Contracting Authority",
   paragraph:
     "Government of Ghana contracting the Ghana Highway Authority through the Ministry of Roads & Highways.",
@@ -328,6 +342,17 @@ export interface SectionStat {
   readonly decimals?: number;
   readonly separator?: boolean;
   readonly label: string;
+  /**
+   * Optional line under the label — used for a qualifier that belongs to the
+   * figure, not the label, e.g. "(approx.)" on an approximated total.
+   */
+  readonly note?: string;
+  /**
+   * Render on Home's "By the numbers" only, not in Project's "Across the whole
+   * corridor" grid (which shares the Total group and renders bare figures —
+   * no prefix/suffix — in a six-column row). Set on the unconfirmed $700M.
+   */
+  readonly homeOnly?: boolean;
 }
 
 export interface SectionStatGroup {
@@ -346,7 +371,11 @@ export const sectionStatGroups: readonly SectionStatGroup[] = [
     stats: [
       { value: 19.5, decimals: 1, unit: "km", label: "Length" },
       { value: 10, label: "Lanes on completion" },
-      { value: 338.9, prefix: "US$", suffix: "M", decimals: 1, label: "Contract price before tax" },
+      // Label "Contract price before tax" → "Construction Contract Price" (client
+      // instruction, 20 Sept 2026); value unchanged. Dropping "before tax"
+      // makes this US$338.9M ambiguous against the US$393.1M incl. tax on
+      // record — flagged in the report. No "(approx.)": only the Total is.
+      { value: 338.9, prefix: "US$", suffix: "M", decimals: 1, label: "Construction Contract Price" },
       { value: 1095, separator: true, unit: "days", label: "Contract duration" },
       { value: 4, label: "Interchanges" },
       { value: 10, label: "Pedestrian crossings" },
@@ -387,10 +416,32 @@ export const sectionStatGroups: readonly SectionStatGroup[] = [
       "The full 27.7 km design scope across all three sections, delivered under a 30-year concession.",
     stats: [
       { value: 27.7, decimals: 1, unit: "km", label: "Total corridor" },
+      // BOARD-APPROVED (client, 20 Sept 2026: every change in that batch was
+      // approved by the board and is to be applied over the earlier data and
+      // documents). $700M is far from the figures on record (US$338,897,543.56
+      // before tax / US$393,121,150.53 incl. tax, May 2026 MPR) — the board's
+      // figure now governs this display, and CLAUDE.md was updated to say so.
+      // It is still an approximation (hence the "(approx.)" note), and the
+      // instruction gave no written statement of what it covers or its
+      // currency; prefix is "$" as written, whereas Section 1's is "US$". This
+      // group had no price figure before; it is ADDED, not replaced.
+      // `homeOnly` keeps it off Project's shared grid, which renders bare
+      // figures without prefix/suffix.
+      {
+        value: 700,
+        prefix: "$",
+        suffix: "M",
+        label: "Construction Contract Price",
+        note: "(approx.)",
+        homeOnly: true,
+      },
       { value: 3, label: "Sections" },
       { value: 5, label: "New interchanges" },
       { value: 2, label: "Remodelled interchanges" },
-      { value: 30, unit: "years", label: "Concession term" },
+      // Unit "year" (singular), not "years": it reads as the adjective in "30
+      // year Concession Term" (client instruction, 20 Sept 2026). Shared with
+      // Project's "Across the whole corridor" grid, so both change together.
+      { value: 30, unit: "year", label: "Concession Term" },
       { value: 2, label: "Delivery phases" },
     ],
   },
@@ -668,7 +719,11 @@ export const progress: Progress = {
   // date as the 52% overall. They are cited as WORK_PLAN_AUG_2026, not the MPR.
   overallPercentComplete: 52,
   asOf: "August 2026",
-  signOffSource: "Client meeting, 28 August 2026",
+  // "Client meeting" → "Progress meeting" (client instruction, 20 Sept 2026).
+  // Rendered as "Source: {signOffSource}" on /progress — the only place the
+  // label appears; the other "client meeting" mentions in this file are
+  // comments, not rendered text.
+  signOffSource: "Progress meeting, 28 August 2026",
   reportSeries: "Monthly Progress Report",
   sections: placeholder<readonly SectionProgress[]>("Per-section progress percentages", []),
   workPackages: [
@@ -690,9 +745,14 @@ export const progress: Progress = {
     {
       id: "teshie-link",
       name: "Teshie Link Interchange",
-      percentComplete: 74.7,
+      // Corrected 20 Sept 2026 (client instruction, board-approved): 74.7% →
+      // 70%. For the record: this file held 74.7 (the doc comment on
+      // WORK_PLAN_AUG_2026 calls it ≈74.5%) while the client's own note said
+      // "currently 74.4%" — they were reading a different source than what
+      // was published. The board's 70% governs regardless.
+      percentComplete: 70,
       asOf: "August 2026",
-      source: WORK_PLAN_AUG_2026,
+      source: CLIENT_CORRECTION_SEPT_2026,
     },
     {
       id: "community-18",
@@ -850,15 +910,89 @@ export const monthlyUpdates: readonly MonthlyUpdate[] = [
     ],
     plannedImages: ["workPlanSep2026PageOne", "workPlanSep2026PageTwo"],
   },
+  // Earlier months (added 20 Sept 2026 for the "Previous progress" history on
+  // /progress). Percentage-only: the overall figures are read straight off
+  // Maripoma's own chart of physical progress (public/images/progress-update-1
+  // .jpeg, dated 28 Aug 2026), whose data table lists every month Jan–Aug
+  // 2026 (38 · 40 · 42 · 44 · 46 · 48 · 50 · 52%). No per-month "what was
+  // completed" notes exist for these months, so `completed` stays empty and
+  // progressHistory (below) derives a single line from the series instead of
+  // inventing detail. Going forward: add each new month at the TOP of this
+  // array — the newest entry drives the page's "This month and next" section
+  // and the Updates popup, and every older one flows into the history.
+  {
+    month: "July 2026",
+    completed: [],
+    planned: [],
+    overallPct: 50,
+  },
+  {
+    month: "June 2026",
+    completed: [],
+    planned: [],
+    overallPct: 48,
+  },
   {
     month: "May 2026",
     completed: [],
     planned: [],
     overallPct: 46,
   },
+  {
+    month: "April 2026",
+    completed: [],
+    planned: [],
+    overallPct: 44,
+  },
+  {
+    month: "March 2026",
+    completed: [],
+    planned: [],
+    overallPct: 42,
+  },
+  {
+    month: "February 2026",
+    completed: [],
+    planned: [],
+    overallPct: 40,
+  },
+  {
+    month: "January 2026",
+    completed: [],
+    planned: [],
+    overallPct: 38,
+  },
 ];
 
 export const latestMonthlyUpdate: MonthlyUpdate | undefined = monthlyUpdates[0];
+
+/**
+ * One row of the "Previous progress" history, presented like release notes:
+ * date + what changed. DERIVED from `monthlyUpdates` — not a second content
+ * model — so adding a month to that array updates the page, the Updates popup
+ * and this history together.
+ */
+export interface ProgressHistoryEntry {
+  readonly month: string;
+  readonly overallPct: number;
+  /** The entry's own completed-work notes, or one line derived from the overall series. */
+  readonly changes: readonly string[];
+  /** True for the newest entry — the one the page itself already shows in full. */
+  readonly isLatest: boolean;
+}
+
+export const progressHistory: readonly ProgressHistoryEntry[] = monthlyUpdates.map((update, index) => {
+  const previous = monthlyUpdates[index + 1];
+  const derived = previous
+    ? `Overall physical progress reached ${update.overallPct}%, up from ${previous.overallPct}% in ${previous.month.split(" ")[0]}.`
+    : `Overall physical progress reported at ${update.overallPct}%.`;
+  return {
+    month: update.month,
+    overallPct: update.overallPct,
+    changes: update.completed.length > 0 ? update.completed : [derived],
+    isLatest: index === 0,
+  };
+});
 
 // ---------------------------------------------------------------------------
 // Contact
@@ -871,7 +1005,14 @@ export const latestMonthlyUpdate: MonthlyUpdate | undefined = monthlyUpdates[0];
  */
 export interface SocialLink {
   readonly platform: string;
-  readonly url: string;
+  /**
+   * Profile URL. OMIT it while the real link isn't available: the entry then
+   * renders as a disabled "Coming soon" item (see site-footer.tsx and
+   * contact-details.tsx) rather than linking to a placeholder or dead URL —
+   * the same honest treatment the newsletter sign-up gets. Add the URL later
+   * and the entry becomes a normal link with no other change.
+   */
+  readonly url?: string;
 }
 
 export interface Contact {
@@ -896,6 +1037,11 @@ export const contact: Contact = {
     { platform: "X (Twitter)", url: "https://x.com/AtExpressway" },
     { platform: "Instagram", url: "https://www.instagram.com/atexpressway/" },
     { platform: "Facebook", url: "https://www.facebook.com/profile.php?id=61573949670230" },
+    // YouTube added 20 Sept 2026 (client instruction) with NO url yet — renders
+    // disabled/"Coming soon". Placed last since no position was specified;
+    // moving it is a one-line reorder, and adding `url` is the only change
+    // needed to make it live.
+    { platform: "YouTube" },
   ],
 };
 
@@ -1187,18 +1333,29 @@ export const boardMembers: readonly BoardMember[] = [
       alt: "Portrait of Ms. Victoria Addotey, Board Member of A.T. Expressway Ltd.",
       // Same CapCut Ai template frame as Theresa's, above — here a
       // narrower ~4% margin on every edge (measured the same way).
-      crop: { scale: 1.12, origin: "50% 50%" },
+      //
+      // Reframed 20 Sept 2026 (client instruction) from head-and-chest to
+      // shoulders-upward: the lower portion is cropped off. Same
+      // scale + origin technique as Gifty's below, on the existing image (no
+      // new file). At scale 1.4 from an origin 21.5% down, the visible window
+      // is x 14.3–85.7% / y 6.1–77.6% of the 1968×1968 source — clear of the
+      // ~4% CapCut border and the watermark (top-left, y ≈ 3–6%), and about
+      // 1400 source px across for a card that shows ~260 css px (~520 at 2x),
+      // so resolution is comfortably sufficient: nothing is upscaled.
+      crop: { scale: 1.4, origin: "50% 21.5%" },
     },
     initials: "VA",
   },
   // Last (client instruction, 2 Sept 2026, reconfirmed 3 Sept 2026).
   {
-    name: "Gifty Duah-Boakye",
+    // "Ms." prefix added 20 Sept 2026 (client instruction), matching
+    // Victoria's formatting — name and alt text; initials stay "GB".
+    name: "Ms. Gifty Duah-Boakye",
     role: "Board Secretary",
     affiliation: "employer",
     photo: {
       src: "/images/board-member2.JPEG",
-      alt: "Portrait of Gifty Duah-Boakye, Board Secretary of A.T. Expressway Ltd.",
+      alt: "Portrait of Ms. Gifty Duah-Boakye, Board Secretary of A.T. Expressway Ltd.",
       // Tighter, shoulders-up crop (client instruction, 7 Sept 2026). The
       // source (1968×1968) is exactly square, same as the card's display
       // frame, so object-cover already shows it uncropped — object-position
@@ -1270,8 +1427,19 @@ export const epcPersonnel: readonly OrgPerson[] = [
     // leftover copy of Sackey's own photo — see git history for that note).
     name: "Ing. Kwaku Anim Boateng",
     role: "ESHS Expert",
+    //
+    // Brightened 20 Sept 2026 (client instruction: "too dark"). kwaku1.png is
+    // a 716×869 backlit phone snapshot whose wall is already blown to white
+    // while the face sits at ~91/255 luminance. Next's image optimizer can't
+    // apply exposure per image, so this is a ONE-TIME sharp pre-process
+    // (modulate brightness ×1.2 → face ~109/255, +20%), saved as a new file;
+    // the original is kept untouched for a one-line revert. ×1.3 was tried and
+    // rejected — it halos the head edge against the white wall. This is a
+    // modest, honest improvement, not a fix: shadow detail can't be recovered
+    // from this source, and a replacement photo from the client is the real
+    // answer. Same precedent as the Togbenou "-enhanced" file.
     photo: {
-      src: "/images/kwaku1.png",
+      src: "/images/kwaku1-brightened.jpg",
       alt: "Portrait of Ing. Kwaku Anim Boateng, ESHS Expert at Maripoma Enterprise Limited",
     },
     initials: "KB",

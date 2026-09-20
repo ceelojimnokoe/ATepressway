@@ -10,6 +10,8 @@ A public information website for **ATEL (Accra–Tema Expressway Limited)**, the
 
 The client's written Monthly Progress Report is the source of truth. It supersedes verbal confirmations, the information form, and press reports. When the MPR conflicts with anything else, the MPR wins.
 
+**Exception — board-approved changes.** Where the client states a change was approved by the board (the 14 and 20 Sept 2026 update batches), apply it over the MPR-based figures below, note the override in the content file's comments, and do not revert it on the grounds that it contradicts the MPR. The MPR figures below stay as the record of what the MPR said.
+
 Current reference: **Monthly Progress Report, May 2026** (cited per-figure as "MPR May 2026").
 
 ## Roles & attribution — read this before writing any copy
@@ -74,7 +76,7 @@ Brand is **lime `#C8F31D` + black**. The lime rule is unchanged by the light-fir
 
 ## Verified facts — per the May 2026 MPR, do not alter
 
-- **Money**: contract price **US$338,897,543.56** (before tax); total including tax **US$393,121,150.53**. Display label: **"US$338.9M contract price"**. The old "≈US$340M investment" figure is superseded — do not reintroduce it.
+- **Money**: contract price **US$338,897,543.56** (before tax); total including tax **US$393,121,150.53**. Display label: **"US$338.9M contract price"**. The old "≈US$340M investment" figure is superseded — do not reintroduce it. **Board-approved override (20 Sept 2026):** Home's "By the numbers" **Total** tab shows **$700M "Construction Contract Price"** with "(approx.)" beneath; Section 1's label there is now "Construction Contract Price" (still US$338.9M). The $700M is not derived from the MPR, and the instruction did not say what it covers or its currency; it appears on Home only.
 - Corridor: **27.7km** across **three sections**:
   - **S1** — Accra–Tema Motorway (N1), **19.5km**, Tetteh Quarshie → Tema
   - **S2** — George Bush Highway (N1), **5.7km**, Tetteh Quarshie → Apenkwa
@@ -89,20 +91,30 @@ Brand is **lime `#C8F31D` + black**. The lime rule is unchanged by the light-fir
   - **Enhancement of roadway traffic in the Lagos Avenue / Lagos Link area**
   - **Rehabilitation and widening of Liberation Road to Polo Club, with overpass**
   - Do **not** use the old "five interchanges" framing. **Fiesta Royale exists only as a design visualisation** — never present it as works scope. Neoplan does not appear in the MPR scope and was dropped from the interchange list (flagged 2026-07-16; restore only on client confirmation).
-- **Progress: 52% overall** (source string: "Client meeting, 28 August 2026"). Maripoma’s own chart (`progress-update-1.jpeg`, 28 Aug 2026) shows one continuous series — Jan 38% · May 46% · Jul 50% · Aug 52% — so the earlier 46% and 50% figures are the same series at earlier months, not competing sources. The per-structure breakdown is now the 28 Aug 2026 set (applied on client instruction, 2026-08-29), so overall and per-structure figures share a reporting date.
-- **Per-structure progress** (each sourced "Maripoma work plan, 28 August 2026"): Tetteh Quarshie **100%** · Teshie Link **74.7%** · Community 18 **67.5%** · Lashibi **37%** · Footbridges **4.45/10** · Box culverts **18.25/20** · Bridge culverts **1.3/3**. These replace the May 2026 MPR set and are on the same reporting date as the 52% overall.
+- **Progress: 52% overall** (source string: "Progress meeting, 28 August 2026" — was "Client meeting", changed 20 Sept 2026). Maripoma’s own chart (`progress-update-1.jpeg`, 28 Aug 2026) shows one continuous series — Jan 38% · May 46% · Jul 50% · Aug 52% — so the earlier 46% and 50% figures are the same series at earlier months, not competing sources. The per-structure breakdown is now the 28 Aug 2026 set (applied on client instruction, 2026-08-29), so overall and per-structure figures share a reporting date.
+- **Per-structure progress** (footbridges and culverts sourced "Maripoma work plan, 28 August 2026"): Footbridges **4.45/10** · Box culverts **18.25/20** · Bridge culverts **1.3/3**. These replace the May 2026 MPR set and are on the same reporting date as the 52% overall. **The four interchange figures are board-approved client corrections** (Tetteh Quarshie, Community 18 and Lashibi on 14 Sept 2026; Teshie Link on 20 Sept 2026): Tetteh Quarshie **70%** (was 100%) · Teshie Link **70%** (was 74.7%) · Community 18 **70%** (was 67.5%) · Lashibi **40%** (was 37%). They are corrections, not a new reporting period — `asOf` stays "August 2026" — and are sourced "client corrections, 14 and 20 September 2026" pending a specific source document.
 - **10-lane configuration**: 4 lanes reinforced concrete freeway + 6 lanes urban highway.
 - **Why reconstruction**: the existing pavement was designed for a **20-year life**. It now shows **fatigue cracking, joint failures, and pumping under wheel load**. Use this language as given — it is what makes the case credible; do not soften it into marketing copy.
 
-These figures are fixed until a newer MPR supersedes them. If other information appears to contradict them, the MPR wins — flag the conflict, don't silently overwrite.
+These figures are fixed until a newer MPR supersedes them. If other information appears to contradict them, the MPR wins — flag the conflict, don't silently overwrite — except for board-approved changes (see "Source of truth"), which are marked above.
 
 ## Media
 
 Real, client-supplied files are catalogued in `src/content/media.ts` (the registry: `src`, alt text, `sourceSlide?`, `verified`). Logo candidates enter the registry `verified: false` until the client renames/confirms them; a file whose content contradicts its filename also stays `verified: false`. Temporary stock assets live in `src/content/stock-media.ts` and are never presented as project imagery.
 
+Several page-hero banners (About Us, Stakeholders, Contact, Investment Info) are generic office/business photos, **not project imagery** (registered 20 Sept 2026 under `aboutUsHero`, `stakeholdersHero`, `contactUsHero`, `investmentHero`). They must never be used as evidence of the works or in the Gallery.
+
+## Navigation
+
+Seven top-level items — Home · About ▾ · The Project ▾ · Progress · Gallery · Stakeholders · Contact ▾ — defined once in `src/content/navigation.ts` and shared by the header (`desktop-nav.tsx`, `mobile-nav-list.tsx`) and the footer (which lists all ten pages flat). **A parent with a dropdown is always also a real link** to its own page (About → /about, The Project → /project, Contact → /contact); a separate chevron button opens the sub-items. Never make a parent menu-only. The dropdown follows the WAI-ARIA disclosure-navigation pattern (aria-expanded + aria-controls, plain links) — deliberately not `role="menu"`.
+
 ## Content process
 
-`contact.social` is an ORDERED ARRAY of `{ platform, url }` (LinkedIn first), not a fixed-key object — display order is content, and new platforms need no type change.
+`contact.social` is an ORDERED ARRAY of `{ platform, url }` (LinkedIn first), not a fixed-key object — display order is content, and new platforms need no type change. An entry with no `url` renders as a disabled "Coming soon" item (YouTube, until its link exists).
+
+**Provisional content.** `src/content/investment.ts` (the /investment page and its form copy) is a **draft pending client sign-off** — the client supplies approved copy at their next meeting. While `investmentContent.status` is `"pending-client-signoff"` the page shows a "Draft" notice and the route is `draft: true` in `content/seo.ts` (noindex, not in the sitemap). When approved copy arrives: replace the text, set `status` to `"approved"`, and remove `draft: true`. Do not treat its wording as verified — it includes return/guarantee claims that are the client's own and unchecked (see the file's header).
+
+**Investment interest form.** `POST /api/investment-interest` emails `contact.email` via Resend (`src/lib/investment-mail.ts`, plain `fetch`, no SDK). It is **off until `RESEND_API_KEY` and `INVESTMENT_MAIL_FROM` are set** (see `.env.example`) — until then the form renders disabled/"Coming soon" and the route answers 503; it never shows a success it didn't get. `/investment` is statically generated, so after adding the variables **redeploy**. Validation is server-side (`src/lib/investment-interest.ts`); spam protection is a honeypot, a minimum fill time, same-origin, a body cap and a best-effort in-memory per-IP rate limit (weak on serverless — use a shared store or the host's WAF if abuse appears).
 
 
 **No CMS.** Content updates arrive weekly by email and we deploy. The client's Monthly Progress Report arrives monthly and is authoritative (see "Source of truth"). All content lives in `src/content/` as typed TypeScript, not in a database or headless CMS.

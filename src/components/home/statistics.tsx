@@ -80,6 +80,7 @@ export function Statistics() {
                 {stat.unit && <span className="text-small text-fg-muted">{stat.unit}</span>}
               </div>
               <span className="text-caption text-fg-muted tracking-wide uppercase">{stat.label}</span>
+              {stat.note && <span className="text-caption text-fg-faint">{stat.note}</span>}
             </div>
           ))}
         </div>

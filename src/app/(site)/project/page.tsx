@@ -117,17 +117,30 @@ export default function ProjectPage() {
       {/* Why reconstruction */}
       <section className="border-b border-hairline bg-surface-raised">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
-          <div className="grid gap-8 md:grid-cols-2 md:items-start md:gap-12">
-            <div className="relative aspect-[16/9] w-full overflow-hidden border border-hairline bg-surface-sunk">
+          {/* Layout reworked 20 Sept 2026 (client instruction: "significant
+              unused vertical space at PC widths"). The old two-column grid put
+              a 16:9 image (~257px tall) beside ~814px of copy at 1440px —
+              ~557px of empty column (563px at 1024, 751px at 834). Now, from
+              `lg`: row 1 is the image beside the heading + first two
+              paragraphs (~420px, so the image is cropped to 4:3 to match
+              closely), row 2 the last two paragraphs side by side; below `lg`
+              everything is one column, in the same reading order. Only the
+              existing image and copy are used — no filler images — and the
+              source is just 1213×606, so it is kept at its old display size
+              (a full-width banner would have upscaled and softened it). The
+              two `contents` wrappers dissolve on mobile so every paragraph
+              sits in one flex column with an even gap. */}
+          <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-12 lg:gap-y-8">
+            <div className="relative mb-4 aspect-[16/9] w-full overflow-hidden border border-hairline bg-surface-sunk lg:mb-0 lg:aspect-[4/3]">
               <Image
                 src={whyImage.src}
                 alt={whyImage.alt}
                 fill
-                sizes="(min-width: 768px) 50vw, 100vw"
+                sizes="(min-width: 1024px) 480px, 100vw"
                 className="object-cover"
               />
             </div>
-            <div className="flex flex-col gap-4">
+            <div className="contents lg:flex lg:flex-col lg:gap-4">
               <h2 className="text-heading-4 text-fg">Why the motorway is being reconstructed</h2>
               {/* "toll road" added 4 Sept 2026 (client instruction) — the
                   original source of the broader site-wide replace. */}
@@ -143,6 +156,10 @@ export default function ProjectPage() {
                 serviceability with visible fatigue-cracking, joint failures and pumping under
                 wheel load and requires reconstruction.
               </p>
+            </div>
+            <div className="contents lg:col-span-2 lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-12">
+              {/* The last two paragraphs sit one row down on `lg` (see the
+                  layout note above) — reading order is unchanged. */}
               <p className="text-body text-fg-muted">
                 The project scope of the ATMP covers 27.7 km and involves an upgrade of 27.7KM of
                 the national road network in the Greater Accra Region together with the operation
@@ -174,7 +191,10 @@ export default function ProjectPage() {
       {/* Scope of work */}
       <section className="border-b border-hairline bg-surface">
         <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
-          <h2 className="text-heading-4 text-fg">Scope of work</h2>
+          {/* "Scope of Work (Section 1)" (client instruction, 20 Sept 2026,
+              where it was called the "subtitle" — read as this section's
+              heading, the only "Scope of work" on the page; flagged). */}
+          <h2 className="text-heading-4 text-fg">Scope of Work (Section 1)</h2>
           <ul className="grid grid-cols-1 gap-px border border-hairline bg-hairline sm:grid-cols-2">
             {scopeOfWorks.map((item, index) => {
               // An odd item count leaves the last row's second cell empty —

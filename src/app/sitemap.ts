@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { routes } from "@/content/seo";
+import { routes, type RouteMeta } from "@/content/seo";
 import { SITE_URL } from "@/lib/site";
 
 /**
@@ -7,11 +7,16 @@ import { SITE_URL } from "@/lib/site";
  * No lastModified: we don't track real per-page update timestamps
  * anywhere, and a uniform build-time date would falsely imply every page
  * changes together when only /progress actually updates weekly.
+ *
+ * Draft routes (provisional copy awaiting client sign-off — see
+ * RouteMeta.draft) are left out too, and carry noindex on the page itself.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  return Object.values(routes).map((route) => ({
-    url: new URL(route.path, SITE_URL).toString(),
-    changeFrequency: route.path === "/progress" ? "weekly" : "monthly",
-    priority: route.path === "/" ? 1 : 0.7,
-  }));
+  return Object.values<RouteMeta>(routes)
+    .filter((route) => !route.draft)
+    .map((route) => ({
+      url: new URL(route.path, SITE_URL).toString(),
+      changeFrequency: route.path === "/progress" ? "weekly" : "monthly",
+      priority: route.path === "/" ? 1 : 0.7,
+    }));
 }
