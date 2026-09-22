@@ -17,9 +17,13 @@ export function buildMetadata(route: RouteMeta): Metadata {
     title: route.title,
     description: route.description,
     alternates: { canonical: route.path },
-    // Draft routes (provisional copy awaiting client sign-off) must not be
-    // indexed — see RouteMeta.draft. Links may still be followed.
-    ...(route.draft ? { robots: { index: false, follow: true } } : {}),
+    // Draft routes (provisional copy awaiting client sign-off, and/or
+    // deliberately hidden pre-launch — see RouteMeta.draft) must not be
+    // indexed or have their outbound links followed: index:false alone still
+    // lets a crawler that reaches the page some other way follow links from
+    // it, and this route now has none pointing to it internally, so there is
+    // nothing for follow:true to usefully cover.
+    ...(route.draft ? { robots: { index: false, follow: false } } : {}),
     openGraph: {
       title: route.title,
       description: route.description,

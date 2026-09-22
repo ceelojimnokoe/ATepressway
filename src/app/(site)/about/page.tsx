@@ -50,7 +50,6 @@ export default function AboutPage() {
               height={logo.height}
               sizes="(min-width: 1024px) 30vw, 70vw"
               className="h-auto w-full max-w-[18rem] object-contain"
-              priority
             />
           </div>
           <div className="flex flex-col gap-4">

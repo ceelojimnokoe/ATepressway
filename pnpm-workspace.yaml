@@ -1,3 +1,16 @@
 allowBuilds:
   sharp: true
   unrs-resolver: true
+
+# Security floors for transitive dev/build-tool dependencies that pnpm
+# doesn't pick up on its own from next/eslint-config-next's own ranges
+# (pre-launch security review, 22 Sept 2026 — see `pnpm audit`). All are
+# transitive: sharp/postcss/nanoid come in via next's own image/CSS
+# pipeline, js-yaml/brace-expansion via eslint's config-loading chain.
+# Revisit when next or eslint-config-next bump past these on their own.
+overrides:
+  sharp: ">=0.35.4"
+  postcss: ">=8.5.18"
+  nanoid: ">=3.3.18"
+  js-yaml: ">=4.3.2"
+  brace-expansion: ">=5.0.9"

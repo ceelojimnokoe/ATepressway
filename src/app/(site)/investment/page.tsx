@@ -13,12 +13,26 @@ export const metadata: Metadata = buildMetadata(routes.investment);
  * Investment Info (/investment) — added 20 Sept 2026; sits under "About" in
  * the nav.
  *
- * ⚠ PROVISIONAL. All wording here comes from content/investment.ts, which is
- * a draft awaiting the client's approved copy (their next meeting). While its
- * `status` is "pending-client-signoff" the page shows a visible draft notice,
- * and the route is `draft: true` in content/seo.ts (noindex, not in the
- * sitemap). Nothing here is hardcoded — replacing the copy is a change to
- * content/investment.ts only.
+ * ⚠⚠ INTENTIONALLY HIDDEN, NOT BROKEN (pre-launch review, Stage 0, 22 Sept
+ * 2026). The client has not approved this page's wording, so at launch it
+ * must not be publicly reachable: removed from the nav (see the header
+ * comment in content/navigation.ts), noindex+nofollow, and excluded from
+ * sitemap.xml (all via `draft: true` on `routes.investment`, content/seo.ts —
+ * see buildMetadata in lib/page-metadata.ts and the filter in
+ * app/sitemap.ts). The route itself, this component, and its content are all
+ * deliberately UNTOUCHED and still work by direct URL, so the client can
+ * review it before approving. If you've landed here investigating "why does
+ * this page have no nav entry" — this is why; it is not a bug, and it is not
+ * dead code to delete. To launch it: get client sign-off on the copy (see the
+ * next paragraph), then reverse both — restore the `children` array on
+ * "About" in navigation.ts and remove `draft: true` from `routes.investment`.
+ *
+ * ⚠ SEPARATELY PROVISIONAL. All wording here comes from content/investment.ts,
+ * which is a draft awaiting the client's approved copy (their next meeting).
+ * While its `status` is "pending-client-signoff" the page shows a visible
+ * draft notice. Nothing here is hardcoded — replacing the copy is a change to
+ * content/investment.ts only. (This is a second, independent reason the page
+ * isn't live — see above for the nav/indexing side.)
  *
  * The registration form's on/off state is decided here, on the server, from
  * whether mail is configured (RESEND_API_KEY + INVESTMENT_MAIL_FROM — see

@@ -10,10 +10,16 @@ export interface RouteMeta {
   readonly title: string;
   readonly description: string;
   /**
-   * The page's copy is a provisional draft awaiting client sign-off. A draft
-   * route is left OUT of the sitemap and gets `noindex`, so search engines
-   * don't cache unapproved wording. Remove the flag when the copy is approved
-   * (see `investmentContent.status` in content/investment.ts).
+   * True for a route that must not be publicly discoverable yet — provisional
+   * copy awaiting client sign-off, and/or deliberately hidden pending launch
+   * approval (currently both, for /investment — pre-launch review Stage 0,
+   * 22 Sept 2026). A draft route is left OUT of the sitemap (app/sitemap.ts)
+   * and gets `noindex, nofollow` (lib/page-metadata.ts) — but the route
+   * itself, its page and its content are untouched and still reachable by
+   * direct URL. This flag does NOT remove nav links by itself; that's done
+   * separately in content/navigation.ts (see its header comment for
+   * /investment specifically). Remove the flag once the client approves the
+   * page and it is re-linked in the nav.
    */
   readonly draft?: boolean;
 }
@@ -46,6 +52,12 @@ export const routes = {
   },
   // Added 20 Sept 2026 (client instruction). Route is /investment (short,
   // matches the "Investment Info" nav label, no trailing "-info" noise).
+  // `draft: true` — see the doc comment on RouteMeta.draft just above, and
+  // the fuller explanation in src/app/(site)/investment/page.tsx and
+  // src/content/navigation.ts. Two independent reasons right now: the copy
+  // isn't approved, AND the page is being held out of the public site until
+  // launch even once it is — check investmentContent.status in
+  // content/investment.ts before assuming this flag is safe to remove.
   investment: {
     path: "/investment",
     title: `Investment Info — ${BRAND}`,
