@@ -204,12 +204,13 @@ export const specialistContractors: readonly Stakeholder[] = [
  * as already built.
  */
 export const governmentOfGhana = {
-  title: "Government of Ghana",
-  // Now the Ministry of Roads & Highways' site, not ghana.gov.gh (client
-  // instruction, 20 Sept 2026). One field, read by GovernmentOfGhanaBlock on
-  // both Home and /stakeholders, so both change together. The link text is
-  // still "Government of Ghana" — a label/destination mismatch flagged in
-  // the report.
+  // Entity name corrected 25 Sept 2026 (client instruction): "Government of
+  // Ghana" → "Ministry of Roads & Highways", resolving the label/destination
+  // mismatch this file used to flag here (the link was always mrh.gov.gh).
+  // `subtitle`/`website` are unchanged by this edit, as instructed. One
+  // field, read by GovernmentOfGhanaBlock on both Home and /stakeholders, so
+  // both change together.
+  title: "Ministry of Roads & Highways",
   website: "https://mrh.gov.gh",
   subtitle: "Contracting Authority",
   paragraph:
@@ -1354,16 +1355,17 @@ export const boardMembers: readonly BoardMember[] = [
     role: "Board Secretary",
     affiliation: "employer",
     photo: {
-      src: "/images/board-member2.JPEG",
+      // Replaced 25 Sept 2026 (client instruction): board-member2.JPEG →
+      // gifty-new.jpg. The old photo needed the crop below to zoom past its
+      // CapCut AI template frame/watermark and get a shoulders-up portrait
+      // out of an otherwise mostly-empty square canvas (same issue flagged
+      // on Theresa Awuni's photo, above). The new source is already a
+      // clean, tightly-framed portrait with no watermark, so that crop is
+      // dropped rather than carried over onto different-composition
+      // source — BoardMemberCard's default `object-cover object-top` in
+      // its square frame reads correctly on it as-is.
+      src: "/images/gifty-new.jpg",
       alt: "Portrait of Ms. Gifty Duah-Boakye, Board Secretary of A.T. Expressway Ltd.",
-      // Tighter, shoulders-up crop (client instruction, 7 Sept 2026). The
-      // source (1968×1968) is exactly square, same as the card's display
-      // frame, so object-cover already shows it uncropped — object-position
-      // alone can't "zoom in" without a transform. Scale + an above-centre
-      // origin biases the crop toward the head/shoulders instead of the
-      // torso. Resolution comfortably supports this; no new source file
-      // needed.
-      crop: { scale: 1.55, origin: "50% 22%" },
     },
     initials: "GB",
   },

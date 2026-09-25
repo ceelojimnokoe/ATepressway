@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { StakeholderOrg } from "@/components/stakeholders/stakeholder-org";
-import { BoardMemberCard } from "@/components/stakeholders/board-member-card";
 import { GovernmentOfGhanaBlock } from "@/components/stakeholders/government-of-ghana-block";
 import { PageHero } from "@/components/ui/page-hero";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
@@ -8,9 +7,7 @@ import {
   stakeholders,
   legalAdvisor,
   team,
-  boardMembers,
   epcPersonnel,
-  oversightBodies,
   specialistContractors,
   type OrgPerson,
   type StakeholderKey,
@@ -22,10 +19,9 @@ export const metadata: Metadata = buildMetadata(routes.stakeholders);
 
 /**
  * Delivery chain, top to bottom, paired with the key each board member's
- * `affiliation` points at (still used below by `membersFor`, for the
- * government-oversight cross-references). ATEL's own Board of Directors no
- * longer renders inline here at all — see the `linkOut` passed to its
- * StakeholderOrg card below, and PEOPLE_BY_ORG's comment.
+ * `affiliation` points at. ATEL's own Board of Directors no longer renders
+ * inline here at all — see the `linkOut` passed to its StakeholderOrg card
+ * below, and PEOPLE_BY_ORG's comment.
  */
 const CHAIN: readonly { readonly key: StakeholderKey | "employersRepAgent" | "epcContractor"; readonly value: (typeof stakeholders)[keyof typeof stakeholders] }[] = [
   { key: "employer", value: stakeholders.employer },
@@ -69,10 +65,6 @@ const PEOPLE_BY_ORG: Record<string, { people: readonly OrgPerson[]; label: strin
   employersRepAgent: { people: consultantPeople, label: "Project personnel" },
   epcContractor: { people: epcPersonnel, label: "Project personnel" },
 };
-
-function membersFor(key: string) {
-  return boardMembers.filter((member) => member.affiliation === key);
-}
 
 export default function StakeholdersPage() {
   return (
@@ -126,67 +118,33 @@ export default function StakeholdersPage() {
         </ViewportReveal>
       </section>
 
-      {/* Government bodies: real contractual roles, but not delivery-chain
-          contractors — so a lighter band rather than full chain cards. */}
+      {/* The "Government Role" section (Ministry of Roads and Highways /
+          Ministry of Finance, each with its own card + link) was removed
+          entirely here (client instruction, 25 Sept 2026) — it duplicated
+          the Ministry of Roads & Highways entry now named correctly at the
+          top of the Delivery chain above (see governmentOfGhana in
+          content/project.ts), and the Ministry of Finance's role is still
+          described in the FAQ. Specialist contractors is kept — Limmark and
+          Dakal aren't named anywhere else on the site — as its own small,
+          clearly-subordinate block rather than folded into the numbered
+          chain above, matching specialistContractors' own "always render
+          visually subordinate" doc comment in content/project.ts. */}
       <section className="border-b border-hairline bg-surface">
-        <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
+        <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 py-16 sm:px-8">
           <div className="flex flex-col gap-2">
-            {/* "Government oversight" → "Government Role" (client instruction,
-                20 Sept 2026). */}
-            <h2 className="text-heading-4 text-fg">Government Role</h2>
+            <h2 className="text-heading-4 text-fg">Specialist contractors</h2>
             <p className="max-w-3xl text-small text-fg-faint">
-              Ministries with a defined role in the concession, outside the delivery chain.
+              Engaged directly for utility relocation works along the corridor, outside the delivery
+              chain above.
             </p>
           </div>
-          <ul className="flex flex-col divide-y divide-hairline border-t border-b border-hairline">
-            {oversightBodies.map((body) => {
-              const members = membersFor(body.key);
-              return (
-                <li key={body.name} className="flex flex-col gap-4 py-5">
-                  <div className="flex flex-col gap-1.5">
-                    <span className="text-caption text-fg-faint tracking-wide uppercase">{body.role}</span>
-                    <a
-                      href={body.website}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      className="-my-1 inline-block w-fit py-1 text-body text-fg underline decoration-hairline underline-offset-4 transition-colors hover:text-accent hover:decoration-current focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                    >
-                      {body.name}
-                      <span className="sr-only"> (opens in a new tab)</span>
-                    </a>
-                    <p className="max-w-2xl text-small text-fg-muted">{body.gloss}</p>
-                  </div>
-                  {members.length > 0 && (
-                    <div className="flex flex-col gap-3">
-                      <span className="text-caption text-fg-faint tracking-wide uppercase">
-                        Represented on the ATEL Board by
-                      </span>
-                      <ul className="grid grid-cols-2 gap-5 sm:grid-cols-4">
-                        {members.map((member) => (
-                          <li key={member.name}>
-                            <BoardMemberCard member={member} />
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </li>
-              );
-            })}
+          <ul className="flex flex-col gap-1">
+            {specialistContractors.map((party) => (
+              <li key={party.name} className="text-small text-fg-muted">
+                <span className="text-fg">{party.name}</span> — {party.role.replace("Specialist Contractor — ", "")}
+              </li>
+            ))}
           </ul>
-
-          <div className="flex flex-col gap-2 pt-2">
-            <span className="text-caption text-fg-faint tracking-wide uppercase">
-              Specialist contractors
-            </span>
-            <ul className="flex flex-col gap-1">
-              {specialistContractors.map((party) => (
-                <li key={party.name} className="text-small text-fg-muted">
-                  <span className="text-fg">{party.name}</span> — {party.role.replace("Specialist Contractor — ", "")}
-                </li>
-              ))}
-            </ul>
-          </div>
         </ViewportReveal>
       </section>
     </>
