@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist_Mono, Instrument_Serif } from "next/font/google";
 import localFont from "next/font/local";
 import { SITE_URL } from "@/lib/site";
+import { routes } from "@/content/seo";
 import "@/styles/globals.css";
 
 /**
@@ -44,14 +45,23 @@ const instrumentSerif = Instrument_Serif({
   weight: "400",
 });
 
+/**
+ * `default`/`description` here are a fallback for a route that sets no
+ * metadata of its own — every real route calls buildMetadata(routes.X)
+ * (lib/page-metadata.ts), which overrides both, so in practice this only
+ * covers app/not-found.tsx and app/global-error.tsx. Read from
+ * routes.home rather than a second hardcoded copy, which had drifted to
+ * the superseded "Accra–Tema Expressway Ltd." brand form (found during
+ * the metadataBase/localhost audit, 25 Sept 2026) — BRAND in
+ * content/seo.ts is the one place that string is written now.
+ */
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Accra–Tema Expressway Ltd. | Motorway and Extensions Project",
+    default: routes.home.title,
     template: "%s",
   },
-  description:
-    "Official project information, design highlights and construction progress for the Accra–Tema Motorway and Extensions Project.",
+  description: routes.home.description,
 };
 
 export default function RootLayout({

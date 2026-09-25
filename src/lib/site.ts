@@ -1,12 +1,22 @@
 /**
  * Canonical site origin, used for metadataBase, canonical URLs, the
- * sitemap, and JSON-LD. The real production domain hasn't been
- * confirmed by the client yet — same category of unresolved fact as
- * contact email or hotline, just not one that fits the Placeholder<T>
- * pattern (this has to be a plain string at module-eval time for
- * Next's metadataBase, sitemap, and robots files, all of which run
- * outside any component tree). Set NEXT_PUBLIC_SITE_URL once the real
- * domain is confirmed; every consumer reads through here, not a
- * hardcoded string, so that's a one-line change when it lands.
+ * sitemap, robots.txt, and JSON-LD (this has to be a plain string at
+ * module-eval time for Next's metadataBase, sitemap, and robots files,
+ * all of which run outside any component tree).
+ *
+ * The domain is now live and confirmed: https://www.atexpresswayltd.com
+ * (verified 25 Sept 2026 — resolves, serves the site). That's the
+ * fallback below, not "http://localhost:3000" as it was before — the
+ * old fallback shipped to PRODUCTION (canonical, og:url, og:image,
+ * twitter:image all served as localhost:3000 on the live site) because
+ * NEXT_PUBLIC_SITE_URL was never actually set in Vercel's production
+ * environment; docs/DEPLOY.md said to set it, but nothing enforced it,
+ * so a missing env var silently downgraded every URL on the site to an
+ * unreachable one instead of failing loudly. Defaulting to the real
+ * domain instead means a missing env var now does the right thing
+ * automatically. NEXT_PUBLIC_SITE_URL still overrides this — set it to
+ * http://localhost:3000 in .env.local for local dev if you want exact
+ * local URLs, and Vercel preview deployments can set it to their own
+ * preview URL if that's ever needed.
  */
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.atexpresswayltd.com";
