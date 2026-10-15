@@ -32,19 +32,16 @@ const MPR_MAY_2026 = "MPR May 2026";
 const WORK_PLAN_AUG_2026 = "Maripoma work plan, 28 August 2026";
 
 /**
- * Corrections to the Aug 2026 work-plan figures below — Tetteh Quarshie,
- * Community 18 and Lashibi (client instruction, 14 Sept 2026) and Teshie Link
- * (client instruction, 20 Sept 2026) — NOT a new reporting period: `asOf` on
- * those entries deliberately stays "August 2026" rather than moving to
- * September, since these aren't a new survey. No specific underlying source
- * document was given for either correction, only the dates the instructions
- * arrived; flagged in the report pending that detail. Lowercase and plural
- * (unlike WORK_PLAN_AUG_2026's proper noun) so it reads correctly in the
- * Progress page's "sourced from the {source}" sentence — which takes the
- * first work package's source and, with all four interchange figures now
- * corrections, describes them all.
+ * "progress and planned work between sept and oct 2026.pdf" (public/info/) —
+ * reports September's completed work (overall 53%, four interchange totals)
+ * and October's plan. The document itself never states a day, only the
+ * month names "SEPTEMBER"/"OCTOBER"; 7 October 2026 is its PDF creation
+ * metadata, used here as the best available date since none is printed in
+ * the visible text — flagged in the report. "Progress report" (not
+ * "Progress meeting," the Aug 2026 citation's wording) because this is a
+ * written document, not a meeting.
  */
-const CLIENT_CORRECTION_SEPT_2026 = "client corrections, 14 and 20 September 2026";
+const PROGRESS_REPORT_OCT_2026 = "Progress report, 7 October 2026";
 
 // ---------------------------------------------------------------------------
 // Organization & stakeholders
@@ -705,74 +702,95 @@ export interface Progress {
  * placeholder — do not back-derive them from the per-structure figures.
  */
 export const progress: Progress = {
-  // Overall physical progress is 52% per the 28 Aug 2026 client meeting.
+  // Overall physical progress is 53% as of September 2026, per
+  // PROGRESS_REPORT_OCT_2026 — up from 52% in August, which the same
+  // document states directly, so this continues (not conflicts with) the
+  // existing series below.
   //
   // RECONCILIATION — now largely explained. Maripoma's own progress chart
   // (public/images/progress-update-1.jpeg, dated 28 Aug 2026) shows a single
   // continuous monthly series: Jan 38% · Feb 40% · Mar 42% · Apr 44% ·
-  // May 46% · Jun 48% · Jul 50% · Aug 52%. So the three figures on record
-  // (46% MPR → 50% Board → 52% now) are NOT competing sources; they are the
-  // same series read at three different months.
+  // May 46% · Jun 48% · Jul 50% · Aug 52% · Sep 53%. So the figures on
+  // record (46% MPR → 50% Board → 52% → 53% now) are NOT competing
+  // sources; they are the same series read at successive months.
   //
   // RESOLVED (client instruction, 2026-08-29): the per-structure workPackages
   // below have been updated from Maripoma’s 28 Aug 2026 work plan
   // (public/images/progress-update-7.jpeg) and now sit on the same reporting
   // date as the 52% overall. They are cited as WORK_PLAN_AUG_2026, not the MPR.
-  overallPercentComplete: 52,
-  asOf: "August 2026",
-  // "Client meeting" → "Progress meeting" (client instruction, 20 Sept 2026).
-  // Rendered as "Source: {signOffSource}" on /progress — the only place the
-  // label appears; the other "client meeting" mentions in this file are
-  // comments, not rendered text.
-  signOffSource: "Progress meeting, 28 August 2026",
+  overallPercentComplete: 53,
+  asOf: "September 2026",
+  signOffSource: PROGRESS_REPORT_OCT_2026,
   reportSeries: "Monthly Progress Report",
   sections: placeholder<readonly SectionProgress[]>("Per-section progress percentages", []),
   workPackages: [
     {
       id: "tetteh-quarshie",
       name: "Tetteh Quarshie Interchange",
-      // ⚠ CORRECTED 14 Sept 2026 (client instruction): 100% → 70%. This was
-      // previously reported complete (1 of 1) in the Aug 2026 work plan, up
-      // from 88% in May — so this correction takes it from "fully complete"
-      // back down to 70%, a bigger reversal than a plain percentage
-      // comparison suggests. Flagged back to the client for confirmation
-      // this is intentional (a corrected baseline, revised scope, or the
-      // 100%/88% figures being wrong) rather than a transcription error —
-      // see report. NOT YET CONFIRMED AS INTENTIONAL.
-      percentComplete: 70,
-      asOf: "August 2026",
-      source: CLIENT_CORRECTION_SEPT_2026,
+      // Updated from PROGRESS_REPORT_OCT_2026's September total-completion
+      // table: 70% → 95%. A large jump right after the prior 100%→70%
+      // correction (14 Sept 2026, still not confirmed as intentional per the
+      // history below) — forward, so not held per "never move backwards
+      // without confirmation," but flagged in the report given that history.
+      //
+      // ⚠ Earlier correction, 14 Sept 2026 (client instruction): 100% → 70%.
+      // This was previously reported complete (1 of 1) in the Aug 2026 work
+      // plan, up from 88% in May — so that correction took it from "fully
+      // complete" back down to 70%, a bigger reversal than a plain
+      // percentage comparison suggests, and was flagged to the client as
+      // NOT YET CONFIRMED AS INTENTIONAL. Superseded by the figure above,
+      // but kept here for the record.
+      percentComplete: 95,
+      asOf: "September 2026",
+      source: PROGRESS_REPORT_OCT_2026,
     },
     {
       id: "teshie-link",
       name: "Teshie Link Interchange",
-      // Corrected 20 Sept 2026 (client instruction, board-approved): 74.7% →
-      // 70%. For the record: this file held 74.7 (the doc comment on
-      // WORK_PLAN_AUG_2026 calls it ≈74.5%) while the client's own note said
-      // "currently 74.4%" — they were reading a different source than what
-      // was published. The board's 70% governs regardless.
-      percentComplete: 70,
-      asOf: "August 2026",
-      source: CLIENT_CORRECTION_SEPT_2026,
+      // Updated from PROGRESS_REPORT_OCT_2026's September total-completion
+      // table: 70% → 92% (forward, not held). Earlier: corrected 20 Sept
+      // 2026 (client instruction, board-approved) 74.7% → 70%; for the
+      // record, this file had held 74.7 (WORK_PLAN_AUG_2026's own comment
+      // calls it ≈74.5%) while the client's own note said "currently
+      // 74.4%" — different sources. Superseded by the figure above.
+      percentComplete: 92,
+      asOf: "September 2026",
+      source: PROGRESS_REPORT_OCT_2026,
     },
     {
       id: "community-18",
       name: "Community 18 Interchange",
-      // Corrected 14 Sept 2026 (client instruction): 67.5% → 70% — the one
-      // figure of the three that moved up, not down.
-      percentComplete: 70,
-      asOf: "August 2026",
-      source: CLIENT_CORRECTION_SEPT_2026,
+      // Updated from PROGRESS_REPORT_OCT_2026's September total-completion
+      // table: 70% → 93% (forward, not held). Earlier: corrected 14 Sept
+      // 2026 (client instruction) 67.5% → 70%. Superseded by the figure above.
+      percentComplete: 93,
+      asOf: "September 2026",
+      source: PROGRESS_REPORT_OCT_2026,
     },
     {
       id: "lashibi",
       name: "Lashibi Interchange",
-      // Corrected 14 Sept 2026 (client instruction): 37% → 40%.
+      // PROGRESS_REPORT_OCT_2026's September total-completion table also
+      // reports 40% — unchanged from the 14 Sept 2026 correction (37% → 40%)
+      // — but re-dated/re-cited to this document anyway so all four
+      // interchanges share one reporting date rather than three fresh and
+      // one a month stale. (Document spells it "Lachibi"; kept as "Lashibi"
+      // here, the site's established spelling for this same structure.)
       percentComplete: 40,
-      asOf: "August 2026",
-      source: CLIENT_CORRECTION_SEPT_2026,
+      asOf: "September 2026",
+      source: PROGRESS_REPORT_OCT_2026,
     },
     {
+      // NOT updated from PROGRESS_REPORT_OCT_2026 (15 Oct 2026 review): that
+      // document does have footbridge data, but in an incompatible shape —
+      // a per-chainage table for 7 of the 10 bridges (missing 4, 8, 9), each
+      // with three columns (% of prior work, % done in September, % planned
+      // for October) rather than this entry's single "X of 10 complete"
+      // aggregate. Turning that into a new unitsComplete/unitsTotal pair
+      // would mean guessing at the missing bridges and at how the three
+      // columns combine — not done; flagged in the report instead. Box and
+      // bridge culverts below aren't mentioned in that document at all, so
+      // they're untouched too.
       id: "footbridges",
       name: "Pedestrian footbridges",
       percentComplete: 44.5,
@@ -884,6 +902,35 @@ export interface MonthlyUpdate {
 }
 
 export const monthlyUpdates: readonly MonthlyUpdate[] = [
+  // Added 15 Oct 2026, from "progress and planned work between sept and oct
+  // 2026.pdf" (public/info/; PROGRESS_REPORT_OCT_2026 above). `completed`
+  // is a plain-language summary, not the document's own bullets — it names
+  // engineering detail (T-beams, LHS/RHS, formwork) that the client has
+  // said before is too technical for a public audience; the raw bullets
+  // are in the PDF for anyone who needs them. No completedImages/
+  // plannedImages: the document has no construction photographs, only its
+  // own two data tables rendered as images.
+  {
+    month: "September 2026",
+    completed: [
+      "Physical progress reached 53%, up from 52% in August.",
+      "Traffic diversion, footing walls and the median section completed at Lashibi Interchange (Km 16+200).",
+      "Bridge works advanced at Km 10+873 and Km 13+745.",
+      "Footbridge construction continued at Km 8+050 and Km 9+920.",
+      "Subgrade laid between Km 16+600 and 18+300, and sub-base and crushed stone laid between Km 1+000 and 5+500.",
+      "U-drain construction — 1,000 m.",
+    ],
+    // October 2026 plan, from the same document.
+    planned: [
+      "Rock filling — 70,000 m³.",
+      "Natural gravel sub-base — 3,000 m³.",
+      "Graded crushed stone sub-base and base — 2,000 m³ each.",
+      "Trapezoidal concrete drain — 2,000 m, and U-drain — 1,000 m.",
+      "T-beam installation continuing at Lashibi Interchange.",
+      "Continued footbridge construction, including new pier and piling work at Km 0+000 and Km 0+860.",
+    ],
+    overallPct: 53,
+  },
   {
     month: "August 2026",
     completed: [
@@ -1355,16 +1402,17 @@ export const boardMembers: readonly BoardMember[] = [
     role: "Board Secretary",
     affiliation: "employer",
     photo: {
-      // Replaced 25 Sept 2026 (client instruction): board-member2.JPEG →
-      // gifty-new.jpg. The old photo needed the crop below to zoom past its
-      // CapCut AI template frame/watermark and get a shoulders-up portrait
-      // out of an otherwise mostly-empty square canvas (same issue flagged
-      // on Theresa Awuni's photo, above). The new source is already a
-      // clean, tightly-framed portrait with no watermark, so that crop is
-      // dropped rather than carried over onto different-composition
-      // source — BoardMemberCard's default `object-cover object-top` in
-      // its square frame reads correctly on it as-is.
-      src: "/images/gifty-new.jpg",
+      // Replaced again 15 Oct 2026 (client instruction): gifty-new.jpg →
+      // gifty.jpg (the 25 Sept 2026 replacement for the original
+      // board-member2.JPEG — see git history for that one's own comment).
+      // gifty.jpg is 810×1080 (portrait, not square): BoardMemberCard's
+      // default `object-cover object-top` in its square frame keeps the
+      // top ~75% of the image, which comfortably clears the hairline/face
+      // and still shows shoulders — same shoulders-upward framing as
+      // before, achieved the same way (no explicit crop needed). No `crop`
+      // added; verified by screenshot, not just by inspecting the source
+      // photo — adjust object-position here if a later source needs it.
+      src: "/images/gifty.jpg",
       alt: "Portrait of Ms. Gifty Duah-Boakye, Board Secretary of A.T. Expressway Ltd.",
     },
     initials: "GB",

@@ -27,7 +27,7 @@ import {
   considerations,
   type Quantity,
 } from "@/content/report";
-import { formatLongDate, formatThousands } from "@/lib/format";
+import { formatLongDate, formatThousands, nextMonthLabel } from "@/lib/format";
 import { buildMetadata } from "@/lib/page-metadata";
 import { routes } from "@/content/seo";
 
@@ -324,7 +324,12 @@ export default function ProgressPage() {
               </div>
 
               <div className="flex flex-col gap-4">
-                <h3 className="text-body text-fg">Planned for September 2026</h3>
+                {/* Was hardcoded "Planned for September 2026" — found stale
+                    during the 15 Oct 2026 content update (the newest month
+                    was about to become September, whose OWN planned list is
+                    October's). nextMonthLabel() already existed in
+                    lib/format.ts for exactly this but was unused anywhere. */}
+                <h3 className="text-body text-fg">Planned for {nextMonthLabel(latestMonthlyUpdate.month)}</h3>
                 <ul className="flex flex-col gap-2">
                   {latestMonthlyUpdate.planned.map((entry) => (
                     <li key={entry} className="flex gap-2 text-small text-fg-muted">

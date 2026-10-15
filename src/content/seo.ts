@@ -82,8 +82,12 @@ export const routes = {
   progress: {
     path: "/progress",
     title: `Construction Progress — ${BRAND}`,
+    // "the May 2026 monthly progress report" → "the latest progress report"
+    // (found stale, 15 Oct 2026 content update — the page's own data is now
+    // well past May). Worded to not need editing again next time the source
+    // document changes.
     description:
-      "Verified construction progress for the Accra–Tema Motorway and Extensions Project, drawn from the May 2026 monthly progress report: overall status, interchanges, works in progress and recent activity.",
+      "Verified construction progress for the Accra–Tema Motorway and Extensions Project, drawn from the latest progress report: overall status, interchanges, works in progress and recent activity.",
   },
   gallery: {
     path: "/gallery",
