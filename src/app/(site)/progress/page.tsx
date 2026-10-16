@@ -5,7 +5,7 @@ import { AnimatedFigure } from "@/components/ui/animated-figure";
 import { StructureProgress } from "@/components/progress/structure-progress";
 import { MilestoneTimeline } from "@/components/progress/milestone-timeline";
 import { BulletinFeed } from "@/components/progress/bulletin-feed";
-import { ProgressHistory } from "@/components/progress/progress-history";
+import { ThisMonthAndNext } from "@/components/progress/this-month-and-next";
 import Image from "next/image";
 import {
   projectFacts,
@@ -27,7 +27,7 @@ import {
   considerations,
   type Quantity,
 } from "@/content/report";
-import { formatLongDate, formatThousands, nextMonthLabel } from "@/lib/format";
+import { formatLongDate, formatThousands } from "@/lib/format";
 import { buildMetadata } from "@/lib/page-metadata";
 import { routes } from "@/content/seo";
 
@@ -269,90 +269,9 @@ export default function ProgressPage() {
         </ViewportReveal>
       </section>
 
-      {/* This month / next month. (The work-plan sheets that used to sit on the
-          PLANNED side were removed from this section on 20 Sept 2026 — see the
-          note below. They must never be presented as completed-work imagery.) */}
-      {latestMonthlyUpdate && (
-        // id + scroll-mt-24 so the Updates popup's "This month and next" link
-        // lands below the sticky header, not underneath it (client
-        // instruction, 4 Sept 2026).
-        <section id="this-month-and-next" className="scroll-mt-24 border-b border-hairline bg-surface">
-          <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-8 px-4 py-16 sm:px-8">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <h2 className="text-heading-4 text-fg">This month and next</h2>
-              {/* "Previous progress" history (client instruction, 20 Sept
-                  2026): a button opening a dialog, fed by progressHistory —
-                  derived from the same monthlyUpdates array this section
-                  reads, so a new month updates both. */}
-              <ProgressHistory entries={progressHistory} />
-            </div>
-            <div className="grid gap-10 lg:grid-cols-2">
-              <div className="flex flex-col gap-4">
-                <h3 className="text-body text-fg">Completed in {latestMonthlyUpdate.month}</h3>
-                <ul className="flex flex-col gap-2">
-                  {latestMonthlyUpdate.completed.map((entry) => (
-                    <li key={entry} className="flex gap-2 text-small text-fg-muted">
-                      <span aria-hidden="true" className="text-accent">
-                        —
-                      </span>
-                      <span>{entry}</span>
-                    </li>
-                  ))}
-                </ul>
-                {latestMonthlyUpdate.completedImages && (
-                  <ul className="mt-1 grid grid-cols-2 gap-3">
-                    {latestMonthlyUpdate.completedImages.map((key) => {
-                      const asset = mediaRegistry[key];
-                      return (
-                        <li
-                          key={key}
-                          className="relative aspect-[16/10] overflow-hidden border border-hairline bg-surface-sunk"
-                        >
-                          <Image
-                            src={asset.src}
-                            alt={asset.alt}
-                            fill
-                            sizes="(min-width: 1024px) 22vw, 45vw"
-                            loading="lazy"
-                            className="object-cover"
-                          />
-                        </li>
-                      );
-                    })}
-                  </ul>
-                )}
-              </div>
-
-              <div className="flex flex-col gap-4">
-                {/* Was hardcoded "Planned for September 2026" — found stale
-                    during the 15 Oct 2026 content update (the newest month
-                    was about to become September, whose OWN planned list is
-                    October's). nextMonthLabel() already existed in
-                    lib/format.ts for exactly this but was unused anywhere. */}
-                <h3 className="text-body text-fg">Planned for {nextMonthLabel(latestMonthlyUpdate.month)}</h3>
-                <ul className="flex flex-col gap-2">
-                  {latestMonthlyUpdate.planned.map((entry) => (
-                    <li key={entry} className="flex gap-2 text-small text-fg-muted">
-                      <span aria-hidden="true" className="text-fg-faint">
-                        —
-                      </span>
-                      <span>{entry}</span>
-                    </li>
-                  ))}
-                </ul>
-                {/* "Contractor work plan" subsection and its two work-plan
-                    sheet images REMOVED from the render (client instruction,
-                    20 Sept 2026). Deliberately NOT deleted from the data:
-                    `plannedImages` on the August entry in monthlyUpdates
-                    (content/project.ts) and the workPlanSep2026PageOne/Two
-                    entries in the media registry are untouched, pending the
-                    client's answer on whether they stay registered — see the
-                    report. Nothing renders `plannedImages` now. */}
-              </div>
-            </div>
-          </ViewportReveal>
-        </section>
-      )}
+      {/* Extracted to its own component 16 Oct 2026 when this section grew
+          verbatim tables — see this-month-and-next.tsx. */}
+      {latestMonthlyUpdate && <ThisMonthAndNext update={latestMonthlyUpdate} history={progressHistory} />}
 
       {/* Construction considerations */}
       <section className="border-b border-hairline bg-surface">

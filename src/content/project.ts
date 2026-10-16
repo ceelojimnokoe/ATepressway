@@ -888,6 +888,21 @@ export const activityHighlights: readonly ActivityHighlight[] = [
   },
 ];
 
+/**
+ * One verbatim table reproduced from a source document — every row and
+ * column exactly as published, never summarised or recomputed. Cells are
+ * plain strings so a "-" (no data) or a value carrying its own "%" renders
+ * exactly as the source shows it, with no numeric coercion to round-trip.
+ */
+export interface MonthlyTable {
+  readonly id: string;
+  /** Accessible table name. Supplied by us when the source gives the table
+   *  no caption of its own — not itself a verbatim quote. */
+  readonly caption: string;
+  readonly columns: readonly string[];
+  readonly rows: readonly (readonly string[])[];
+}
+
 export interface MonthlyUpdate {
   /** Reporting month, e.g. "May 2026". */
   readonly month: string;
@@ -899,35 +914,117 @@ export interface MonthlyUpdate {
   readonly completedImages?: readonly MediaKey[];
   /** Imagery for the NEXT month's plan (work-plan sheets), never mixed with completed work. */
   readonly plannedImages?: readonly MediaKey[];
+  /** Verbatim tables belonging to the completed/planned sides, reproduced
+   *  in full — every row and column, never merged, recomputed or dropped. */
+  readonly completedTables?: readonly MonthlyTable[];
+  readonly plannedTables?: readonly MonthlyTable[];
+  /**
+   * The source document's own heading for its "done"/"planned" sections,
+   * e.g. "Work done for the month of September" — rendered verbatim
+   * instead of the synthesised "Completed in {month}" when present.
+   * Optional: older entries without a cited document keep that fallback.
+   */
+  readonly completedHeading?: string;
+  readonly plannedHeading?: string;
 }
 
 export const monthlyUpdates: readonly MonthlyUpdate[] = [
-  // Added 15 Oct 2026, from "progress and planned work between sept and oct
-  // 2026.pdf" (public/info/; PROGRESS_REPORT_OCT_2026 above). `completed`
-  // is a plain-language summary, not the document's own bullets — it names
-  // engineering detail (T-beams, LHS/RHS, formwork) that the client has
-  // said before is too technical for a public audience; the raw bullets
-  // are in the PDF for anyone who needs them. No completedImages/
-  // plannedImages: the document has no construction photographs, only its
-  // own two data tables rendered as images.
+  // Added 15 Oct 2026, REDONE verbatim 16 Oct 2026 (client instruction: only
+  // part of "progress and planned work between sept and oct 2026.pdf"
+  // (public/info/; PROGRESS_REPORT_OCT_2026 above) had made it onto the
+  // site, and all of it is necessary — overrides the plain-language-summary
+  // instruction for THIS document specifically). `completed`/`planned` and
+  // the two tables below are the document's own text, word for word,
+  // including its typos and one internal inconsistency — not normalised:
+  //
+  //   - The bullets spell this interchange "Lachibi" throughout; the table
+  //     spells the same interchange "Lashibi" (the site's own established,
+  //     correct spelling, used everywhere else on the site). That mismatch
+  //     is in the source document itself, reproduced exactly where it
+  //     occurs rather than silently reconciled — flagged in the report for
+  //     the client to raise with whoever supplies these documents.
+  //   - The last column of completedTables[0] reads "Total complettion" —
+  //     the document's own misspelling (an extra T), kept rather than
+  //     corrected, per "reproduce apparent typos as written."
+  //   - "T-beam" (hyphen) in the September bullets vs "T–beam" (en dash) in
+  //     the October bullets: both reproduced exactly as given.
+  //
+  // No completedImages/plannedImages: the document has no construction
+  // photographs, only its own two data tables, confirmed by rasterising
+  // both pages independently of the text extraction — nothing is missing.
   {
     month: "September 2026",
+    completedHeading: "Work done for the month of September",
     completed: [
-      "Physical progress reached 53%, up from 52% in August.",
-      "Traffic diversion, footing walls and the median section completed at Lashibi Interchange (Km 16+200).",
-      "Bridge works advanced at Km 10+873 and Km 13+745.",
-      "Footbridge construction continued at Km 8+050 and Km 9+920.",
-      "Subgrade laid between Km 16+600 and 18+300, and sub-base and crushed stone laid between Km 1+000 and 5+500.",
-      "U-drain construction — 1,000 m.",
+      "Physical progress 53%, up from 52% in August.",
+      "Traffic diversion and footing walls constructed at Lachibi Interchange (km 16+200)",
+      "T-beam installation for Bridge at km 10+873 (LHS*RHS)",
+      "Casting of surface concrete and approach slab for Bridge at km 10+873 (LHS*RHS)",
+      "Construction of piles and pier caps for Bridge at km 13+745-LHS",
+      "Formwork and reinforcement for Abutment at km 13+745 Bridge-LHS",
+      "Construction of U-shaped ramp for Footbridge No. 5 at km 8+050 – LHS",
+      "Formwork and reinforcement for Footbridge No. 7 at km 9+920 -RHS",
+      "Subgrade laid between 16+600 and 18+300",
+      "Construction of Lachibi interchange- Median section.",
+      "U-drain construction – 1000 m",
+      "Sub-base +crushed stone laid (0/40 mm- 2 layers) from 1+000 -5+500",
     ],
-    // October 2026 plan, from the same document.
+    completedTables: [
+      {
+        id: "bridge-completion-sept-2026",
+        caption: "Bridge and interchange completion, September 2026",
+        columns: [
+          "#",
+          "Bridge",
+          "Earthworks %",
+          "Structure %",
+          "Earthworks Completion",
+          "Structure Completion",
+          "Total complettion",
+        ],
+        rows: [
+          ["1", "Tetteh Quarshie", "5%", "95%", "0%", "95%", "95%"],
+          ["2", "Teshie Link", "10%", "90%", "2%", "90%", "92%"],
+          ["3", "Community 18", "10%", "90%", "3%", "90%", "93%"],
+          ["4", "Lashibi", "15%", "85%", "0%", "40%", "40%"],
+        ],
+      },
+    ],
+    plannedHeading: "Work planned for October",
     planned: [
-      "Rock filling — 70,000 m³.",
-      "Natural gravel sub-base — 3,000 m³.",
-      "Graded crushed stone sub-base and base — 2,000 m³ each.",
-      "Trapezoidal concrete drain — 2,000 m, and U-drain — 1,000 m.",
-      "T-beam installation continuing at Lashibi Interchange.",
-      "Continued footbridge construction, including new pier and piling work at Km 0+000 and Km 0+860.",
+      "Rock filling - 70,000 m³.",
+      "Natural gravel sub-base - 3,000 m³.",
+      "Graded crushed stone sub-base - 2,000 m³.",
+      "Graded Crushed Stone Base - 2,000 m³.",
+      "Trapezoidal concrete drain - 2,000 m, and U-drain - 1,000 m.",
+      "T–beam installation for Lachibi Interchange at km 16+200.",
+      "Pier construction for footbridge No. 1 at km 0+000",
+      "Piling for footbridge No. 2 at km 0+860.",
+      "Continuous work on Footbridge No. 3 at km 4+655 ( U shaped Ramp)",
+      "Continuous work on Footbridge No. 5 at km 8+050 (Stairs).",
+      "Continuous work on Footbridge No. 10 at km 18+295 (Formwork and reinforcement).",
+    ],
+    plannedTables: [
+      {
+        id: "footbridge-chainages-oct-2026",
+        caption: "Footbridge chainages — percentage complete and planned",
+        columns: [
+          "Nbr",
+          "Footbridges-Chainages",
+          "Percentage of previous completed work",
+          "Percentage done for September",
+          "Percentage planned for October",
+        ],
+        rows: [
+          ["1", "CH 0+000", "26%", "2%", "15%"],
+          ["2", "CH 0+860", "-", "5%", "10%"],
+          ["3", "CH 4+655", "3%", "2%", "10%"],
+          ["5", "CH 8+050", "35%", "40%", "15%"],
+          ["6", "CH 8+885", "45%", "50%", "10%"],
+          ["7", "CH 9+920", "52%", "10%", "-"],
+          ["10", "CH 18+295", "25%", "5%", "10%"],
+        ],
+      },
     ],
     overallPct: 53,
   },
