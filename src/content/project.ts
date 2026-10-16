@@ -937,12 +937,14 @@ export const monthlyUpdates: readonly MonthlyUpdate[] = [
   // the two tables below are the document's own text, word for word,
   // including its typos and one internal inconsistency — not normalised:
   //
-  //   - The bullets spell this interchange "Lachibi" throughout; the table
-  //     spells the same interchange "Lashibi" (the site's own established,
+  //   - The bullets spelled this interchange "Lachibi" in three places; the
+  //     table already spells it "Lashibi" (the site's own established,
   //     correct spelling, used everywhere else on the site). That mismatch
-  //     is in the source document itself, reproduced exactly where it
-  //     occurs rather than silently reconciled — flagged in the report for
-  //     the client to raise with whoever supplies these documents.
+  //     was in the source document itself. CORRECTED 16 Oct 2026 (client
+  //     instruction) in one of the three bullets — "Construction of ...
+  //     Median section." — left as "Lachibi" in the other two per the same
+  //     instruction ("only make this fix, leave everything else the way it
+  //     is"), so this is now a deliberately partial, not a full, correction.
   //   - The last column of completedTables[0] reads "Total complettion" —
   //     the document's own misspelling (an extra T), kept rather than
   //     corrected, per "reproduce apparent typos as written."
@@ -965,7 +967,7 @@ export const monthlyUpdates: readonly MonthlyUpdate[] = [
       "Construction of U-shaped ramp for Footbridge No. 5 at km 8+050 – LHS",
       "Formwork and reinforcement for Footbridge No. 7 at km 9+920 -RHS",
       "Subgrade laid between 16+600 and 18+300",
-      "Construction of Lachibi interchange- Median section.",
+      "Construction of Lashibi interchange- Median section.",
       "U-drain construction – 1000 m",
       "Sub-base +crushed stone laid (0/40 mm- 2 layers) from 1+000 -5+500",
     ],
