@@ -217,6 +217,58 @@ export const governmentOfGhana = {
 };
 
 /**
+ * Office-holder records for the Contracting Authority entry (client
+ * instruction, 21 Oct 2026) — added 21 Oct 2026. These are POSTS, not
+ * permanent facts: whoever holds the Presidency, the Finance portfolio and
+ * the Roads & Highways portfolio changes after an election or a reshuffle,
+ * so update the three entries below in one place when that happens — the
+ * rest of the site (and the Ministry link itself) doesn't need to change.
+ * Order is the client's own: Head of State first, then the two ministers.
+ * `OrgPerson`-shaped so GovernmentOfGhanaBlock can reuse StakeholderOrg's
+ * existing Roster — the same thin, photo/name/role-only card every board
+ * member uses, no bio field set. Photos are local files in public/images/,
+ * matched by surname; see the pre-launch report for the match confidence
+ * and crop notes on each.
+ */
+export const contractingAuthorityOfficeHolders: readonly OrgPerson[] = [
+  {
+    name: "John Dramani Mahama",
+    role: "His Excellency the President of the Republic of Ghana",
+    photo: {
+      src: "/images/John Dramani Mahama .png",
+      alt: "Portrait of John Dramani Mahama, President of the Republic of Ghana",
+    },
+    initials: "JM",
+  },
+  {
+    name: "Hon. Dr. Cassiel Ato Forson (MP)",
+    role: "Minister for Finance",
+    photo: {
+      src: "/images/Hon. Dr. Cassiel Ato Forson (MP).png",
+      alt: "Portrait of Hon. Dr. Cassiel Ato Forson, Minister for Finance",
+    },
+    initials: "AF",
+  },
+  {
+    name: "Hon. Kwame Governs Agbodza (MP)",
+    role: "Minister for Roads & Highways",
+    photo: {
+      src: "/images/Hon. Kwame Agbodza Governs (MP).png",
+      alt: "Portrait of Hon. Kwame Governs Agbodza, Minister for Roads & Highways",
+      // Source photo is landscape (729×421, not portrait/square like the
+      // other two) with the subject left-of-centre and a lot of empty
+      // background to the right. Default object-cover/object-top would
+      // centre the CROP on the image, not on the face, so the face would
+      // sit off-centre in the square card. Scale + a left/upper-biased
+      // origin pulls the crop toward where the face actually is — checked
+      // by screenshot, not just by eye on the source file.
+      crop: { scale: 1.35, origin: "32% 25%" },
+    },
+    initials: "KA",
+  },
+];
+
+/**
  * Website / brand identity. As of the 28 Aug 2026 client meeting the site uses
  * ONE name form everywhere — "A.T. Expressway Ltd." — matching the client's own
  * source documents (the Website Text Corrections doc and the FAQ pack both use

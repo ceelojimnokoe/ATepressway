@@ -553,6 +553,22 @@ export const mediaRegistry = {
   },
 
   // --- Progress photography, 28 August 2026 (client-supplied, captioned by chainage) ---
+  // Added 21 Oct 2026 (client instruction) as the Home hero slider's new
+  // first slide. Aerial/drone photo; which named interchange this is
+  // wasn't confirmed, so the alt text describes what's shown rather than
+  // naming a specific structure. 1080×602 — notably smaller than the other
+  // four hero photos (1380–4184px wide); next/image will still serve it
+  // correctly at every width (no upscaling, no error), it just won't be as
+  // crisp as the other slides on very large/high-DPI displays.
+  headerImage: {
+    src: "/images/header-image.jpg",
+    alt: "Aerial view of a completed flyover interchange along the Accra–Tema Motorway corridor",
+    width: 1080,
+    height: 602,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
   progAshaiman: {
     src: "/images/progress-ashaiman.jpeg",
     alt: "Earthworks and construction activity at Ashaiman along the Section 1 corridor",

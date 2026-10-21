@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { mediaRegistry } from "@/content/media";
-import { governmentOfGhana } from "@/content/project";
+import { governmentOfGhana, contractingAuthorityOfficeHolders } from "@/content/project";
+import { Roster } from "./stakeholder-org";
 
 /**
  * The Government of Ghana entry — one shared block rendered identically on
@@ -10,8 +11,20 @@ import { governmentOfGhana } from "@/content/project";
  * logo) matches StakeholderOrg's own name+logo layout exactly (client
  * instruction, 4 Sept 2026) — same position, same link styling — so this
  * reads as one more entry in the same visual language, not a one-off.
+ *
+ * `showOfficeHolders` (client instruction, 21 Oct 2026) adds the three
+ * current office-holder cards (President, Finance Minister, Roads &
+ * Highways Minister — content/project.ts, contractingAuthorityOfficeHolders)
+ * via the SAME Roster StakeholderOrg uses for every other organisation's
+ * people, so this looks native rather than a one-off addition. Defaults to
+ * false/unset so Home — which renders this block with no props — is
+ * unaffected; only /stakeholders passes it.
  */
-export function GovernmentOfGhanaBlock() {
+export function GovernmentOfGhanaBlock({
+  showOfficeHolders = false,
+}: {
+  readonly showOfficeHolders?: boolean;
+} = {}) {
   const logo = mediaRegistry[governmentOfGhana.logo];
   const supportingLogos = governmentOfGhana.supportingLogos.map((key) => mediaRegistry[key]);
 
@@ -60,6 +73,10 @@ export function GovernmentOfGhanaBlock() {
             </div>
           ))}
         </div>
+      )}
+
+      {showOfficeHolders && (
+        <Roster label="Government office holders" people={contractingAuthorityOfficeHolders} />
       )}
     </div>
   );

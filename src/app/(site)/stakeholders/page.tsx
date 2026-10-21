@@ -92,7 +92,7 @@ export default function StakeholdersPage() {
             {/* First in the chain, above the Concessionaire (client
                 instruction, 3 Sept 2026) — same shared block as Home's
                 "08 — Delivery" section. */}
-            <GovernmentOfGhanaBlock />
+            <GovernmentOfGhanaBlock showOfficeHolders />
             {CHAIN.map(({ key, value }) => {
               const group = PEOPLE_BY_ORG[key];
               return (

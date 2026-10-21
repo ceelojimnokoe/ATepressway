@@ -12,9 +12,20 @@ import { AnimatedFigure } from "@/components/ui/animated-figure";
 
 // Approved slide order for the hero backdrop, each paired with a scrim
 // strength tuned from its own measured brightness (see the three
-// .hero-scrim-* tiers in globals.css) — the four photos vary enough in
+// .hero-scrim-* tiers in globals.css) — the five photos vary enough in
 // brightness that one shared value would over- or under-darken some of them.
+//
+// headerImage leads as slide 1 (client instruction, 21 Oct 2026) — it's
+// therefore the hero's LCP image; HeroSlider already keys `priority` and
+// non-lazy loading off array position (i === 0), so leading the array is
+// the whole fix, no change needed in hero-slider.tsx itself. Its scrim
+// tier was measured the same way as the other four: a canvas pixel sample
+// of the bottom-left corner (where the text block sits) gave it a
+// luminance of 115 — matching flowerPotRemodel (115) and close to
+// progTBeam (105), both "light," and well under progAshaiman's "medium"
+// (126) or progUnderpassKm16105A's "strong" (152).
 const SLIDE_KEYS = [
+  { key: "headerImage", scrimIntensity: "light" },
   { key: "progAshaiman", scrimIntensity: "medium" },
   { key: "progUnderpassKm16105A", scrimIntensity: "strong" },
   { key: "flowerPotRemodel", scrimIntensity: "light" },

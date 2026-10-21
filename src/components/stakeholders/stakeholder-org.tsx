@@ -16,7 +16,7 @@ import { CtaLink } from "@/components/ui/cta-link";
  * and what lets the section grow to 2, 3, 4+ profiled members later without
  * any layout assumption baked in for "exactly one".
  */
-function Roster({ label, people }: { readonly label: string; readonly people: readonly OrgPerson[] }) {
+export function Roster({ label, people }: { readonly label: string; readonly people: readonly OrgPerson[] }) {
   if (people.length === 0) return null;
   const thin = people.filter((person) => !person.bio);
   const profiled = people.filter((person) => person.bio);
