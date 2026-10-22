@@ -1,8 +1,6 @@
 import Image from "next/image";
 import { mediaRegistry } from "@/content/media";
-import { galleryCategories, type GalleryItem } from "@/content/gallery";
-
-const CATEGORY_LABEL = new Map(galleryCategories.map((category) => [category.id, category.label]));
+import { resolveGalleryCaption, type GalleryItem } from "@/content/gallery";
 
 const TILE_SIZES = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw";
 
@@ -20,6 +18,7 @@ export function GalleryCard({
   readonly lightboxIndex: number;
 }) {
   const asset = mediaRegistry[item.media];
+  const caption = resolveGalleryCaption(item);
   return (
     <figure className="flex flex-col gap-3">
       {/* The button is the block-level wrapper; the aspect box is the DIRECT
@@ -37,10 +36,8 @@ export function GalleryCard({
         </div>
       </button>
       <figcaption className="flex flex-col gap-1">
-        <span className="text-small text-fg">{item.title}</span>
-        <span className="text-caption text-fg-faint tracking-wide uppercase">
-          {CATEGORY_LABEL.get(item.category)} · {item.type}
-        </span>
+        <span className="text-small text-fg">{caption.heading}</span>
+        <span className="text-caption text-fg-faint tracking-wide uppercase">{caption.meta}</span>
       </figcaption>
     </figure>
   );

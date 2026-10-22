@@ -7,13 +7,20 @@
  */
 
 import { mediaRegistry, type MediaKey, type RegisteredMediaAsset } from "./media";
+import { galleryEventsById, formatEventDate, type GalleryEventId } from "./events";
 
 export interface GalleryCategory {
   readonly id: string;
   readonly label: string;
 }
 
-/** Only categories that actually contain images (no always-empty filters). */
+/**
+ * Only categories that actually contain images (no always-empty filters).
+ * "Visits & Events" added 23 Oct 2026 (client instruction) for photography
+ * of site visits, inspections and awareness events — deliberately separate
+ * from the construction categories below it, which document works in
+ * progress rather than who visited.
+ */
 export const galleryCategories: readonly GalleryCategory[] = [
   { id: "interchanges", label: "Interchanges" },
   { id: "bridges", label: "Bridges" },
@@ -21,22 +28,30 @@ export const galleryCategories: readonly GalleryCategory[] = [
   { id: "earthworks", label: "Earthworks" },
   { id: "proposed-designs", label: "Proposed Designs" },
   { id: "corridor-maps", label: "Corridor and Maps" },
+  { id: "visits-events", label: "Visits & Events" },
 ] as const;
 
 export type GalleryCategoryId = (typeof galleryCategories)[number]["id"];
+
+const CATEGORY_LABEL = new Map(galleryCategories.map((category) => [category.id, category.label]));
 
 export type GalleryType = "Construction Photo" | "Proposed Design";
 
 export interface GalleryItem {
   readonly id: string;
   /**
-   * ISO 8601 date this image was published to the site. The Gallery sorts on
-   * this, newest first — so a newly added entry sorts to the front purely by
-   * carrying a later date, with no manual reordering and no code change.
+   * ISO 8601 date. The Gallery sorts on this, newest first — so a newly
+   * added entry sorts to the front purely by carrying a later date, with no
+   * manual reordering and no code change.
    *
-   * Deliberately "published on", not "captured on": we know when an image was
-   * added to the site, but the client has not supplied capture dates for the
-   * older sets, and inventing them would be inventing facts.
+   * Two meanings depending on whether `eventId` is set: for a photo tied to
+   * an event (below), this is that event's own real date, read from
+   * content/events.ts — not a publish date. For everything else it is
+   * "published on", not "captured on": we know when an image was added to
+   * the site, but the client has not supplied capture dates for the older
+   * sets, and inventing them would be inventing facts. Either way it is
+   * never rendered — the Gallery doesn't show dates directly, only through
+   * `resolveGalleryCaption` for event photos.
    */
   readonly addedOn: string;
   readonly media: MediaKey;
@@ -44,12 +59,22 @@ export interface GalleryItem {
   readonly category: GalleryCategoryId;
   readonly type: GalleryType;
   /**
-   * True when `addedOn` is standing in for a capture date the client hasn't
-   * supplied (client instruction, 22 Oct 2026) — not shown anywhere in the
-   * UI (the Gallery doesn't render dates at all), but kept so these entries
-   * can be found and corrected in one place if a real date arrives later.
+   * The visit or event this photo documents (content/events.ts). When set,
+   * it — not `category`/`type` — drives the caption shown in the Gallery and
+   * lightbox (see `resolveGalleryCaption` below), and `addedOn` above is set
+   * to that event's own real, client-confirmed date rather than a publish
+   * date, so sorting stays newest-first "from the date field" with no second
+   * sort key. Added 23 Oct 2026, replacing the 22 Oct `dateIsApproximate`
+   * placeholder now that real dates exist for every photo that carries one.
    */
-  readonly dateIsApproximate?: boolean;
+  readonly eventId?: GalleryEventId;
+  /**
+   * Marks a category assignment as not yet client-confirmed (client
+   * instruction, 23 Oct 2026) — not shown in the UI, kept so these entries
+   * can be found in one place if the client later wants a different
+   * grouping. Currently true on every `eventId` photo below.
+   */
+  readonly provisional?: boolean;
   /**
    * Keeps an item out of every slider that reads the gallery newest-first
    * (currently just "The Journey" on Home — see corridor-timeline.tsx;
@@ -62,37 +87,93 @@ export interface GalleryItem {
 }
 
 export const galleryItems: readonly GalleryItem[] = [
-  // --- 22 Oct 2026: 21-photo batch (client-supplied: atel01.jpg–atel21.jpg,
-  // public/images/). atel02.jpg excluded — a byte-for-byte duplicate of
-  // headerImage (Home hero slide 1). No capture dates were supplied, so
-  // every entry shares one placeholder date (dateIsApproximate: true) —
-  // correct it in one place here once a real date is known. All 20 carry
-  // excludeFromSliders: true (client instruction) so none can appear in
-  // "The Journey" on Home. Order below is the tie-break for same-date
-  // sorting (resolveGalleryItems' sort is stable) — filename order,
-  // atel01 first, exactly as instructed; reorder this block directly if a
-  // different sequence is wanted later, no other file needs to change.
-  { id: "oct2026-01", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch01", title: "Site Visit Along the Corridor", category: "corridor-maps", type: "Construction Photo" },
-  { id: "oct2026-03", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch03", title: "Bridge Deck Reinforcement Under a Launching Gantry", category: "bridges", type: "Construction Photo" },
-  { id: "oct2026-04", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch04", title: "Precast Beam Yard with Gantry Cranes", category: "bridges", type: "Construction Photo" },
-  { id: "oct2026-05", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch05", title: "Engineers and Officials on Site", category: "corridor-maps", type: "Construction Photo" },
-  { id: "oct2026-06", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch06", title: "Project Briefing with Press", category: "corridor-maps", type: "Construction Photo" },
-  { id: "oct2026-07", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch07", title: "Site Visit Near a Launching Gantry", category: "bridges", type: "Construction Photo" },
-  { id: "oct2026-08", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch08", title: "Indoor Project Meeting", category: "corridor-maps", type: "Construction Photo" },
-  { id: "oct2026-09", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch09", title: "Press Interview During a Site Visit", category: "corridor-maps", type: "Construction Photo" },
-  { id: "oct2026-10", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch10", title: "Press Interview on Site", category: "corridor-maps", type: "Construction Photo" },
-  { id: "oct2026-11", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch11", title: "Launching Gantry Over Bridge Deck Reinforcement", category: "bridges", type: "Construction Photo" },
-  { id: "oct2026-12", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch12", title: "Press Interview Near a Piling Rig", category: "bridges", type: "Construction Photo" },
-  { id: "oct2026-13", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch13", title: "Twin-Cell Underpass Structure", category: "interchanges", type: "Construction Photo" },
-  { id: "oct2026-14", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch14", title: "Design Review Meeting", category: "corridor-maps", type: "Construction Photo" },
-  { id: "oct2026-15", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch15", title: "Site Visit Near Piling Works", category: "bridges", type: "Construction Photo" },
-  { id: "oct2026-16", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch16", title: "Gantry Crane Lowering a Load", category: "bridges", type: "Construction Photo" },
-  { id: "oct2026-17", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch17", title: "Delegation Walking the Corridor", category: "corridor-maps", type: "Construction Photo" },
-  { id: "oct2026-18", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch18", title: "Group Photo at the Construction Site", category: "bridges", type: "Construction Photo" },
-  { id: "oct2026-19", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch19", title: "Project Discussion", category: "corridor-maps", type: "Construction Photo" },
-  { id: "oct2026-20", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch20", title: "Indoor Meeting Beside a Window", category: "corridor-maps", type: "Construction Photo" },
-  { id: "oct2026-21", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch21", title: "Indoor Meeting with Microphone Stand", category: "corridor-maps", type: "Construction Photo" },
-  // Aerial corridor construction photography (client-supplied), sorted 1–10.
+  // --- Visits & Events (client instruction, 23 Oct 2026) ---------------------
+  // Five visits/events with photography, grouped below by event; all carry
+  // eventId, provisional: true (category not yet client-confirmed) and
+  // excludeFromSliders: true (none of these may appear in the Home hero
+  // slider or "The Journey"). `addedOn` on every entry is that event's own
+  // real date (content/events.ts), not a publish-date placeholder — the
+  // 22 Oct dateIsApproximate field is retired now that real dates exist.
+  // Within each event, entries are ordered by filename ascending — the one
+  // place to reorder if a different sequence is ever wanted.
+  //
+  // atel02.jpg stays unregistered: confirmed (SHA-256 and two independent
+  // visual inspections) as a real aerial photo, byte-identical to
+  // headerImage — see the report for the open conflict with the "concept
+  // of the final work" note. The Ministry of Finance monitoring-team visit
+  // (22 Sept 2026) has no files in this batch; its event record exists in
+  // content/events.ts with zero photos rather than being invented here.
+
+  // ATEL Board Visit — 22 January 2026 (atel22–atel29)
+  { id: "event-atel22", addedOn: "2026-01-22", eventId: "atel-board-visit-jan2026", provisional: true, excludeFromSliders: true, media: "atel22", title: "Reviewing a Progress Dashboard in the Boardroom", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel23", addedOn: "2026-01-22", eventId: "atel-board-visit-jan2026", provisional: true, excludeFromSliders: true, media: "atel23", title: "Delegation Group Photo Beside Interchange Design Boards", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel24", addedOn: "2026-01-22", eventId: "atel-board-visit-jan2026", provisional: true, excludeFromSliders: true, media: "atel24", title: "Site Visit Near Reinforcement Works", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel25", addedOn: "2026-01-22", eventId: "atel-board-visit-jan2026", provisional: true, excludeFromSliders: true, media: "atel25", title: "Delegation at a Concrete Batching Plant", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel26", addedOn: "2026-01-22", eventId: "atel-board-visit-jan2026", provisional: true, excludeFromSliders: true, media: "atel26", title: "Delegation at an Underpass Structure", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel27", addedOn: "2026-01-22", eventId: "atel-board-visit-jan2026", provisional: true, excludeFromSliders: true, media: "atel27", title: "Observing an Overpass Span Under Scaffolding", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel28", addedOn: "2026-01-22", eventId: "atel-board-visit-jan2026", provisional: true, excludeFromSliders: true, media: "atel28", title: "Delegation on a Bridge Deck", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel29", addedOn: "2026-01-22", eventId: "atel-board-visit-jan2026", provisional: true, excludeFromSliders: true, media: "atel29", title: "Delegation Beside Site Vehicles and a Crane", category: "visits-events", type: "Construction Photo" },
+
+  // Minister for Roads and Highways inspects ATMP project — 31 March 2026
+  // (atel01, atel03–atel21; atel02 excluded, see above). Titles carried
+  // over unchanged from the 22 Oct registration.
+  { id: "event-atel01", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch01", title: "Site Visit Along the Corridor", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel03", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch03", title: "Bridge Deck Reinforcement Under a Launching Gantry", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel04", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch04", title: "Precast Beam Yard with Gantry Cranes", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel05", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch05", title: "Engineers and Officials on Site", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel06", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch06", title: "Project Briefing with Press", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel07", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch07", title: "Site Visit Near a Launching Gantry", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel08", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch08", title: "Indoor Project Meeting", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel09", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch09", title: "Press Interview During a Site Visit", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel10", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch10", title: "Press Interview on Site", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel11", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch11", title: "Launching Gantry Over Bridge Deck Reinforcement", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel12", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch12", title: "Press Interview Near a Piling Rig", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel13", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch13", title: "Twin-Cell Underpass Structure", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel14", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch14", title: "Design Review Meeting", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel15", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch15", title: "Site Visit Near Piling Works", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel16", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch16", title: "Gantry Crane Lowering a Load", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel17", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch17", title: "Delegation Walking the Corridor", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel18", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch18", title: "Group Photo at the Construction Site", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel19", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch19", title: "Project Discussion", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel20", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch20", title: "Indoor Meeting Beside a Window", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel21", addedOn: "2026-03-31", eventId: "minister-roads-highways-inspection-mar2026", provisional: true, excludeFromSliders: true, media: "octoberBatch21", title: "Indoor Meeting with Microphone Stand", category: "visits-events", type: "Construction Photo" },
+
+  // GIIF Board pays a working visit to the project site — 8 April 2026
+  // (atel30–atel36). The presentation slide visible in atel35/atel36 itself
+  // reads "8th March 2026" — a discrepancy with the date given for this
+  // event; flagged in the report rather than silently resolved either way.
+  { id: "event-atel30", addedOn: "2026-04-08", eventId: "giif-board-visit-apr2026", provisional: true, excludeFromSliders: true, media: "atel30", title: "Delegation Meeting Indoors", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel31", addedOn: "2026-04-08", eventId: "giif-board-visit-apr2026", provisional: true, excludeFromSliders: true, media: "atel31", title: "GIIF Board Meeting in the Boardroom", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel32", addedOn: "2026-04-08", eventId: "giif-board-visit-apr2026", provisional: true, excludeFromSliders: true, media: "atel32", title: "GIIF Board Reviewing a Presentation", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel33", addedOn: "2026-04-08", eventId: "giif-board-visit-apr2026", provisional: true, excludeFromSliders: true, media: "atel33", title: "GIIF Board Meeting, Boardroom View", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel34", addedOn: "2026-04-08", eventId: "giif-board-visit-apr2026", provisional: true, excludeFromSliders: true, media: "atel34", title: "GIIF Board Meeting Beside a Site Window", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel35", addedOn: "2026-04-08", eventId: "giif-board-visit-apr2026", provisional: true, excludeFromSliders: true, media: "atel35", title: "Presentation to the GIIF Board", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel36", addedOn: "2026-04-08", eventId: "giif-board-visit-apr2026", provisional: true, excludeFromSliders: true, media: "atel36", title: "Presentation to the GIIF Board, Wider View", category: "visits-events", type: "Construction Photo" },
+
+  // Liberian Delegation pays benchmark visit to Project Site — 14 August 2026
+  // (atel43–atel53)
+  { id: "event-atel43", addedOn: "2026-08-14", eventId: "liberian-delegation-aug2026", provisional: true, excludeFromSliders: true, media: "atel43", title: "Liberian Delegation Seated in the Boardroom", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel44", addedOn: "2026-08-14", eventId: "liberian-delegation-aug2026", provisional: true, excludeFromSliders: true, media: "atel44", title: "Liberian Delegation Meeting, Close View", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel45", addedOn: "2026-08-14", eventId: "liberian-delegation-aug2026", provisional: true, excludeFromSliders: true, media: "atel45", title: "Liberian Delegation Meeting Beside a Window", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel46", addedOn: "2026-08-14", eventId: "liberian-delegation-aug2026", provisional: true, excludeFromSliders: true, media: "atel46", title: "Liberian Delegation Boardroom Meeting", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel47", addedOn: "2026-08-14", eventId: "liberian-delegation-aug2026", provisional: true, excludeFromSliders: true, media: "atel47", title: "Liberian Delegation Beside Interchange Design Boards", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel48", addedOn: "2026-08-14", eventId: "liberian-delegation-aug2026", provisional: true, excludeFromSliders: true, media: "atel48", title: "Liberian Delegation Meeting, Seated View", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel49", addedOn: "2026-08-14", eventId: "liberian-delegation-aug2026", provisional: true, excludeFromSliders: true, media: "atel49", title: "Delegation Briefing Beside the Boardroom Entrance", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel50", addedOn: "2026-08-14", eventId: "liberian-delegation-aug2026", provisional: true, excludeFromSliders: true, media: "atel50", title: "Liberian Delegation Reviewing a Corridor Map", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel51", addedOn: "2026-08-14", eventId: "liberian-delegation-aug2026", provisional: true, excludeFromSliders: true, media: "atel51", title: "Liberian Delegation Beside Interchange Design Boards", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel52", addedOn: "2026-08-14", eventId: "liberian-delegation-aug2026", provisional: true, excludeFromSliders: true, media: "atel52", title: "Delegation Group Photo Beside Interchange Design Boards", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel53", addedOn: "2026-08-14", eventId: "liberian-delegation-aug2026", provisional: true, excludeFromSliders: true, media: "atel53", title: "Delegation Group Photo Beside Interchange Design Boards, Second View", category: "visits-events", type: "Construction Photo" },
+
+  // Breast cancer awareness education at the project site — October 2026
+  // (month precision only; atel37–atel42)
+  { id: "event-atel37", addedOn: "2026-10-01", eventId: "breast-cancer-awareness-oct2026", provisional: true, excludeFromSliders: true, media: "atel37", title: "Breast Cancer Awareness Session — Overview of Stages", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel38", addedOn: "2026-10-01", eventId: "breast-cancer-awareness-oct2026", provisional: true, excludeFromSliders: true, media: "atel38", title: "Breast Cancer Awareness Session — Support and Awareness", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel39", addedOn: "2026-10-01", eventId: "breast-cancer-awareness-oct2026", provisional: true, excludeFromSliders: true, media: "atel39", title: "Breast Cancer Awareness Session, Wider View", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel40", addedOn: "2026-10-01", eventId: "breast-cancer-awareness-oct2026", provisional: true, excludeFromSliders: true, media: "atel40", title: "Breast Cancer Awareness Session Beside Design Boards", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel41", addedOn: "2026-10-01", eventId: "breast-cancer-awareness-oct2026", provisional: true, excludeFromSliders: true, media: "atel41", title: "Breast Cancer Awareness Presentation", category: "visits-events", type: "Construction Photo" },
+  { id: "event-atel42", addedOn: "2026-10-01", eventId: "breast-cancer-awareness-oct2026", provisional: true, excludeFromSliders: true, media: "atel42", title: "Breast Cancer Awareness Presentation, Closer View", category: "visits-events", type: "Construction Photo" },
+
+  // --- Aerial corridor construction photography (client-supplied), sorted 1–10.
   { id: "atel-1", addedOn: "2026-07-17", media: "atelJunctionUnderpass", title: "Junction Underpass Construction", category: "interchanges", type: "Construction Photo" },
   { id: "atel-2", addedOn: "2026-07-17", media: "atelBridgeDeckRebar", title: "Bridge Deck Reinforcement", category: "bridges", type: "Construction Photo" },
   { id: "atel-3", addedOn: "2026-07-17", media: "atelPierConcreting", title: "Bridge Pier Concreting", category: "bridges", type: "Construction Photo" },
@@ -211,4 +292,31 @@ export function resolveGalleryItems(items: readonly GalleryItem[]): ResolvedGall
    * their authored sequence.
    */
   return resolved.sort((a, b) => b.item.addedOn.localeCompare(a.item.addedOn));
+}
+
+export interface GalleryCaption {
+  /** The event title for an event photo, else the item's own title. */
+  readonly heading: string;
+  /** Category label plus event date, or category plus type — one line. */
+  readonly meta: string;
+  /** Single-line form for contexts with no room for two lines (the lightbox). */
+  readonly full: string;
+}
+
+/**
+ * The caption shown for a gallery item (added 23 Oct 2026, for the Visits &
+ * Events photos). An item with `eventId` is captioned from its event —
+ * title and date, read once from content/events.ts — rather than from its
+ * own `category`/`type`, per the client's "caption each image with the
+ * event title and date" instruction. Everything else renders exactly as it
+ * did before this existed.
+ */
+export function resolveGalleryCaption(item: GalleryItem): GalleryCaption {
+  const categoryLabel = CATEGORY_LABEL.get(item.category) ?? item.category;
+  const event = item.eventId ? galleryEventsById.get(item.eventId) : undefined;
+  if (event) {
+    const date = formatEventDate(event);
+    return { heading: event.title, meta: `${categoryLabel} · ${date}`, full: `${event.title} — ${date}` };
+  }
+  return { heading: item.title, meta: `${categoryLabel} · ${item.type}`, full: item.title };
 }

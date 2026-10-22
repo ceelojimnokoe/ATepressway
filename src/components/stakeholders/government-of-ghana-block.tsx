@@ -1,24 +1,33 @@
 import Image from "next/image";
 import { mediaRegistry } from "@/content/media";
 import { governmentOfGhana, contractingAuthorityOfficeHolders } from "@/content/project";
-import { Roster } from "./stakeholder-org";
+import { BoardMemberCard } from "./board-member-card";
 
 /**
- * The Government of Ghana entry — one shared block rendered identically on
- * Home ("08 — Delivery") and on /stakeholders (first in the delivery
- * chain), reading from the single `governmentOfGhana` content export so the
- * two never drift apart. Header row (role caption, linked title, gloss,
- * logo) matches StakeholderOrg's own name+logo layout exactly (client
- * instruction, 4 Sept 2026) — same position, same link styling — so this
- * reads as one more entry in the same visual language, not a one-off.
+ * The Government of Ghana entry — one shared block rendered on Home
+ * ("08 — Delivery"), /stakeholders (first in the delivery chain) and, since
+ * 23 Oct 2026, /about, reading from the single `governmentOfGhana` content
+ * export so none of the three ever drift apart. Header row (role caption,
+ * linked title, gloss, logo) matches StakeholderOrg's own name+logo layout
+ * exactly (client instruction, 4 Sept 2026) — same position, same link
+ * styling — so this reads as one more entry in the same visual language,
+ * not a one-off.
  *
  * `showOfficeHolders` (client instruction, 21 Oct 2026) adds the three
- * current office-holder cards (President, Finance Minister, Roads &
- * Highways Minister — content/project.ts, contractingAuthorityOfficeHolders)
- * via the SAME Roster StakeholderOrg uses for every other organisation's
- * people, so this looks native rather than a one-off addition. Defaults to
- * false/unset so Home — which renders this block with no props — is
- * unaffected; only /stakeholders passes it.
+ * current office-holder cards (content/project.ts,
+ * contractingAuthorityOfficeHolders). Defaults to false/unset so Home —
+ * which renders this block with no props — is unaffected; /stakeholders
+ * and /about both pass it.
+ *
+ * Layout restructured 23 Oct 2026 (client instruction — "the President
+ * can't share a line with the ministers"): the first entry in
+ * `contractingAuthorityOfficeHolders` (the President) renders alone on its
+ * own centred row at every width; the rest of the array renders below it in
+ * a row that stacks to one column at 360px and two columns from `sm`
+ * upward, in array order. This replaced the generic multi-column Roster
+ * grid StakeholderOrg uses elsewhere, which can't produce a "one alone,
+ * others below" layout — BoardMemberCard itself (photo/name/role only) is
+ * unchanged, only its container here is bespoke to this one block.
  */
 export function GovernmentOfGhanaBlock({
   showOfficeHolders = false,
@@ -75,8 +84,22 @@ export function GovernmentOfGhanaBlock({
         </div>
       )}
 
-      {showOfficeHolders && (
-        <Roster label="Government office holders" people={contractingAuthorityOfficeHolders} />
+      {showOfficeHolders && contractingAuthorityOfficeHolders.length > 0 && (
+        <div className="flex flex-col gap-5 border-t border-hairline pt-5">
+          <span className="text-caption text-fg-faint tracking-wide uppercase">Government office holders</span>
+          <div className="mx-auto w-1/2 max-w-[11rem] sm:max-w-[13rem]">
+            <BoardMemberCard member={contractingAuthorityOfficeHolders[0]} />
+          </div>
+          {contractingAuthorityOfficeHolders.length > 1 && (
+            <ul className="mx-auto grid w-full max-w-xl grid-cols-1 gap-5 sm:grid-cols-2">
+              {contractingAuthorityOfficeHolders.slice(1).map((person) => (
+                <li key={person.name}>
+                  <BoardMemberCard member={person} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       )}
     </div>
   );

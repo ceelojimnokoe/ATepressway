@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { galleryItems, resolveGalleryItems } from "@/content/gallery";
+import { galleryItems, resolveGalleryItems, resolveGalleryCaption } from "@/content/gallery";
 import { GalleryFilter } from "@/components/gallery/gallery-filter";
 import { GalleryCard } from "@/components/gallery/gallery-tile";
 import { GalleryLightbox, type LightboxImage } from "@/components/gallery/gallery-lightbox";
@@ -31,7 +31,7 @@ export default function GalleryPage() {
     alt: asset.alt,
     width: asset.width,
     height: asset.height,
-    caption: item.title,
+    caption: resolveGalleryCaption(item).full,
   }));
 
   return (

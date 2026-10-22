@@ -3,6 +3,7 @@ import Image from "next/image";
 import { PageHero } from "@/components/ui/page-hero";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import { BoardMemberCard } from "@/components/stakeholders/board-member-card";
+import { GovernmentOfGhanaBlock } from "@/components/stakeholders/government-of-ghana-block";
 import { mediaRegistry } from "@/content/media";
 import { organization, boardMembers } from "@/content/project";
 import {
@@ -72,6 +73,35 @@ export default function AboutPage() {
           src/content/about.ts (`visionMission`) untouched; only the render
           is removed. Restore this section (and the `visionMission` import
           above) once the client supplies final copy. */}
+
+      {/* Contracting Authority — added 23 Oct 2026 (client instruction):
+          reuses the exact same GovernmentOfGhanaBlock /stakeholders and Home
+          render, with `showOfficeHolders` so the three figures (President,
+          Minister for Roads & Highways, Minister for Finance) show here too
+          — no content or data is duplicated, the block and its figures both
+          read from the one shared source in content/project.ts. Home's own
+          call to this component (partners.tsx) is untouched and still
+          passes no props, so it keeps the version without the figures. The
+          client's wording was "the client also wants Contracting Authority
+          information on About Us" — read here as including the three
+          figures, since they are part of what GovernmentOfGhanaBlock shows
+          under that same heading everywhere else; flagged in the report as
+          an assumption rather than an explicit instruction. Placed directly
+          before Board of Directors — "near" it, as asked — and in the same
+          top-to-bottom order the delivery chain already uses elsewhere on
+          the site (Contracting Authority above the Concessionaire). */}
+      <section className="border-b border-hairline bg-surface">
+        <ViewportReveal className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 py-16 sm:px-8">
+          <div className="flex flex-col gap-2">
+            <h2 className="text-heading-4 text-fg">Contracting Authority</h2>
+            <p className="max-w-3xl text-small text-fg-faint">
+              The Government of Ghana body that contracted the works, and the office holders who
+              currently lead it.
+            </p>
+          </div>
+          <GovernmentOfGhanaBlock showOfficeHolders />
+        </ViewportReveal>
+      </section>
 
       {/* Board of Directors — MOVED from /stakeholders, not duplicated
           (client instruction, 9 Sept 2026): reads `boardMembers` straight

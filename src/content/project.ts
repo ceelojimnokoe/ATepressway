@@ -224,11 +224,19 @@ export const governmentOfGhana = {
  * so update the three entries below in one place when that happens — the
  * rest of the site (and the Ministry link itself) doesn't need to change.
  * Order is the client's own: Head of State first, then the two ministers.
- * `OrgPerson`-shaped so GovernmentOfGhanaBlock can reuse StakeholderOrg's
- * existing Roster — the same thin, photo/name/role-only card every board
- * member uses, no bio field set. Photos are local files in public/images/,
- * matched by surname; see the pre-launch report for the match confidence
- * and crop notes on each.
+ * `OrgPerson`-shaped so GovernmentOfGhanaBlock can render them with the same
+ * thin, photo/name/role-only BoardMemberCard every board member uses, no
+ * bio field set. Photos are local files in public/images/, matched by
+ * surname; see the pre-launch report for the match confidence and crop
+ * notes on each.
+ *
+ * Order (client instruction, 23 Oct 2026 — reversing the 21 Oct order):
+ * the President first, alone — GovernmentOfGhanaBlock renders this first
+ * entry on its own centred row, since "the President can't share a line
+ * with the ministers." The rest of this array renders below him in array
+ * order, so Agbodza (Roads & Highways) now comes before Forson (Finance).
+ * This is still the one array both the layout and a future membership
+ * change read from.
  */
 export const contractingAuthorityOfficeHolders: readonly OrgPerson[] = [
   {
@@ -239,15 +247,6 @@ export const contractingAuthorityOfficeHolders: readonly OrgPerson[] = [
       alt: "Portrait of John Dramani Mahama, President of the Republic of Ghana",
     },
     initials: "JM",
-  },
-  {
-    name: "Hon. Dr. Cassiel Ato Forson (MP)",
-    role: "Minister for Finance",
-    photo: {
-      src: "/images/Hon. Dr. Cassiel Ato Forson (MP).png",
-      alt: "Portrait of Hon. Dr. Cassiel Ato Forson, Minister for Finance",
-    },
-    initials: "AF",
   },
   {
     name: "Hon. Kwame Governs Agbodza (MP)",
@@ -265,6 +264,15 @@ export const contractingAuthorityOfficeHolders: readonly OrgPerson[] = [
       crop: { scale: 1.35, origin: "32% 25%" },
     },
     initials: "KA",
+  },
+  {
+    name: "Hon. Dr. Cassiel Ato Forson (MP)",
+    role: "Minister for Finance",
+    photo: {
+      src: "/images/Hon. Dr. Cassiel Ato Forson (MP).png",
+      alt: "Portrait of Hon. Dr. Cassiel Ato Forson, Minister for Finance",
+    },
+    initials: "AF",
   },
 ];
 

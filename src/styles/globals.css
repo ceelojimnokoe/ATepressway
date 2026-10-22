@@ -311,7 +311,8 @@
 [data-gallery-filter="drainage"] [data-gallery-cat]:not([data-gallery-cat="drainage"]),
 [data-gallery-filter="earthworks"] [data-gallery-cat]:not([data-gallery-cat="earthworks"]),
 [data-gallery-filter="proposed-designs"] [data-gallery-cat]:not([data-gallery-cat="proposed-designs"]),
-[data-gallery-filter="corridor-maps"] [data-gallery-cat]:not([data-gallery-cat="corridor-maps"]) {
+[data-gallery-filter="corridor-maps"] [data-gallery-cat]:not([data-gallery-cat="corridor-maps"]),
+[data-gallery-filter="visits-events"] [data-gallery-cat]:not([data-gallery-cat="visits-events"]) {
   display: none;
 }
 

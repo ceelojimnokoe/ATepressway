@@ -53,6 +53,12 @@ export function formatShortDate(iso: string): string {
   return `${day} ${MONTHS_SHORT[monthIndex]} ${year}`;
 }
 
+/** "2026-10-01" → "October 2026". The day is read but never shown. */
+export function formatMonthYear(iso: string): string {
+  const { monthIndex, year } = parseIsoParts(iso);
+  return `${MONTHS_LONG[monthIndex]} ${year}`;
+}
+
 /**
  * Thousands separators, computed as a pure string operation so the server
  * and client always produce identical markup (no locale-dependent Intl
