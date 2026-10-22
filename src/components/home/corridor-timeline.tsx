@@ -23,9 +23,14 @@ const JOURNEY_SLIDE_COUNT = 4;
  * later-dated construction photo to the registry makes it appear here with no
  * code change: this array is recomputed from the live gallery data, not
  * hand-picked.
+ *
+ * `!item.excludeFromSliders` (added 22 Oct 2026) keeps flagged entries out —
+ * currently the 21-photo batch the client doesn't want surfacing here. Keyed
+ * off the flag, never a filename or id, so this stays correct for any future
+ * batch that needs the same treatment.
  */
 const journeySlides: readonly SlideshowImage[] = resolveGalleryItems(
-  galleryItems.filter((item) => item.type === "Construction Photo"),
+  galleryItems.filter((item) => item.type === "Construction Photo" && !item.excludeFromSliders),
 )
   .slice(0, JOURNEY_SLIDE_COUNT)
   .map(({ asset }) => ({ src: asset.src, alt: asset.alt, width: asset.width, height: asset.height }));

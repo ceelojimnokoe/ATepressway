@@ -43,9 +43,55 @@ export interface GalleryItem {
   readonly title: string;
   readonly category: GalleryCategoryId;
   readonly type: GalleryType;
+  /**
+   * True when `addedOn` is standing in for a capture date the client hasn't
+   * supplied (client instruction, 22 Oct 2026) — not shown anywhere in the
+   * UI (the Gallery doesn't render dates at all), but kept so these entries
+   * can be found and corrected in one place if a real date arrives later.
+   */
+  readonly dateIsApproximate?: boolean;
+  /**
+   * Keeps an item out of every slider that reads the gallery newest-first
+   * (currently just "The Journey" on Home — see corridor-timeline.tsx;
+   * the Hero slider is separately curated and never reads this registry at
+   * all). Added 22 Oct 2026 for the 21-photo batch below, which the client
+   * does not want surfacing there; works for any future entry the same way,
+   * no filename or id ever hardcoded in the component.
+   */
+  readonly excludeFromSliders?: boolean;
 }
 
 export const galleryItems: readonly GalleryItem[] = [
+  // --- 22 Oct 2026: 21-photo batch (client-supplied: atel01.jpg–atel21.jpg,
+  // public/images/). atel02.jpg excluded — a byte-for-byte duplicate of
+  // headerImage (Home hero slide 1). No capture dates were supplied, so
+  // every entry shares one placeholder date (dateIsApproximate: true) —
+  // correct it in one place here once a real date is known. All 20 carry
+  // excludeFromSliders: true (client instruction) so none can appear in
+  // "The Journey" on Home. Order below is the tie-break for same-date
+  // sorting (resolveGalleryItems' sort is stable) — filename order,
+  // atel01 first, exactly as instructed; reorder this block directly if a
+  // different sequence is wanted later, no other file needs to change.
+  { id: "oct2026-01", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch01", title: "Site Visit Along the Corridor", category: "corridor-maps", type: "Construction Photo" },
+  { id: "oct2026-03", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch03", title: "Bridge Deck Reinforcement Under a Launching Gantry", category: "bridges", type: "Construction Photo" },
+  { id: "oct2026-04", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch04", title: "Precast Beam Yard with Gantry Cranes", category: "bridges", type: "Construction Photo" },
+  { id: "oct2026-05", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch05", title: "Engineers and Officials on Site", category: "corridor-maps", type: "Construction Photo" },
+  { id: "oct2026-06", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch06", title: "Project Briefing with Press", category: "corridor-maps", type: "Construction Photo" },
+  { id: "oct2026-07", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch07", title: "Site Visit Near a Launching Gantry", category: "bridges", type: "Construction Photo" },
+  { id: "oct2026-08", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch08", title: "Indoor Project Meeting", category: "corridor-maps", type: "Construction Photo" },
+  { id: "oct2026-09", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch09", title: "Press Interview During a Site Visit", category: "corridor-maps", type: "Construction Photo" },
+  { id: "oct2026-10", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch10", title: "Press Interview on Site", category: "corridor-maps", type: "Construction Photo" },
+  { id: "oct2026-11", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch11", title: "Launching Gantry Over Bridge Deck Reinforcement", category: "bridges", type: "Construction Photo" },
+  { id: "oct2026-12", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch12", title: "Press Interview Near a Piling Rig", category: "bridges", type: "Construction Photo" },
+  { id: "oct2026-13", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch13", title: "Twin-Cell Underpass Structure", category: "interchanges", type: "Construction Photo" },
+  { id: "oct2026-14", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch14", title: "Design Review Meeting", category: "corridor-maps", type: "Construction Photo" },
+  { id: "oct2026-15", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch15", title: "Site Visit Near Piling Works", category: "bridges", type: "Construction Photo" },
+  { id: "oct2026-16", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch16", title: "Gantry Crane Lowering a Load", category: "bridges", type: "Construction Photo" },
+  { id: "oct2026-17", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch17", title: "Delegation Walking the Corridor", category: "corridor-maps", type: "Construction Photo" },
+  { id: "oct2026-18", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch18", title: "Group Photo at the Construction Site", category: "bridges", type: "Construction Photo" },
+  { id: "oct2026-19", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch19", title: "Project Discussion", category: "corridor-maps", type: "Construction Photo" },
+  { id: "oct2026-20", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch20", title: "Indoor Meeting Beside a Window", category: "corridor-maps", type: "Construction Photo" },
+  { id: "oct2026-21", addedOn: "2026-10-17", dateIsApproximate: true, excludeFromSliders: true, media: "octoberBatch21", title: "Indoor Meeting with Microphone Stand", category: "corridor-maps", type: "Construction Photo" },
   // Aerial corridor construction photography (client-supplied), sorted 1–10.
   { id: "atel-1", addedOn: "2026-07-17", media: "atelJunctionUnderpass", title: "Junction Underpass Construction", category: "interchanges", type: "Construction Photo" },
   { id: "atel-2", addedOn: "2026-07-17", media: "atelBridgeDeckRebar", title: "Bridge Deck Reinforcement", category: "bridges", type: "Construction Photo" },
