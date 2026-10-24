@@ -23,6 +23,32 @@ export interface RegisteredMediaAsset {
 
 export const mediaRegistry = {
   // --- Hero slider ---------------------------------------------------------
+  // header1/header2 added 24 Oct 2026 (client instruction) for the Home hero
+  // slider. Both read, on visual inspection, as 3D design-visualisation
+  // renders rather than drone photography (confirmed with the client) — same
+  // treatment as flowerPotRemodel below: `kind: "render"` and the on-slide
+  // "Proposed design visualisation" disclaimer (src/content/hero.ts).
+  // header3 (also supplied) was held back — it shows a generic highway with
+  // supercars and non-Ghanaian road markings, not Accra–Tema project
+  // imagery, and was not registered pending the client's review.
+  header1: {
+    src: "/images/header1.png",
+    alt: "Design visualisation of a landscaped cloverleaf interchange with a pedestrian bridge, viewed from above",
+    width: 2048,
+    height: 1180,
+    kind: "render",
+    onDisk: true,
+    verified: true,
+  },
+  header2: {
+    src: "/images/header2.png",
+    alt: "Design visualisation of an elevated highway passing through a dense urban area beside a river",
+    width: 2048,
+    height: 1152,
+    kind: "render",
+    onDisk: true,
+    verified: true,
+  },
   teshieLinkRemodel: {
     src: "/images/teshie-link-remodel.png",
     alt: "Aerial design visualisation of the Teshie Link Interchange, a landscaped cloverleaf junction linking the motorway with local roads",

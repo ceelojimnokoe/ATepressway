@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { mediaRegistry } from "@/content/media";
+import { heroSlides } from "@/content/hero";
 import { organization, projectFacts, progress } from "@/content/project";
 import { isPlaceholder } from "@/content/placeholder";
 import { HeroSlider, type Slide } from "./hero-slider";
@@ -11,31 +12,20 @@ import { MagneticButton } from "@/components/motion/magnetic-button";
 import { CtaLink } from "@/components/ui/cta-link";
 import { AnimatedFigure } from "@/components/ui/animated-figure";
 
-// Approved slide order for the hero backdrop, each paired with a scrim
-// strength tuned from its own measured brightness (see the three
-// .hero-scrim-* tiers in globals.css) — the four photos vary enough in
-// brightness that one shared value would over- or under-darken some of them.
-//
-// headerImage REMOVED (client instruction, 24 Oct 2026) — confirmed by
-// SHA-256 checksum to be the exact same file as atel02.jpg (byte-identical),
-// which the client wants out of the hero and visible in the Gallery instead
-// (see the "headerImage" entry added to galleryItems in content/gallery.ts —
-// same media key, not a second registration, since it's the same file). The
-// media registry entry and the file on disk are both untouched; only this
-// array no longer references it. Slide order reverts to its pre-21-Oct-2026
-// sequence below, and HeroSlider already keys `priority`/non-lazy loading
-// off array position (i === 0), so progAshaiman becomes the LCP image with
-// no change needed in hero-slider.tsx itself.
-const SLIDE_KEYS = [
-  { key: "progAshaiman", scrimIntensity: "medium" },
-  { key: "progUnderpassKm16105A", scrimIntensity: "strong" },
-  { key: "flowerPotRemodel", scrimIntensity: "light" },
-  { key: "progTBeam", scrimIntensity: "light" },
-] as const;
-
-const slides: readonly Slide[] = SLIDE_KEYS.map(({ key, scrimIntensity }) => {
-  const asset = mediaRegistry[key];
-  return { src: asset.src, alt: asset.alt, width: asset.width, height: asset.height, scrimIntensity };
+// Slide order, scrim and render-disclaimer content now live in
+// content/hero.ts — the one place to change them, with nothing hardcoded
+// here. Full replacement (client instruction, 24 Oct 2026): header1,
+// flower-pot-remodel, header2, in that order — every previously-approved
+// slide (headerImage/progAshaiman/progUnderpassKm16105A/progTBeam) is out
+// of the hero slider. None of the three photographic ones are now
+// unreferenced, though: progAshaiman and progTBeam still show on Home's
+// gallery-preview.tsx, progUnderpassKm16105A is still About's identity
+// image, and all three are still in the Gallery grid — see the 24 Oct
+// report. header1 is slide 1, so HeroSlider's existing `priority`/non-lazy
+// `i === 0` logic makes it the LCP image automatically.
+const slides: readonly Slide[] = heroSlides.map(({ media, scrimIntensity, renderDisclaimer }) => {
+  const asset = mediaRegistry[media];
+  return { src: asset.src, alt: asset.alt, width: asset.width, height: asset.height, scrimIntensity, renderDisclaimer };
 });
 
 const coatOfArms = mediaRegistry.coatOfArms;

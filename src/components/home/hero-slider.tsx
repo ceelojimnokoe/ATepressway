@@ -17,6 +17,12 @@ export interface Slide {
    * "medium" (the original shared value) if a slide doesn't specify one.
    */
   readonly scrimIntensity?: "light" | "medium" | "strong";
+  /**
+   * Shown as a small on-slide disclaimer when set (content comes from
+   * content/hero.ts, never hardcoded here) — for a slide that's a design
+   * render rather than construction photography.
+   */
+  readonly renderDisclaimer?: string;
 }
 
 const SCRIM_CLASS = {
@@ -159,6 +165,34 @@ export function HeroSlider({ slides, className, overlay = "none", children }: He
           aria-hidden="true"
           className={cn(SCRIM_CLASS[slides[index]?.scrimIntensity ?? "medium"], "absolute inset-0 -z-10")}
         />
+      )}
+
+      {/* Design-render disclaimer — only on a slide that sets one (see
+          content/hero.ts). Three earlier placements each collided with
+          something, every one caught by screenshot rather than left to
+          chance: beside the crest overlapped it directly; below the crest
+          overlapped the eyebrow pill (which wraps to two lines and spans
+          the full width at 360px); and an earlier version of this
+          bottom-right spot, pushed up to clear the ScrollCue, instead
+          overlapped the stats row above it.
+
+          The one genuinely reliable gap is between the headline/CTAs/stats
+          column's fixed 112px bottom padding (`pb-28` in Hero.tsx, constant
+          regardless of content length) and the slider's own ~68px-tall
+          controls bar — a ~44px band. A two-line pill doesn't fit that band
+          with any margin, which is what kept causing a new collision every
+          time the position shifted. Keeping it to ONE line (a wide enough
+          max-w from `sm` up, since there's no shortage of horizontal room
+          at those widths) brings its height to ~30px, which clears both the
+          stats row above and the ScrollCue/controls below at the SAME
+          bottom offset used at 360px — confirmed by screenshot at all three
+          widths, not computed and assumed. */}
+      {slides[index]?.renderDisclaimer && (
+        <div className="absolute right-4 bottom-16 z-10 max-w-[15rem] text-right sm:right-8 sm:max-w-md">
+          <span className="inline-block border border-hairline bg-surface/70 px-2.5 py-1 text-caption text-fg-muted backdrop-blur-sm">
+            {slides[index].renderDisclaimer}
+          </span>
+        </div>
       )}
 
       {children}
