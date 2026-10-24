@@ -22,11 +22,13 @@ export function BoardMemberCard({ member }: { readonly member: OrgPerson }) {
             alt={member.photo.alt}
             fill
             sizes="(min-width: 1024px) 15vw, (min-width: 640px) 30vw, 45vw"
-            className="object-cover object-top"
+            className={member.photo.objectPosition ? "object-cover" : "object-cover object-top"}
             style={
-              member.photo.crop
-                ? { transform: `scale(${member.photo.crop.scale})`, transformOrigin: member.photo.crop.origin }
-                : undefined
+              member.photo.objectPosition
+                ? { objectPosition: member.photo.objectPosition }
+                : member.photo.crop
+                  ? { transform: `scale(${member.photo.crop.scale})`, transformOrigin: member.photo.crop.origin }
+                  : undefined
             }
           />
         ) : (

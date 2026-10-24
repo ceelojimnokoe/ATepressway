@@ -13,9 +13,17 @@ const TILE_SIZES = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw";
 export function GalleryCard({
   item,
   lightboxIndex,
+  showHeading = true,
 }: {
   readonly item: GalleryItem;
   readonly lightboxIndex: number;
+  /**
+   * False inside an event folder page (src/app/(site)/gallery/[slug]/page.tsx),
+   * where every tile's caption heading would otherwise repeat the exact
+   * same event title the folder's own `<h1>` already states — the meta
+   * line (category · date) still renders, since that's per-photo useful.
+   */
+  readonly showHeading?: boolean;
 }) {
   const asset = mediaRegistry[item.media];
   const caption = resolveGalleryCaption(item);
@@ -36,7 +44,7 @@ export function GalleryCard({
         </div>
       </button>
       <figcaption className="flex flex-col gap-1">
-        <span className="text-small text-fg">{caption.heading}</span>
+        {showHeading && <span className="text-small text-fg">{caption.heading}</span>}
         <span className="text-caption text-fg-faint tracking-wide uppercase">{caption.meta}</span>
       </figcaption>
     </figure>

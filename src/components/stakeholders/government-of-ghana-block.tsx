@@ -87,13 +87,26 @@ export function GovernmentOfGhanaBlock({
       {showOfficeHolders && contractingAuthorityOfficeHolders.length > 0 && (
         <div className="flex flex-col gap-5 border-t border-hairline pt-5">
           <span className="text-caption text-fg-faint tracking-wide uppercase">Government office holders</span>
-          <div className="mx-auto w-1/2 max-w-[11rem] sm:max-w-[13rem]">
+          {/*
+           * CARD_WIDTH below (12rem / 14rem from `sm`) is applied identically
+           * to the President's solo wrapper and to each minister's `li` — the
+           * one shared size both reads from. Previously the President's
+           * wrapper capped at 11rem/13rem while the ministers sat in a
+           * `grid-cols-2` whose cells stretched to ~17.4rem, so his card
+           * rendered visibly smaller even though BoardMemberCard itself
+           * (aspect-square + object-cover) is identical for all three — the
+           * mismatch was purely this container sizing, now fixed by using
+           * the same fixed max-width everywhere instead of a stretchy grid
+           * for the pair below him (client-reported, 24 Oct 2026; measured
+           * before/after in the report).
+           */}
+          <div className="mx-auto flex w-full max-w-[12rem] flex-col items-center sm:max-w-[14rem]">
             <BoardMemberCard member={contractingAuthorityOfficeHolders[0]} />
           </div>
           {contractingAuthorityOfficeHolders.length > 1 && (
-            <ul className="mx-auto grid w-full max-w-xl grid-cols-1 gap-5 sm:grid-cols-2">
+            <ul className="mx-auto flex w-full max-w-xl flex-col items-center gap-5 sm:flex-row sm:justify-center">
               {contractingAuthorityOfficeHolders.slice(1).map((person) => (
-                <li key={person.name}>
+                <li key={person.name} className="w-full max-w-[12rem] sm:max-w-[14rem]">
                   <BoardMemberCard member={person} />
                 </li>
               ))}

@@ -234,19 +234,48 @@ export const governmentOfGhana = {
  * the President first, alone — GovernmentOfGhanaBlock renders this first
  * entry on its own centred row, since "the President can't share a line
  * with the ministers." The rest of this array renders below him in array
- * order, so Agbodza (Roads & Highways) now comes before Forson (Finance).
- * This is still the one array both the layout and a future membership
- * change read from.
+ * order. Order changed AGAIN 24 Oct 2026 (client instruction, explicitly
+ * swapping the 23 Oct order back): Forson (Finance) now comes before
+ * Agbodza (Roads & Highways). This is still the one array both the layout
+ * and a future membership change read from.
+ *
+ * Photos for the President and the Minister for Finance replaced 24 Oct
+ * 2026 (client-supplied: mahama.jpeg, minoffinance.jpeg) — the old files
+ * ("John Dramani Mahama .png", "Hon. Dr. Cassiel Ato Forson (MP).png") are
+ * no longer referenced anywhere (left on disk, not deleted, per
+ * instruction). All three photos now use `objectPosition` — a plain,
+ * unscaled focal point — rather than the `crop` scale/zoom hack the Roads
+ * & Highways photo used until this change; see the 24 Oct report for why
+ * (the zoom was the actual cause of that photo's "face cut off" complaint,
+ * not the source file, which has normal headroom).
  */
 export const contractingAuthorityOfficeHolders: readonly OrgPerson[] = [
   {
     name: "John Dramani Mahama",
     role: "His Excellency the President of the Republic of Ghana",
     photo: {
-      src: "/images/John Dramani Mahama .png",
+      src: "/images/mahama.jpeg",
       alt: "Portrait of John Dramani Mahama, President of the Republic of Ghana",
+      // Source is 1066×1600 (portrait, taller than the square card), so
+      // object-cover crops the top/bottom only — no scaling, no width crop.
+      // "center 10%" keeps a little headroom above the hairline and brings
+      // the shoulders into frame at the bottom; checked by screenshot.
+      objectPosition: "center 10%",
     },
     initials: "JM",
+  },
+  {
+    name: "Hon. Dr. Cassiel Ato Forson (MP)",
+    role: "Minister for Finance",
+    photo: {
+      src: "/images/minoffinance.jpeg",
+      alt: "Portrait of Hon. Dr. Cassiel Ato Forson, Minister for Finance",
+      // Source is 720×644 — close to square already, slightly wider — so
+      // object-cover only crops a little off the sides; "48%" nudges the
+      // window very slightly left of dead-centre onto the face.
+      objectPosition: "48% center",
+    },
+    initials: "AF",
   },
   {
     name: "Hon. Kwame Governs Agbodza (MP)",
@@ -254,25 +283,16 @@ export const contractingAuthorityOfficeHolders: readonly OrgPerson[] = [
     photo: {
       src: "/images/Hon. Kwame Agbodza Governs (MP).png",
       alt: "Portrait of Hon. Kwame Governs Agbodza, Minister for Roads & Highways",
-      // Source photo is landscape (729×421, not portrait/square like the
-      // other two) with the subject left-of-centre and a lot of empty
-      // background to the right. Default object-cover/object-top would
-      // centre the CROP on the image, not on the face, so the face would
-      // sit off-centre in the square card. Scale + a left/upper-biased
-      // origin pulls the crop toward where the face actually is — checked
-      // by screenshot, not just by eye on the source file.
-      crop: { scale: 1.35, origin: "32% 25%" },
+      // Source is landscape (729×421): object-cover crops the sides only,
+      // never the top or bottom, so the full head and the headroom already
+      // present in the source are always shown — no scaling. "34%" centres
+      // the crop window on the face, which sits left-of-centre in the
+      // source with empty background to its right. Replaces the previous
+      // `crop: { scale: 1.35, … }`, which was magnifying the photo and is
+      // what actually cut the top of his head off — see the 24 Oct report.
+      objectPosition: "34% center",
     },
     initials: "KA",
-  },
-  {
-    name: "Hon. Dr. Cassiel Ato Forson (MP)",
-    role: "Minister for Finance",
-    photo: {
-      src: "/images/Hon. Dr. Cassiel Ato Forson (MP).png",
-      alt: "Portrait of Hon. Dr. Cassiel Ato Forson, Minister for Finance",
-    },
-    initials: "AF",
   },
 ];
 
@@ -1260,6 +1280,17 @@ export interface ImageAsset {
   readonly src: string;
   readonly alt: string;
   /**
+   * Per-image focal point (added 24 Oct 2026) — a plain CSS object-position
+   * value, e.g. "34% 50%". Use this whenever the source photo's aspect
+   * ratio differs from its display frame at all (almost always true for a
+   * square card): object-cover already has real overflow to pan within, so
+   * no scaling is needed, which means no magnification and no distortion —
+   * just choosing which part of the untouched original shows through the
+   * crop. Read directly by BoardMemberCard's `style`, never hardcoded
+   * per-component. Prefer this over `crop` below for any new photo.
+   */
+  readonly objectPosition?: string;
+  /**
    * Optional tighter-crop override for a specific photo. Needed only when a
    * source image's aspect ratio already matches its display frame (a square
    * photo in a square card) — object-cover then shows the whole frame with
@@ -1268,6 +1299,8 @@ export interface ImageAsset {
    * overflow-hidden) and `origin` is the CSS transform-origin that stays
    * fixed while it enlarges — an origin above centre biases the zoom toward
    * the top of the photo, cropping proportionally more off the bottom.
+   * Magnifies the source, so prefer `objectPosition` above wherever the
+   * source has any aspect-ratio overflow to pan within instead.
    */
   readonly crop?: { readonly scale: number; readonly origin: string };
 }

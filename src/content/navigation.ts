@@ -2,6 +2,17 @@
  * Primary site navigation, shared by SiteHeader (desktop bar + mobile menu)
  * and SiteFooter (src/components/layout/).
  *
+ * Reordered 24 Oct 2026 (client instruction) to:
+ *
+ *   Home · About Us · Stakeholders · The Project ▾ · Progress · Gallery · Contact ▾
+ *
+ * Moving Stakeholders up is the only structural change — the dropdown
+ * groupings, the plain-link items, and SiteFooter (which reads the flat
+ * `allNavPages` derived from this same array below) all follow with no
+ * separate edit. About Us was already a plain link (no `children`) before
+ * this change too, from the 22 Sept 2026 Investment Info removal below —
+ * so there was nothing to "demote" here.
+ *
  * Restructured 20 Sept 2026 (client instruction) from 9 flat items to 7
  * top-level items, with a tenth page (Investment Info) added:
  *
@@ -56,6 +67,7 @@ export const primaryNav: readonly NavItem[] = [
   // Info removed pending approval; "About Us" is this item's pre-restructure
   // label, restored because a one-item dropdown would be pointless).
   { label: "About Us", href: "/about" },
+  { label: "Stakeholders", href: "/stakeholders" },
   {
     label: "The Project",
     href: "/project",
@@ -66,7 +78,6 @@ export const primaryNav: readonly NavItem[] = [
   },
   { label: "Progress", href: "/progress" },
   { label: "Gallery", href: "/gallery" },
-  { label: "Stakeholders", href: "/stakeholders" },
   {
     label: "Contact",
     href: "/contact",

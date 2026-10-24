@@ -173,6 +173,14 @@ export const galleryItems: readonly GalleryItem[] = [
   { id: "event-atel41", addedOn: "2026-10-01", eventId: "breast-cancer-awareness-oct2026", provisional: true, excludeFromSliders: true, media: "atel41", title: "Breast Cancer Awareness Presentation", category: "visits-events", type: "Construction Photo" },
   { id: "event-atel42", addedOn: "2026-10-01", eventId: "breast-cancer-awareness-oct2026", provisional: true, excludeFromSliders: true, media: "atel42", title: "Breast Cancer Awareness Presentation, Closer View", category: "visits-events", type: "Construction Photo" },
 
+  // Removed from the Home hero slider (client instruction, 24 Oct 2026) and
+  // registered here instead, so the photo stays visible on the site — same
+  // "headerImage" media key the hero used to reference (confirmed by
+  // SHA-256 to be the exact same file as atel02.jpg), not a second entry
+  // for atel02.jpg itself. excludeFromSliders keeps it out of "The Journey"
+  // too, so that section's output is provably unaffected by this move.
+  { id: "header-image", addedOn: "2026-10-24", excludeFromSliders: true, media: "headerImage", title: "Completed Flyover Interchange", category: "interchanges", type: "Construction Photo" },
+
   // --- Aerial corridor construction photography (client-supplied), sorted 1–10.
   { id: "atel-1", addedOn: "2026-07-17", media: "atelJunctionUnderpass", title: "Junction Underpass Construction", category: "interchanges", type: "Construction Photo" },
   { id: "atel-2", addedOn: "2026-07-17", media: "atelBridgeDeckRebar", title: "Bridge Deck Reinforcement", category: "bridges", type: "Construction Photo" },

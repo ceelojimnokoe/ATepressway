@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { mediaRegistry } from "@/content/media";
 import { organization, projectFacts, progress } from "@/content/project";
 import { isPlaceholder } from "@/content/placeholder";
@@ -12,20 +13,20 @@ import { AnimatedFigure } from "@/components/ui/animated-figure";
 
 // Approved slide order for the hero backdrop, each paired with a scrim
 // strength tuned from its own measured brightness (see the three
-// .hero-scrim-* tiers in globals.css) — the five photos vary enough in
+// .hero-scrim-* tiers in globals.css) — the four photos vary enough in
 // brightness that one shared value would over- or under-darken some of them.
 //
-// headerImage leads as slide 1 (client instruction, 21 Oct 2026) — it's
-// therefore the hero's LCP image; HeroSlider already keys `priority` and
-// non-lazy loading off array position (i === 0), so leading the array is
-// the whole fix, no change needed in hero-slider.tsx itself. Its scrim
-// tier was measured the same way as the other four: a canvas pixel sample
-// of the bottom-left corner (where the text block sits) gave it a
-// luminance of 115 — matching flowerPotRemodel (115) and close to
-// progTBeam (105), both "light," and well under progAshaiman's "medium"
-// (126) or progUnderpassKm16105A's "strong" (152).
+// headerImage REMOVED (client instruction, 24 Oct 2026) — confirmed by
+// SHA-256 checksum to be the exact same file as atel02.jpg (byte-identical),
+// which the client wants out of the hero and visible in the Gallery instead
+// (see the "headerImage" entry added to galleryItems in content/gallery.ts —
+// same media key, not a second registration, since it's the same file). The
+// media registry entry and the file on disk are both untouched; only this
+// array no longer references it. Slide order reverts to its pre-21-Oct-2026
+// sequence below, and HeroSlider already keys `priority`/non-lazy loading
+// off array position (i === 0), so progAshaiman becomes the LCP image with
+// no change needed in hero-slider.tsx itself.
 const SLIDE_KEYS = [
-  { key: "headerImage", scrimIntensity: "light" },
   { key: "progAshaiman", scrimIntensity: "medium" },
   { key: "progUnderpassKm16105A", scrimIntensity: "strong" },
   { key: "flowerPotRemodel", scrimIntensity: "light" },
@@ -36,6 +37,8 @@ const slides: readonly Slide[] = SLIDE_KEYS.map(({ key, scrimIntensity }) => {
   const asset = mediaRegistry[key];
   return { src: asset.src, alt: asset.alt, width: asset.width, height: asset.height, scrimIntensity };
 });
+
+const coatOfArms = mediaRegistry.coatOfArms;
 
 const overallPct = isPlaceholder(progress.overallPercentComplete) ? 46 : progress.overallPercentComplete;
 
@@ -174,6 +177,26 @@ function HeroContent() {
 export function Hero() {
   return (
     <HeroSlider slides={slides} overlay="scrim" className="border-b border-hairline">
+      {/* Coat of arms (client instruction, 24 Oct 2026) — deliberately its
+          own fixed position on the right of the hero, NOT sharing the
+          title's line. The title's font size at each breakpoint is already
+          tuned to the edge of fitting on one line (see HeroContent below);
+          an inline crest beside it would either force the title smaller
+          than its established floor or shrink the crest to an unreadable
+          icon at 360px. Decoupling it here keeps the crest a consistent,
+          legible size at every breakpoint and the one-line guarantee never
+          at risk. A soft drop-shadow (not a box or dark overlay, which the
+          client dislikes) separates it from the photo. */}
+      <div className="absolute top-4 right-4 z-10 sm:top-6 sm:right-8 lg:top-8">
+        <Image
+          src={coatOfArms.src}
+          alt="Coat of arms of the Republic of Ghana"
+          width={coatOfArms.width}
+          height={coatOfArms.height}
+          className="h-12 w-auto drop-shadow-[0_4px_14px_rgba(0,0,0,0.5)] sm:h-16 lg:h-20"
+        />
+      </div>
+
       <div className="relative z-10 mx-auto flex min-h-[92svh] w-full max-w-5xl flex-col justify-end px-4 pt-24 pb-28 sm:px-8">
         <div className="hero-text-shadow flex w-full max-w-[42rem] flex-col gap-6">
           <HeroContent />
