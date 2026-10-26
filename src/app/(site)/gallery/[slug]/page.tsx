@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { galleryFolders, getGalleryFolder, formatFolderDate } from "@/content/folders";
 import { resolveGalleryCaption } from "@/content/gallery";
 import { GalleryCard } from "@/components/gallery/gallery-tile";
+import { FolderVideo } from "@/components/gallery/folder-video";
 import { GalleryLightbox, type LightboxImage } from "@/components/gallery/gallery-lightbox";
 import { FolderShowMore } from "@/components/gallery/folder-show-more";
 import { SafeBoundary } from "@/components/gallery/safe-boundary";
@@ -28,10 +29,14 @@ export async function generateMetadata({
   const folder = getGalleryFolder(slug);
   if (!folder) return {};
   const count = folder.items.length;
+  const date = formatFolderDate(folder);
+  const photos = `${count} photo${count === 1 ? "" : "s"}${folder.video ? " and a video" : ""}`;
   return buildMetadata({
     path: `/gallery/${folder.slug}`,
     title: `${folder.title} — Gallery — ${BRAND}`,
-    description: `${folder.title} (${formatFolderDate(folder)}) — ${count} photo${count === 1 ? "" : "s"} from the Accra–Tema Motorway and Extensions Project.`,
+    description: date
+      ? `${folder.title} (${date}) — ${photos} from the Accra–Tema Motorway and Extensions Project.`
+      : `${folder.title} — ${folder.description ?? "Archive material."} ${photos} from the Accra–Tema Motorway and Extensions Project.`,
   });
 }
 
@@ -85,11 +90,19 @@ export default async function GalleryFolderPage({
         </Link>
         <div className="flex flex-col gap-2">
           <h1 className="text-heading-3 text-fg sm:text-heading-2">{folder.title}</h1>
+          {folder.description && <p className="text-small text-fg-muted">{folder.description}</p>}
           <p className="figure text-small text-fg-muted">
-            {formatFolderDate(folder)} · {count} photo{count === 1 ? "" : "s"}
+            {[formatFolderDate(folder), `${count} photo${count === 1 ? "" : "s"}`].filter(Boolean).join(" · ")}
           </p>
         </div>
       </div>
+
+      {folder.video && (
+        <div className="flex flex-col gap-3">
+          <FolderVideo video={folder.video} label={folder.video.alt} />
+          <p className="text-caption text-fg-faint tracking-wide uppercase">Video · plays only when you press play</p>
+        </div>
+      )}
 
       <ViewportReveal>
         <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">

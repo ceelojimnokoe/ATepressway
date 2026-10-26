@@ -22,6 +22,18 @@ export interface GalleryEvent {
    */
   readonly date: string;
   readonly precision: DatePrecision;
+  /**
+   * Explicit sort-priority override (client instruction, 26 Oct 2026): when
+   * set, this event's folder always sorts ahead of the named event's
+   * folder, regardless of either one's date — added so the rule "ministry-
+   * led events before the ATEL Board Visit" holds even if a date is later
+   * corrected. Deliberately narrow: it overrides the date comparison for
+   * ONLY this one pair, so every other folder pair (including this event
+   * against anything other than the one it names) still sorts purely by
+   * date — see `compareGalleryFolders` in content/folders.ts, the only
+   * place that reads it.
+   */
+  readonly sortAheadOf?: string;
 }
 
 export const galleryEvents: readonly GalleryEvent[] = [
@@ -36,6 +48,7 @@ export const galleryEvents: readonly GalleryEvent[] = [
     title: "Minister for Roads and Highways inspects ATMP project",
     date: "2026-03-31",
     precision: "day",
+    sortAheadOf: "atel-board-visit-jan2026",
   },
   {
     id: "giif-board-visit-apr2026",
@@ -57,6 +70,7 @@ export const galleryEvents: readonly GalleryEvent[] = [
     title: "Monitoring Team from the Ministry of Finance pays an inspection visit to project site",
     date: "2026-09-22",
     precision: "day",
+    sortAheadOf: "atel-board-visit-jan2026",
   },
   {
     id: "breast-cancer-awareness-oct2026",

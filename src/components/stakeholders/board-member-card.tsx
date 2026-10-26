@@ -12,7 +12,21 @@ import type { OrgPerson } from "@/content/project";
  * image. Cards are nested under their affiliated organisation on
  * /stakeholders, so they are sized to sit inside another card.
  */
-export function BoardMemberCard({ member }: { readonly member: OrgPerson }) {
+export function BoardMemberCard({
+  member,
+  reserveTextHeight,
+}: {
+  readonly member: OrgPerson;
+  /**
+   * Minimum height (px) for the name/role block below the photo — set only
+   * where two or more of these cards sit side by side and their text can
+   * wrap to a different number of lines (e.g. the Contracting Authority's
+   * two ministers), so a shorter name/role never leaves that card shorter
+   * than its neighbour. Unset everywhere else; the normal grids of many
+   * same-shaped cards don't need it.
+   */
+  readonly reserveTextHeight?: number;
+}) {
   return (
     <div className="flex flex-col gap-3">
       <div className="relative aspect-square w-full overflow-hidden border border-hairline bg-surface-sunk">
@@ -40,7 +54,7 @@ export function BoardMemberCard({ member }: { readonly member: OrgPerson }) {
           </span>
         )}
       </div>
-      <div className="flex flex-col gap-0.5">
+      <div className="flex flex-col gap-0.5" style={reserveTextHeight ? { minHeight: reserveTextHeight } : undefined}>
         <span className="text-small text-fg">{member.name}</span>
         <span className="text-caption text-fg-muted">{member.role}</span>
       </div>

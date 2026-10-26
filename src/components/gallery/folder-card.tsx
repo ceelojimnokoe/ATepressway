@@ -32,6 +32,7 @@ export function FolderCard({ folder }: { readonly folder: ResolvedGalleryFolder 
   const [hovered, setHovered] = useState(false);
   const reducedMotion = useReducedMotion();
   const count = folder.items.length;
+  const date = formatFolderDate(folder);
   const canPreview = !reducedMotion && folder.previews.length > 0;
   const montage = [folder.cover, ...folder.previews].slice(0, 4);
 
@@ -95,7 +96,7 @@ export function FolderCard({ folder }: { readonly folder: ResolvedGalleryFolder 
         <span className="text-small text-fg transition-colors duration-150 ease-out group-hover:text-accent">
           {folder.title}
         </span>
-        <span className="text-caption text-fg-faint tracking-wide uppercase">{formatFolderDate(folder)}</span>
+        {date && <span className="text-caption text-fg-faint tracking-wide uppercase">{date}</span>}
       </div>
     </Link>
   );

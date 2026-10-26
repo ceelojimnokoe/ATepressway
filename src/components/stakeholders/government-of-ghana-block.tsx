@@ -104,10 +104,21 @@ export function GovernmentOfGhanaBlock({
             <BoardMemberCard member={contractingAuthorityOfficeHolders[0]} />
           </div>
           {contractingAuthorityOfficeHolders.length > 1 && (
-            <ul className="mx-auto flex w-full max-w-xl flex-col items-center gap-5 sm:flex-row sm:justify-center">
+            // items-start (not items-center) — client-reported, 26 Oct 2026:
+            // the two ministers' names/roles don't always wrap to the same
+            // number of lines (today, "Minister for Roads & Highways" runs
+            // longer than "Minister for Finance"), which made their card
+            // heights differ; items-center then centred each card within
+            // the row and put the two PHOTOS out of vertical alignment by
+            // half that difference — confirmed by measuring both images'
+            // top offset before this fix, not assumed. items-start pins
+            // both photos to the same top edge regardless of text length,
+            // and reserveTextHeight below (BoardMemberCard) keeps the two
+            // cards the same overall height too.
+            <ul className="mx-auto flex w-full max-w-xl flex-col items-center gap-5 sm:flex-row sm:items-start sm:justify-center">
               {contractingAuthorityOfficeHolders.slice(1).map((person) => (
                 <li key={person.name} className="w-full max-w-[12rem] sm:max-w-[14rem]">
-                  <BoardMemberCard member={person} />
+                  <BoardMemberCard member={person} reserveTextHeight={80} />
                 </li>
               ))}
             </ul>

@@ -7,7 +7,7 @@
  * renders must never be presented as as-built photographs.
  */
 
-export type MediaKind = "photo" | "render" | "drawing" | "logo" | "map";
+export type MediaKind = "photo" | "render" | "drawing" | "logo" | "map" | "video";
 
 export interface RegisteredMediaAsset {
   readonly src: string;
@@ -19,6 +19,10 @@ export interface RegisteredMediaAsset {
   readonly onDisk: boolean;
   /** Confirmed as the correct, presentable asset. */
   readonly verified: boolean;
+  /** Video only: the still shown before play. Nothing else is fetched until the visitor presses play. */
+  readonly poster?: { readonly src: string; readonly width: number; readonly height: number };
+  /** Stated on the asset for the record; gallery.ts's per-item flag is what the sliders actually read. */
+  readonly excludeFromSliders?: boolean;
 }
 
 export const mediaRegistry = {
@@ -1410,6 +1414,278 @@ export const mediaRegistry = {
     verified: true,
   },
 
+  // --- Archives (client-supplied, 26 Oct 2026) ------------------------------
+  // 28 optimised photographs (max 2400px long edge, EXIF/GPS stripped) from
+  // public/images/archives/, plus the video. Capture dates are not shown
+  // anywhere; alt text describes only what is visible in each frame.
+  archive240103135531: {
+    src: "/images/archives/20240103_135531.jpg",
+    alt: "An orange excavator working beside a bank of cleared earth and debris, with trees behind",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240103141515: {
+    src: "/images/archives/20240103_141515.jpg",
+    alt: "An unpaved strip of earth beside a road, with a billboard and trees in the distance",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240104111804: {
+    src: "/images/archives/20240104_111804.jpg",
+    alt: "Two people in high-visibility vests and white hard hats standing on bare earth, with a pylon and buildings behind them",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240104111908: {
+    src: "/images/archives/20240104_111908.jpg",
+    alt: "A yellow motor grader seen from the front on a dirt surface beside an existing paved road",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240104111922: {
+    src: "/images/archives/20240104_111922.jpg",
+    alt: "A yellow motor grader working along a strip of graded dirt",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240104114009: {
+    src: "/images/archives/20240104_114009.jpg",
+    alt: "Close view of a joint between two concrete road slabs, with cracked and worn edges",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240105144103: {
+    src: "/images/archives/20240105_144103.jpg",
+    alt: "Bare earth marked with machine tracks and scattered debris",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240105151028: {
+    src: "/images/archives/20240105_151028.jpg",
+    alt: "An orange excavator beside a mound of cleared vegetation and soil, with a pylon behind, over tracked ground",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240106102201: {
+    src: "/images/archives/20240106_102201.jpg",
+    alt: "A dirt track pressed with heavy tyre and track marks, running between cleared ground and scrub",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240106113941: {
+    src: "/images/archives/20240106_113941.jpg",
+    alt: "A line of yellow rollers and excavators parked in a row on gravelly ground",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240106114023: {
+    src: "/images/archives/20240106_114023.jpg",
+    alt: "A row of white truck-mounted cranes parked on gravelly ground beneath a cloudy sky",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240106114135: {
+    src: "/images/archives/20240106_114135.jpg",
+    alt: "The front of a yellow bulldozer on gravelly ground, with other machinery behind",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240106114148: {
+    src: "/images/archives/20240106_114148.jpg",
+    alt: "A row of yellow and orange machines with large buckets parked along a gravel strip",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240108110858: {
+    src: "/images/archives/20240108_110858.jpg",
+    alt: "Bare, graded earth with deep tyre tracks stretching toward roadside buildings and pylons",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240111161851: {
+    src: "/images/archives/20240111_161851.jpg",
+    alt: "Close-up self-portrait of a person in a white hard hat and high-visibility vest, with a bank of exposed soil and a yellow machine behind",
+    width: 1800,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240113111239: {
+    src: "/images/archives/20240113_111239.jpg",
+    alt: "A wide strip of cleared reddish earth with repeated track marks leading into the distance",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240116083042: {
+    src: "/images/archives/20240116_083042.jpg",
+    alt: "A paving machine at the end of a strip of dark asphalt, beside a bare earth shoulder",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240117103842: {
+    src: "/images/archives/20240117_103842.jpg",
+    alt: "Two yellow silos on a scaffold frame beside a storage shed",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240117103935: {
+    src: "/images/archives/20240117_103935.jpg",
+    alt: "Two yellow silos on a steel frame beside a long open-sided storage shed, under an overcast sky",
+    width: 2400,
+    height: 1350,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240120112626: {
+    src: "/images/archives/20240120_112626.jpg",
+    alt: "A tall corrugated metal wall running alongside bare earth",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240123120240: {
+    src: "/images/archives/20240123_120240.jpg",
+    alt: "Two people in high-visibility vests, one wearing a hard hat, working with a measuring tape across an open grassy field",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240127112127: {
+    src: "/images/archives/20240127_112127.jpg",
+    alt: "A bare earth strip beside a gravel-surfaced edge, running along a road",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240127112640: {
+    src: "/images/archives/20240127_112640.jpg",
+    alt: "A concrete culvert with several openings passing beneath a road, with water and litter below",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240229095807: {
+    src: "/images/archives/20240229_095807.jpg",
+    alt: "Black pipe lengths stacked on open sandy ground",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240229100456: {
+    src: "/images/archives/20240229_100456.jpg",
+    alt: "A narrow excavated trench in the ground, with an excavator and mounds of soil in the background",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240229100518: {
+    src: "/images/archives/20240229_100518.jpg",
+    alt: "A long black pipe on the ground beside a trench, with a vehicle fitted with a crane arm behind it",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240229100612: {
+    src: "/images/archives/20240229_100612.jpg",
+    alt: "A long black pipe with a blue stripe laid on sandy soil beside an excavated trench",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  archive240229101932: {
+    src: "/images/archives/20240229_101932.jpg",
+    alt: "A green welded-wire mesh fence beside a red-walled building, over disturbed earth",
+    width: 1350,
+    height: 2400,
+    kind: "photo",
+    onDisk: true,
+    verified: true,
+  },
+  // Archives video (client-supplied, 26 Oct 2026 - original 1920x1080, 126 MB,
+  // re-encoded to 720p H.264 for the web). `excludeFromSliders` is stated
+  // here for the record: the video is not a GalleryItem and so cannot reach
+  // The Journey or the hero in the first place. It has an audio track;
+  // whether it carries speech is unconfirmed, so captions may be needed.
+  archiveSodCuttingVideo: {
+    src: "/videos/sod-cutting.mp4",
+    alt: "Video of a sod-cutting event for the motorway expansion project: officials in hard hats and vests gathered around project drawings, and a vehicle convoy arriving on site",
+    width: 1280,
+    height: 720,
+    kind: "video",
+    onDisk: true,
+    verified: true,
+    excludeFromSliders: true,
+    poster: { src: "/videos/sod-cutting-poster.webp", width: 1280, height: 720 },
+  },
 } as const satisfies Record<string, RegisteredMediaAsset>;
 
 export type MediaKey = keyof typeof mediaRegistry;

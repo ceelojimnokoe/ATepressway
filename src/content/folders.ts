@@ -13,7 +13,7 @@
  * change here to show up in the matching folder.
  */
 
-import { type MediaKey } from "./media";
+import { mediaRegistry, type MediaKey, type RegisteredMediaAsset } from "./media";
 import {
   galleryCategories,
   galleryItems,
@@ -25,11 +25,12 @@ import { galleryEventsById, formatEventDate, type DatePrecision, type GalleryEve
 
 const categoryLabel = new Map(galleryCategories.map((category) => [category.id, category.label]));
 
-export type GalleryFolderGroup = "visits-events" | "construction-design";
+export type GalleryFolderGroup = "visits-events" | "construction-design" | "archives";
 
 export const folderGroupLabel: Record<GalleryFolderGroup, string> = {
   "visits-events": "Visits & Events",
   "construction-design": "Construction & Design",
+  archives: "Archives",
 };
 
 type FolderSource =
@@ -44,6 +45,23 @@ export interface GalleryFolderDef {
   readonly coverMedia?: MediaKey;
   /** Up to 3 explicit hover-preview images. Falls back to the next images after the cover if unset. */
   readonly previewMedia?: readonly MediaKey[];
+  /**
+   * When true, this folder always sorts after every non-pinned folder,
+   * regardless of date (used for Archives, whose capture dates aren't
+   * known — see the 26 Oct 2026 report). Two pinned folders would fall
+   * back to date order between themselves; there's only one today.
+   */
+  readonly pinLast?: boolean;
+  /**
+   * True when the folder's capture dates are unknown: no date, month or year
+   * is shown for it (card, page header, metadata), and `date` is used for
+   * nothing but the fallback sort between two non-pinned folders.
+   */
+  readonly undated?: boolean;
+  /** One-line description shown under the folder title and used in metadata. */
+  readonly description?: string;
+  /** A video featured at the top of the folder page. Not a gallery item: it never counts as a photo and never reaches a slider. */
+  readonly video?: MediaKey;
 }
 
 export const galleryFolderDefs: readonly GalleryFolderDef[] = [
@@ -68,6 +86,23 @@ export const galleryFolderDefs: readonly GalleryFolderDef[] = [
   { slug: "earthworks", group: "construction-design", source: { kind: "category", categoryId: "earthworks" } },
   { slug: "proposed-designs", group: "construction-design", source: { kind: "category", categoryId: "proposed-designs" } },
   { slug: "corridor-maps", group: "construction-design", source: { kind: "category", categoryId: "corridor-maps" } },
+
+  // --- Archives (client instruction, 26 Oct 2026) -------------------------
+  // Pinned to the very end and undated: the capture dates are unknown, so
+  // nothing about it may imply one. The description is a neutral stand-in,
+  // PENDING THE CLIENT'S OWN WORDING. Cover is the one landscape frame in
+  // the set (a wide view of the batching plant), since a portrait photo
+  // crops badly into the 4:3 card.
+  {
+    slug: "archives",
+    group: "archives",
+    source: { kind: "category", categoryId: "archives" },
+    coverMedia: "archive240117103935",
+    pinLast: true,
+    undated: true,
+    description: "Early images from the start of the project.",
+    video: "archiveSodCuttingVideo",
+  },
 ] as const;
 
 export type GalleryFolderSlug = (typeof galleryFolderDefs)[number]["slug"];
@@ -77,12 +112,16 @@ export interface ResolvedGalleryFolder {
   readonly slug: string;
   readonly title: string;
   readonly group: GalleryFolderGroup;
+  /** Set only for an event-sourced folder — read by compareGalleryFolders for the sortAheadOf rule. */
+  readonly eventId?: GalleryEventId;
   readonly date: string;
   readonly precision: DatePrecision;
   /** Filename-ascending — the folder's own display order, independent of the flat Gallery's old newest-first sort. */
   readonly items: readonly ResolvedGalleryItem[];
   readonly cover: ResolvedGalleryItem;
   readonly previews: readonly ResolvedGalleryItem[];
+  readonly description?: string;
+  readonly video?: RegisteredMediaAsset;
 }
 
 /** Base filename for natural (numeric-aware) sort — "atel-images2.webp" before "atel-images10.webp". */
@@ -134,19 +173,59 @@ export function resolveGalleryFolder(def: GalleryFolderDef): ResolvedGalleryFold
         .filter((r): r is ResolvedGalleryItem => !!r))
     : items.filter((r) => r.item.id !== cover.item.id).slice(0, 3);
 
-  return { def, slug: def.slug, title, group: def.group, date, precision, items, cover, previews };
+  return {
+    def,
+    slug: def.slug,
+    title,
+    group: def.group,
+    eventId: def.source.kind === "event" ? def.source.eventId : undefined,
+    date,
+    precision,
+    items,
+    cover,
+    previews,
+    description: def.description,
+    video: def.video ? mediaRegistry[def.video] : undefined,
+  };
+}
+
+/**
+ * Newest-first by date, with two explicit overrides read from the folder
+ * data rather than hardcoded here:
+ *  - `def.pinLast` (Archives) always sorts after every non-pinned folder.
+ *  - an event's `sortAheadOf` (content/events.ts — currently the Minister
+ *    for Roads and Highways inspection and the Ministry of Finance
+ *    monitoring visit, both set to outrank the ATEL Board Visit) wins over
+ *    date for that ONE named pair only; every other pair, including those
+ *    same two events against anything else, still sorts purely by date.
+ */
+function compareGalleryFolders(a: ResolvedGalleryFolder, b: ResolvedGalleryFolder): number {
+  const aPinned = a.def.pinLast ?? false;
+  const bPinned = b.def.pinLast ?? false;
+  if (aPinned !== bPinned) return aPinned ? 1 : -1;
+
+  if (a.eventId && b.eventId) {
+    const aEvent = galleryEventsById.get(a.eventId);
+    const bEvent = galleryEventsById.get(b.eventId);
+    if (aEvent?.sortAheadOf === bEvent?.id) return -1;
+    if (bEvent?.sortAheadOf === aEvent?.id) return 1;
+  }
+
+  return b.date.localeCompare(a.date);
 }
 
 /** Every folder that actually has images, newest-first. The one list both the index and `generateStaticParams` read. */
 export const galleryFolders: readonly ResolvedGalleryFolder[] = galleryFolderDefs
   .map(resolveGalleryFolder)
   .filter((folder): folder is ResolvedGalleryFolder => folder !== null)
-  .sort((a, b) => b.date.localeCompare(a.date));
+  .sort(compareGalleryFolders);
 
 export function getGalleryFolder(slug: string): ResolvedGalleryFolder | undefined {
   return galleryFolders.find((folder) => folder.slug === slug);
 }
 
-export function formatFolderDate(folder: ResolvedGalleryFolder): string {
+/** The folder's date line, or null for an undated folder (Archives) — callers must render nothing in that case. */
+export function formatFolderDate(folder: ResolvedGalleryFolder): string | null {
+  if (folder.def.undated) return null;
   return formatEventDate({ id: folder.slug, title: folder.title, date: folder.date, precision: folder.precision });
 }

@@ -28,6 +28,7 @@ export const galleryCategories: readonly GalleryCategory[] = [
   { id: "earthworks", label: "Earthworks" },
   { id: "proposed-designs", label: "Proposed Designs" },
   { id: "corridor-maps", label: "Corridor and Maps" },
+  { id: "archives", label: "Archives" },
   { id: "visits-events", label: "Visits & Events" },
 ] as const;
 
@@ -85,6 +86,14 @@ export interface GalleryItem {
    */
   readonly excludeFromSliders?: boolean;
 }
+
+/**
+ * Archives photos carry the day they were added to the site, like every
+ * other non-event item. Their capture dates are unknown to the client and
+ * are deliberately never displayed; the Archives folder is pinned last by
+ * `pinLast` in content/folders.ts, not by this date.
+ */
+const ARCHIVE_ADDED_ON = "2026-10-26";
 
 export const galleryItems: readonly GalleryItem[] = [
   // --- Visits & Events (client instruction, 23 Oct 2026) ---------------------
@@ -253,6 +262,35 @@ export const galleryItems: readonly GalleryItem[] = [
   { id: "prog-tl-footing", addedOn: "2026-08-28", media: "teshieLinkFootingWall", title: "Teshie Link Interchange — Footing Wall", category: "interchanges", type: "Construction Photo" },
   { id: "prog-c18-footing", addedOn: "2026-08-28", media: "comm18FootingWall", title: "Community 18 Interchange — Footing Wall", category: "interchanges", type: "Construction Photo" },
   { id: "prog-c18-underpass", addedOn: "2026-08-28", media: "comm18Underpass", title: "Community 18 Interchange — Underpass", category: "interchanges", type: "Construction Photo" },
+  // --- Archives (client instruction, 26 Oct 2026) ---------------------------
+  { id: "archive-20240103_135531", addedOn: ARCHIVE_ADDED_ON, media: "archive240103135531", title: "Excavator Beside Cleared Ground", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240103_141515", addedOn: ARCHIVE_ADDED_ON, media: "archive240103141515", title: "Earth Strip Beside a Road", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240104_111804", addedOn: ARCHIVE_ADDED_ON, media: "archive240104111804", title: "Two People in Hard Hats and Vests", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240104_111908", addedOn: ARCHIVE_ADDED_ON, media: "archive240104111908", title: "Motor Grader on Dirt Surface", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240104_111922", addedOn: ARCHIVE_ADDED_ON, media: "archive240104111922", title: "Motor Grader on Graded Earth", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240104_114009", addedOn: ARCHIVE_ADDED_ON, media: "archive240104114009", title: "Joint Between Concrete Road Slabs", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240105_144103", addedOn: ARCHIVE_ADDED_ON, media: "archive240105144103", title: "Earth Marked by Machine Tracks", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240105_151028", addedOn: ARCHIVE_ADDED_ON, media: "archive240105151028", title: "Excavator Beside Cleared Vegetation", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240106_102201", addedOn: ARCHIVE_ADDED_ON, media: "archive240106102201", title: "Dirt Track with Heavy Tyre Marks", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240106_113941", addedOn: ARCHIVE_ADDED_ON, media: "archive240106113941", title: "Rollers and Excavators Parked in a Row", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240106_114023", addedOn: ARCHIVE_ADDED_ON, media: "archive240106114023", title: "Truck-Mounted Cranes Parked in a Row", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240106_114135", addedOn: ARCHIVE_ADDED_ON, media: "archive240106114135", title: "Bulldozer at Rest", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240106_114148", addedOn: ARCHIVE_ADDED_ON, media: "archive240106114148", title: "Machines with Large Buckets in a Row", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240108_110858", addedOn: ARCHIVE_ADDED_ON, media: "archive240108110858", title: "Graded Earth with Deep Tyre Tracks", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240111_161851", addedOn: ARCHIVE_ADDED_ON, media: "archive240111161851", title: "Self-Portrait in Hard Hat and Vest", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240113_111239", addedOn: ARCHIVE_ADDED_ON, media: "archive240113111239", title: "Cleared Strip of Reddish Earth", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240116_083042", addedOn: ARCHIVE_ADDED_ON, media: "archive240116083042", title: "Paving Machine Beside Fresh Asphalt", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240117_103842", addedOn: ARCHIVE_ADDED_ON, media: "archive240117103842", title: "Two Yellow Silos on a Scaffold Frame", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240117_103935", addedOn: ARCHIVE_ADDED_ON, media: "archive240117103935", title: "Yellow Silos Beside a Long Storage Shed", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240120_112626", addedOn: ARCHIVE_ADDED_ON, media: "archive240120112626", title: "Metal Wall Beside Bare Earth", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240123_120240", addedOn: ARCHIVE_ADDED_ON, media: "archive240123120240", title: "Two People Measuring Across a Field", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240127_112127", addedOn: ARCHIVE_ADDED_ON, media: "archive240127112127", title: "Earth Strip Beside a Gravel Edge", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240127_112640", addedOn: ARCHIVE_ADDED_ON, media: "archive240127112640", title: "Concrete Culvert Beneath a Road", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240229_095807", addedOn: ARCHIVE_ADDED_ON, media: "archive240229095807", title: "Pipe Lengths on Open Ground", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240229_100456", addedOn: ARCHIVE_ADDED_ON, media: "archive240229100456", title: "Narrow Excavated Trench", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240229_100518", addedOn: ARCHIVE_ADDED_ON, media: "archive240229100518", title: "Pipe Beside a Trench", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240229_100612", addedOn: ARCHIVE_ADDED_ON, media: "archive240229100612", title: "Black Pipe Beside a Trench", category: "archives", type: "Construction Photo", excludeFromSliders: true },
+  { id: "archive-20240229_101932", addedOn: ARCHIVE_ADDED_ON, media: "archive240229101932", title: "Green Mesh Fence Beside a Building", category: "archives", type: "Construction Photo", excludeFromSliders: true },
 ] as const;
 
 export interface ResolvedGalleryItem {

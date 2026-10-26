@@ -8,7 +8,7 @@ import { routes } from "@/content/seo";
 
 export const metadata: Metadata = buildMetadata(routes.gallery);
 
-const GROUP_ORDER: readonly GalleryFolderGroup[] = ["visits-events", "construction-design"];
+const GROUP_ORDER: readonly GalleryFolderGroup[] = ["visits-events", "construction-design", "archives"];
 
 /**
  * The Gallery index — folder cards, grouped, replacing the old flat

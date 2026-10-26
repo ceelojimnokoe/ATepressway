@@ -27,6 +27,9 @@ export function GalleryCard({
 }) {
   const asset = mediaRegistry[item.media];
   const caption = resolveGalleryCaption(item);
+  // A portrait photo cropped to 16:10 would show only its middle band, so
+  // it gets a 3:4 box instead (still reserved up front — no layout shift).
+  const portrait = asset.height > asset.width;
   return (
     <figure className="flex flex-col gap-3">
       {/* The button is the block-level wrapper; the aspect box is the DIRECT
@@ -39,7 +42,7 @@ export function GalleryCard({
         aria-label={`View larger: ${item.title}`}
         className="block w-full cursor-zoom-in overflow-hidden border border-hairline bg-surface-sunk focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
       >
-        <div className="relative aspect-[16/10] w-full overflow-hidden">
+        <div className={`relative w-full overflow-hidden ${portrait ? "aspect-[3/4]" : "aspect-[16/10]"}`}>
           <Image src={asset.src} alt={asset.alt} fill sizes={TILE_SIZES} loading="lazy" className="object-cover" />
         </div>
       </button>
