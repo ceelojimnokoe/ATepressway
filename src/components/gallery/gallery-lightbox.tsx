@@ -23,6 +23,24 @@ interface GalleryLightboxProps {
   readonly rootId?: string;
 }
 
+/** Widths the old image optimizer offered (Next's default device + image sizes). */
+const LEGACY_WIDTHS = [16, 32, 48, 64, 96, 128, 256, 384, 640, 750, 828, 1080, 1200, 1920, 2048, 3840];
+
+/**
+ * The lightbox image has always been shown at its photo's own pixel size
+ * scaled to the `sizes="90vw"` slot: a small photo is never blown up, a big
+ * one fills the stage (then max-w-full and the 78vh height cap apply). This
+ * reproduces that from the registry width alone, so it no longer matters
+ * which pre-built file loads. Only called while the lightbox is open, i.e.
+ * in the browser.
+ */
+function lightboxCssWidth(imageWidth: number): number {
+  const slot = window.innerWidth * 0.9;
+  const dpr = window.devicePixelRatio || 1;
+  const candidate = LEGACY_WIDTHS.find((w) => w >= slot * dpr) ?? LEGACY_WIDTHS[LEGACY_WIDTHS.length - 1];
+  return Math.round((Math.min(imageWidth, candidate) * slot) / candidate);
+}
+
 const FOCUSABLE = 'button:not([disabled]), [href], [tabindex]:not([tabindex="-1"])';
 
 /**
@@ -179,7 +197,11 @@ export function GalleryLightbox({ images, rootId }: GalleryLightboxProps) {
             width={current.width}
             height={current.height}
             sizes="90vw"
-            className="h-auto max-h-[78vh] w-auto max-w-full object-contain"
+            // Display size is derived from the registry's width/height and the
+            // viewport, never from which derivative file the browser picked:
+            // the same size the lightbox always had (see lightboxCssWidth).
+            style={{ width: `min(100%, calc(78vh * ${current.width / current.height}), ${lightboxCssWidth(current.width)}px)`, height: "auto" }}
+            className="max-w-full object-contain"
           />
           <figcaption className="text-small text-fg-muted">{current.caption}</figcaption>
         </figure>

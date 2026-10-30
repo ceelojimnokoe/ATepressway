@@ -44,7 +44,7 @@ public/        → files served as-is at the site's root
 
 **`src/styles/globals.css`** — every design value the site uses, as CSS custom properties: colors, spacing, the type scale, corner radius. This is where "design tokens" live — see [§1.3](#13-the-core-pattern-content-tokens-motion) for why that matters.
 
-**`public/`** — files served exactly as they are, at the site's root URL. `public/images/` holds the real project photography and logos referenced from `media.ts`. `public/media/` holds video/img subfolders for heavier media.
+**`public/`** — files served exactly as they are, at the site's root URL. `public/images/` holds the real project photography and logos referenced from `media.ts`. `public/videos/` holds the archive video. Unused originals (including the old `media/` samples) live in `assets-src/`, outside the deploy.
 
 > **Observation, not a fix (per your instructions, this is a note only):** `public/info/` currently holds six source documents — FAQ packs, a text-corrections doc, staff CVs, a progress-pictures doc — as raw `.xlsx`/`.docx` files. Anything under `public/` is served at a public URL once deployed (e.g. `yoursite.com/info/Ing%20Ben%20Sackey.docx` would work today). These look like internal reference material that ended up in the servable folder rather than being excluded from the deploy — worth knowing if you ever wonder why a file you thought was private shows up reachable.
 

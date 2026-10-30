@@ -3,7 +3,7 @@
  * SIGN-OFF.
  *
  * ⚠ Everything in this file is a first draft, built 20 Sept 2026 from the
- * client's "ATEL Website Text Corrections -NEW.docx" (public/info/), from the
+ * client's "ATEL Website Text Corrections -NEW.docx" (docs-src/info/), from the
  * "Our Approach" heading downwards, so the client has something concrete to
  * react to. The client will supply FINAL APPROVED COPY at their next meeting;
  * when it arrives, replace the text below and change `status` to "approved".

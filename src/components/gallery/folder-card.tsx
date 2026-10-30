@@ -8,7 +8,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { duration, easing } from "@/lib/motion";
 import { formatFolderDate, type ResolvedGalleryFolder } from "@/content/folders";
 
-const COVER_SIZES = "(min-width: 1024px) 31vw, (min-width: 640px) 46vw, 90vw";
+const COVER_SIZES = "(min-width: 1216px) 340px, (min-width: 1024px) 29vw, (min-width: 640px) 44vw, 91vw";
 const PREVIEW_SIZES = "18vw";
 
 /**

@@ -142,9 +142,9 @@ export function HeroSlider({ slides, className, overlay = "none", children }: He
               alt={slide.alt}
               fill
               priority={i === 0}
+              fetchPriority={i === 0 ? "high" : undefined}
               loading={i === 0 ? undefined : "lazy"}
               sizes="100vw"
-              quality={i === 0 ? 70 : 65}
               className={cn(
                 "object-cover",
                 i === index && "motion-safe:animate-[ken-burns_7s_ease-out_forwards]",

@@ -37,7 +37,7 @@ export function DesignSectionCard({ section, reverse, chainage, percent, asOf }:
             src={asset.src}
             alt={asset.alt}
             fill
-            sizes="(min-width: 768px) 58vw, 100vw"
+            sizes="(min-width: 1280px) 605px, (min-width: 768px) 58vw, 100vw"
             loading="lazy"
             className="object-cover"
           />

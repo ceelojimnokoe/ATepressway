@@ -2,7 +2,7 @@ import Image from "next/image";
 import { mediaRegistry } from "@/content/media";
 import { resolveGalleryCaption, type GalleryItem } from "@/content/gallery";
 
-const TILE_SIZES = "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw";
+const TILE_SIZES = "(min-width: 1216px) 340px, (min-width: 1024px) 29vw, (min-width: 640px) 44vw, 91vw";
 
 /**
  * Server-rendered gallery card. The image is lazy-loaded with a reserved
@@ -14,6 +14,7 @@ export function GalleryCard({
   item,
   lightboxIndex,
   showHeading = true,
+  isLcp = false,
 }: {
   readonly item: GalleryItem;
   readonly lightboxIndex: number;
@@ -24,6 +25,8 @@ export function GalleryCard({
    * line (category · date) still renders, since that's per-photo useful.
    */
   readonly showHeading?: boolean;
+  /** True for the one tile that is the page's Largest Contentful Paint: fetched eagerly at high priority. Every other tile stays lazy. */
+  readonly isLcp?: boolean;
 }) {
   const asset = mediaRegistry[item.media];
   const caption = resolveGalleryCaption(item);
@@ -43,7 +46,16 @@ export function GalleryCard({
         className="block w-full cursor-zoom-in overflow-hidden border border-hairline bg-surface-sunk focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent"
       >
         <div className={`relative w-full overflow-hidden ${portrait ? "aspect-[3/4]" : "aspect-[16/10]"}`}>
-          <Image src={asset.src} alt={asset.alt} fill sizes={TILE_SIZES} loading="lazy" className="object-cover" />
+          <Image
+            src={asset.src}
+            alt={asset.alt}
+            fill
+            sizes={TILE_SIZES}
+            loading={isLcp ? "eager" : "lazy"}
+            fetchPriority={isLcp ? "high" : undefined}
+            decoding="async"
+            className="object-cover"
+          />
         </div>
       </button>
       <figcaption className="flex flex-col gap-1">

@@ -56,8 +56,8 @@ export function PageHero({
         alt={asset.alt}
         fill
         priority={priority}
+        fetchPriority={priority ? "high" : undefined}
         sizes="100vw"
-        quality={70}
         className={cn("-z-10 object-cover", !objectPosition && "object-center")}
         style={objectPosition ? { objectPosition } : undefined}
       />

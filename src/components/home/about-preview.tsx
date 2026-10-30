@@ -43,7 +43,7 @@ export function AboutPreview() {
               alt=""
               width={logo.width}
               height={logo.height}
-              sizes="(min-width: 1024px) 25vw, 60vw"
+              sizes="(min-width: 1280px) 195px, (min-width: 1024px) 25vw, 60vw"
               className="h-auto w-full max-w-[12rem] object-contain"
             />
           </div>

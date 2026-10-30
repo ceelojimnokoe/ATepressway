@@ -18,6 +18,10 @@ const clashDisplay = localFont({
   variable: "--font-clash-display",
   weight: "200 700",
   display: "swap",
+  // Fallback metrics are tuned in globals.css (see "font fallbacks") so the
+  // swap to the real face doesn't re-wrap text and shift the page.
+  adjustFontFallback: false,
+  fallback: ["Clash Display Fallback"],
 });
 
 /**
@@ -30,12 +34,16 @@ const generalSans = localFont({
   src: [{ path: "./fonts/GeneralSans-Variable.woff2", style: "normal", weight: "200 700" }],
   variable: "--font-general-sans",
   display: "swap",
+  adjustFontFallback: false,
+  fallback: ["General Sans Fallback"],
 });
 
 /** Unchanged: numbers need a true mono face with tabular figures. */
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  adjustFontFallback: false,
+  fallback: ["Geist Mono Fallback"],
 });
 
 /** Unchanged: the one serif moment, still used exactly once. */
