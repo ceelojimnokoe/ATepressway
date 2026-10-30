@@ -8,8 +8,9 @@ import type { NextConfig } from "next";
  * script and inline styles (and a few data-driven inline styles here,
  * e.g. the gallery aspect ratios and the corridor handle transform); a
  * nonce-based policy would force every page to render dynamically, which
- * isn't worth it for a fully static build. `data:`/`blob:` on img-src
- * cover next/image's optimizer output.
+ * isn't worth it for a fully static build. `data:` covers the generated
+ * inline icons and Open Graph image; `blob:` remains available for
+ * browser-created images.
  *
  * `'unsafe-eval'` is added in development ONLY — Next's dev/HMR runtime
  * evaluates code via eval(), so without it the dev server can't hydrate
@@ -59,8 +60,8 @@ const nextConfig: NextConfig = {
     "*": ["./node_modules/@img/**", "./node_modules/sharp/**", "./node_modules/.pnpm/@img*/**", "./node_modules/.pnpm/sharp*/**"],
   },
   images: {
-    // Every image is a pre-built static WebP in /public/img (see
-    // src/lib/image-loader.ts and docs/IMAGES.md) - nothing goes through
+    // Every image is a pre-built static WebP in /public/img (with AVIF sources
+    // selected by StaticImage; see docs/IMAGES.md) - nothing goes through
     // Next's /_next/image optimizer, so this works on any host.
     loader: "custom",
     loaderFile: "./src/lib/image-loader.ts",

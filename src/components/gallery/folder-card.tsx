@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { PointerEvent } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
 import { duration, easing } from "@/lib/motion";

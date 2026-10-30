@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import { usePathname } from "next/navigation";
 import { organization } from "@/content/project";
 import { mediaRegistry } from "@/content/media";

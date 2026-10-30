@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import { JsonLd } from "@/components/seo/json-ld";

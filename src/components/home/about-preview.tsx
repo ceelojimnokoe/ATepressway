@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import { mediaRegistry } from "@/content/media";
 import { aboutIntro } from "@/content/about";
 // visionMission intentionally not imported — its preview grid below is

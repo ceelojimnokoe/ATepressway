@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import type { CSSProperties } from "react";
 import { useReveal } from "@/hooks/use-reveal";
 import { cn } from "@/lib/cn";

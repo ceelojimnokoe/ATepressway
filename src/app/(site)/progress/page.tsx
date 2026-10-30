@@ -6,7 +6,7 @@ import { StructureProgress } from "@/components/progress/structure-progress";
 import { MilestoneTimeline } from "@/components/progress/milestone-timeline";
 import { BulletinFeed } from "@/components/progress/bulletin-feed";
 import { ThisMonthAndNext } from "@/components/progress/this-month-and-next";
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import {
   projectFacts,
   progress,

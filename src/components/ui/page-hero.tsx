@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import { mediaRegistry, type MediaKey } from "@/content/media";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";

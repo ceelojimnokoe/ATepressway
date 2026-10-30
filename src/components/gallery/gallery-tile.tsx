@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import { mediaRegistry } from "@/content/media";
 import { resolveGalleryCaption, type GalleryItem } from "@/content/gallery";
 

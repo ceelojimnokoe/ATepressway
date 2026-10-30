@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 
 export interface LightboxImage {
   readonly src: string;

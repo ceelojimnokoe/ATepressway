@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import type { MonthlyUpdate, ProgressHistoryEntry } from "@/content/project";
 import { mediaRegistry } from "@/content/media";
 import { nextMonthLabel } from "@/lib/format";

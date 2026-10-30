@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import { organization, contact } from "@/content/project";
 import { NewsletterSignup } from "./newsletter-signup";
 import { allNavPages } from "@/content/navigation";

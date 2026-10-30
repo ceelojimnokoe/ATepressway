@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import type { OrgPerson } from "@/content/project";
 
 /**

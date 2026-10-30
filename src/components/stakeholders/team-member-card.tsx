@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import type { TeamMember } from "@/content/project";
 
 type CardVariant = "compact" | "feature";
