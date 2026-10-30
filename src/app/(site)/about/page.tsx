@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import { PageHero } from "@/components/ui/page-hero";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import { BoardMemberCard } from "@/components/stakeholders/board-member-card";
@@ -49,7 +49,7 @@ export default function AboutPage() {
               alt={`${organization.name} logo`}
               width={logo.width}
               height={logo.height}
-              sizes="(min-width: 1024px) 30vw, 70vw"
+              sizes="(min-width: 1280px) 270px, (min-width: 1024px) 30vw, 70vw"
               className="h-auto w-full max-w-[18rem] object-contain"
             />
           </div>
@@ -149,7 +149,7 @@ export default function AboutPage() {
                 src={identityImage.src}
                 alt={identityImage.alt}
                 fill
-                sizes="(min-width: 768px) 50vw, 100vw"
+                sizes="(min-width: 1280px) 460px, (min-width: 768px) 50vw, 100vw"
                 className="object-cover"
               />
             </div>

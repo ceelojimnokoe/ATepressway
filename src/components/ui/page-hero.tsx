@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import { mediaRegistry, type MediaKey } from "@/content/media";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
@@ -56,8 +56,8 @@ export function PageHero({
         alt={asset.alt}
         fill
         priority={priority}
+        fetchPriority={priority ? "high" : undefined}
         sizes="100vw"
-        quality={70}
         className={cn("-z-10 object-cover", !objectPosition && "object-center")}
         style={objectPosition ? { objectPosition } : undefined}
       />

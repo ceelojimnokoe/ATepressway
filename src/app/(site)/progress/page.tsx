@@ -6,7 +6,7 @@ import { StructureProgress } from "@/components/progress/structure-progress";
 import { MilestoneTimeline } from "@/components/progress/milestone-timeline";
 import { BulletinFeed } from "@/components/progress/bulletin-feed";
 import { ThisMonthAndNext } from "@/components/progress/this-month-and-next";
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import {
   projectFacts,
   progress,
@@ -253,7 +253,7 @@ export default function ProgressPage() {
                       src={asset.src}
                       alt={asset.alt}
                       fill
-                      sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                      sizes="(min-width: 1280px) 305px, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                       loading="lazy"
                       className="object-cover"
                     />

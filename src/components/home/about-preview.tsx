@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import { mediaRegistry } from "@/content/media";
 import { aboutIntro } from "@/content/about";
 // visionMission intentionally not imported — its preview grid below is
@@ -43,7 +43,7 @@ export function AboutPreview() {
               alt=""
               width={logo.width}
               height={logo.height}
-              sizes="(min-width: 1024px) 25vw, 60vw"
+              sizes="(min-width: 1280px) 195px, (min-width: 1024px) 25vw, 60vw"
               className="h-auto w-full max-w-[12rem] object-contain"
             />
           </div>

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import { mediaRegistry } from "@/content/media";
 import { governmentOfGhana, contractingAuthorityOfficeHolders } from "@/content/project";
 import { BoardMemberCard } from "./board-member-card";

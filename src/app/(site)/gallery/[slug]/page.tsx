@@ -108,7 +108,7 @@ export default async function GalleryFolderPage({
         <ul className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {visible.map(({ item }, index) => (
             <li key={item.id}>
-              <GalleryCard item={item} lightboxIndex={index} showHeading={!isEventFolder} />
+              <GalleryCard item={item} lightboxIndex={index} showHeading={!isEventFolder} isLcp={index === 0} />
             </li>
           ))}
           <FolderShowMore items={overflow} startIndex={visible.length} showHeading={!isEventFolder} />

@@ -32,7 +32,7 @@ const MPR_MAY_2026 = "MPR May 2026";
 const WORK_PLAN_AUG_2026 = "Maripoma work plan, 28 August 2026";
 
 /**
- * "progress and planned work between sept and oct 2026.pdf" (public/info/) —
+ * "progress and planned work between sept and oct 2026.pdf" (docs-src/info/) —
  * reports September's completed work (overall 53%, four interchange totals)
  * and October's plan. The document itself never states a day, only the
  * month names "SEPTEMBER"/"OCTOBER"; 7 October 2026 is its PDF creation
@@ -1011,7 +1011,7 @@ export interface MonthlyUpdate {
 export const monthlyUpdates: readonly MonthlyUpdate[] = [
   // Added 15 Oct 2026, REDONE verbatim 16 Oct 2026 (client instruction: only
   // part of "progress and planned work between sept and oct 2026.pdf"
-  // (public/info/; PROGRESS_REPORT_OCT_2026 above) had made it onto the
+  // (docs-src/info/; PROGRESS_REPORT_OCT_2026 above) had made it onto the
   // site, and all of it is necessary — overrides the plain-language-summary
   // instruction for THIS document specifically). `completed`/`planned` and
   // the two tables below are the document's own text, word for word,
@@ -1367,7 +1367,7 @@ export const team: readonly TeamMember[] = [
     // Ing. Koffi Togbenou's entry was REPLACED outright (client instruction,
     // 7 Sept 2026) by Ing. Evelyn Gyampo — a different person, not a rename;
     // Togbenou's photo and profile are removed from the site entirely.
-    // Extracted from "ATEL Profile.docx" (public/info/): text via the
+    // Extracted from "ATEL Profile.docx" (docs-src/info/): text via the
     // document.xml zipfile technique, photo from word/media/image1.jpeg
     // (the only non-template image in the file) — visually verified as a
     // genuine, distinct portrait, not a repeat of any other team photo.
@@ -1621,11 +1621,11 @@ export const epcPersonnel: readonly OrgPerson[] = [
     // RESOLVED (client instruction, 2 Sept 2026): "Project Manager" —
     // corrects the earlier client list (30 Aug 2026), which read "Product
     // Manager". Verified directly against his own CV ("Ing Ben Sackey.docx",
-    // public/info/), which states "Project Manager" throughout, including as
+    // docs-src/info/), which states "Project Manager" throughout, including as
     // his current role on this project.
     role: "Project Manager",
     // Photo replaced 7 Sept 2026 — image extraction only, from "Ing Ben
-    // Sackey (Profile).docx" (public/info/); his bio below is untouched
+    // Sackey (Profile).docx" (docs-src/info/); his bio below is untouched
     // (last revised 3 Sept 2026, see note below) per client instruction.
     // Swapped again 8 Sept 2026 (client instruction) to bsackey.png — the
     // same document's smaller passport-style headshot (191×233, positioned
@@ -1656,7 +1656,7 @@ export const epcPersonnel: readonly OrgPerson[] = [
   },
   {
     // Added 3 Sept 2026, extracted from his CV ("Ing Kwaku Anim Boateng.docx",
-    // public/info/). His CV lists Maripoma Enterprise Limited among his past
+    // docs-src/info/). His CV lists Maripoma Enterprise Limited among his past
     // clients generically (no dated "current role" line the way Sackey's CV
     // has) — the project tie in the bio below reflects his placement on this
     // roster per client instruction, matching the framing every other entry
@@ -1697,7 +1697,7 @@ export const epcPersonnel: readonly OrgPerson[] = [
   },
   {
     // Added 7 Sept 2026, extracted from "Jihad_El_Zohbi_Profile .pdf"
-    // (public/info/ — note the trailing space before the extension in the
+    // (docs-src/info/ — note the trailing space before the extension in the
     // actual filename). This source is a PDF rather than a docx like the
     // other profile sources here; text was read via native PDF text
     // extraction, and the photo via PyMuPDF (pixel data + its separate soft

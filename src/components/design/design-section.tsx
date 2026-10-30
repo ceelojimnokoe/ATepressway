@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import { mediaRegistry } from "@/content/media";
 import { DESIGN_DISCLAIMER, type DesignSection } from "@/content/design";
 import { Figure } from "@/components/ui/figure";
@@ -37,7 +37,7 @@ export function DesignSectionCard({ section, reverse, chainage, percent, asOf }:
             src={asset.src}
             alt={asset.alt}
             fill
-            sizes="(min-width: 768px) 58vw, 100vw"
+            sizes="(min-width: 1280px) 605px, (min-width: 768px) 58vw, 100vw"
             loading="lazy"
             className="object-cover"
           />

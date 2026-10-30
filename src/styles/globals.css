@@ -456,3 +456,38 @@
     display: none !important;
   }
 }
+
+/*
+ * Font fallbacks. Each web font is shown first in a local Arial face resized
+ * to match the real font's measured text width, so when the real font swaps
+ * in, lines break in the same places and nothing shifts (the home page used
+ * to score ~0.25 CLS from this). size-adjust values were measured in-browser
+ * against the real fonts (real width / fallback width on representative
+ * copy); vertical overrides carry over from next/font's generated values,
+ * rescaled by old/new size-adjust so line height is unchanged. Re-measure if
+ * a font file changes.
+ */
+@font-face {
+  font-family: "Clash Display Fallback";
+  src: local("Arial");
+  size-adjust: 110.9%;
+  ascent-override: 80.25%;
+  descent-override: 22.54%;
+  line-gap-override: 8.11%;
+}
+@font-face {
+  font-family: "General Sans Fallback";
+  src: local("Arial");
+  size-adjust: 99.75%;
+  ascent-override: 101.26%;
+  descent-override: 24.06%;
+  line-gap-override: 10.02%;
+}
+@font-face {
+  font-family: "Geist Mono Fallback";
+  src: local("Arial");
+  size-adjust: 120.96%;
+  ascent-override: 83.09%;
+  descent-override: 24.39%;
+  line-gap-override: 0%;
+}

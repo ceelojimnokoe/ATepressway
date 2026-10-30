@@ -18,7 +18,7 @@ export const OG_IMAGE_SIZE = { width: 1200, height: 630 };
  * Text is drawn straight from content — no stale or placeholder figures.
  */
 const bgDataUri = `data:image/jpeg;base64,${readFileSync(
-  join(process.cwd(), "public/images/og-hero-bg.jpg"),
+  join(process.cwd(), "assets-src/images/og-hero-bg.jpg"),
 ).toString("base64")}`;
 
 /**
@@ -30,7 +30,7 @@ const bgDataUri = `data:image/jpeg;base64,${readFileSync(
  * 32px square.
  */
 const logoDataUri = `data:image/png;base64,${readFileSync(
-  join(process.cwd(), "public/images/atel-logo.png"),
+  join(process.cwd(), "assets-src/images/atel-logo.png"),
 ).toString("base64")}`;
 
 export function renderOgImage() {

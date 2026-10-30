@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/static-image";
 import { mediaRegistry } from "@/content/media";
 import { heroSlides } from "@/content/hero";
 import { organization, projectFacts, progress } from "@/content/project";
@@ -183,6 +183,7 @@ export function Hero() {
           alt="Coat of arms of the Republic of Ghana"
           width={coatOfArms.width}
           height={coatOfArms.height}
+          sizes="96px"
           className="h-12 w-auto drop-shadow-[0_4px_14px_rgba(0,0,0,0.5)] sm:h-16 lg:h-20"
         />
       </div>
