@@ -1,6 +1,9 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 
+// Required by `output: "export"`: this route is rendered once at build time.
+export const dynamic = "force-static";
+
 /**
  * /styleguide is intentionally not Disallow'd here even though it's
  * noindex (see its own metadata export) — combining the two is a known

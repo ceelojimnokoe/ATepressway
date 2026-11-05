@@ -3,7 +3,6 @@ import { PageHero } from "@/components/ui/page-hero";
 import { ViewportReveal } from "@/components/motion/viewport-reveal";
 import { InvestmentInterestForm } from "@/components/investment/investment-interest-form";
 import { investmentContent, investmentForm } from "@/content/investment";
-import { getMailConfig } from "@/lib/investment-mail";
 import { buildMetadata } from "@/lib/page-metadata";
 import { routes } from "@/content/seo";
 
@@ -44,7 +43,10 @@ export const metadata: Metadata = buildMetadata(routes.investment);
 export default function InvestmentPage() {
   const { intro, approach, highlights, beyond } = investmentContent;
   const pending = investmentContent.status === "pending-client-signoff";
-  const formEnabled = getMailConfig() !== null;
+  // The site is a static export (no server to receive a submission), so the
+  // form is always in its honest disabled state. The old API route is kept in
+  // docs-src/investment-interest-route.ts.txt for when a backend exists.
+  const formEnabled = false;
 
   return (
     <>

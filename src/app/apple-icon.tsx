@@ -2,6 +2,9 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
+// Required by `output: "export"`: this route is rendered once at build time.
+export const dynamic = "force-static";
+
 /**
  * Apple touch icon (180×180), generated from the ATEL logo on a white
  * plate. Pairs with icon.tsx (the 32×32 favicon).

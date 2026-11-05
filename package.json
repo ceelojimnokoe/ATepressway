@@ -16,6 +16,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev",
     "images:build": "node scripts/build-images.mjs",
     "images:check": "node scripts/check-images.mjs",
     "prebuild": "node scripts/check-images.mjs",
@@ -41,6 +43,7 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "sharp": ">=0.35.4",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "wrangler": "4.157.0"
   }
 }

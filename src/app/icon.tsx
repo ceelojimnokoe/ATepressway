@@ -2,6 +2,9 @@ import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 
+// Required by `output: "export"`: this route is rendered once at build time.
+export const dynamic = "force-static";
+
 /**
  * Favicon, generated from the real ATEL logo (assets-src/images/atel-logo.png)
  * rather than a static drop-in, so Next emits a properly-sized icon and the

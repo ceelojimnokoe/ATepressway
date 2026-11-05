@@ -3,6 +3,9 @@ import { routes, type RouteMeta } from "@/content/seo";
 import { galleryFolders } from "@/content/folders";
 import { SITE_URL } from "@/lib/site";
 
+// Required by `output: "export"`: this route is rendered once at build time.
+export const dynamic = "force-static";
+
 /**
  * /styleguide is deliberately absent — it's noindex, not a public route.
  * No lastModified: we don't track real per-page update timestamps

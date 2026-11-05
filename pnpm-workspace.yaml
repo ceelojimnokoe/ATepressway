@@ -5,6 +5,8 @@ packages: []
 allowBuilds:
   sharp: true
   unrs-resolver: true
+  esbuild: true
+  workerd: true
 
 # Security floors for transitive dev/build-tool dependencies that pnpm
 # doesn't pick up on its own from next/eslint-config-next's own ranges
